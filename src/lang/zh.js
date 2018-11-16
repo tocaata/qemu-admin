@@ -72,10 +72,18 @@ export default {
     theme: '换肤',
     size: '布局大小'
   },
+  signup: {
+    title: '注册账户',
+    username: '账号',
+    email: '邮箱',
+    password: '密码',
+    repeatPassword: '重复密码',
+    signUp: '注册'
+  },
   login: {
     title: '系统登录',
     logIn: '登录',
-    username: '账号',
+    username: '账号名',
     password: '密码',
     any: '随便填',
     thirdparty: '第三方登录',
