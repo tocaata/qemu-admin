@@ -72,6 +72,14 @@ export default {
     theme: 'Theme',
     size: 'Global Size'
   },
+  signup: {
+    title: 'Sign Up Account',
+    username: 'Username',
+    email: 'Email Address',
+    password: 'Password',
+    repeatPassword: 'Please Repeat Password',
+    signUp: 'Sign Up'
+  },
   login: {
     title: 'Login Form',
     logIn: 'Log in',
