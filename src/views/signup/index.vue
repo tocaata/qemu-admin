@@ -21,7 +21,7 @@
 
       <el-form-item prop="name">
         <span class="svg-container">
-          <svg-icon icon-class="user" />
+          <svg-icon icon-class="people" />
         </span>
         <el-input
           v-model="signupForm.name"
@@ -107,13 +107,14 @@ export default {
   },
   methods: {
     handleSignUp() {
-      const { username, email, password } = this.signupForm
-      signUp(username, email, password, "a user").then(({data}) => {
+      const { username, name, email, password } = this.signupForm
+      signUp(username, name, email, password, "a user").then((data) => {
         this.$message({
           type: 'success',
           message: data.message
         });
-        console.log(data);
+
+        this.$router.push('/user/login');
       }).catch((err) => {
         console.log(err)
       })
@@ -200,6 +201,7 @@ export default {
       width: 520px;
       max-width: 100%;
       padding: 35px 35px 15px 35px;
+      margin: auto;
       margin: 120px auto;
     }
     .tips {
