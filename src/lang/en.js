@@ -75,6 +75,7 @@ export default {
   signup: {
     title: 'Sign Up Account',
     username: 'Username',
+    name: 'Nickname',
     email: 'Email Address',
     password: 'Password',
     repeatPassword: 'Please Repeat Password',

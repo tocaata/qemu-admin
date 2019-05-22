@@ -9,7 +9,18 @@ module.exports = {
     // Paths
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
-    proxyTable: {},
+    proxyTable: {
+      '/api-dev':{
+        target:'http://localhost:3000/',
+        // target: 'https://www.baidu.com/',
+        changeOrigin: true,
+        pathRewrite:{'^/api-dev':''},
+        secure: false,
+        logLevel: 'info'
+        // agent: new ProxyAgent('http://127.0.0.1:8888')
+        // agent: new ProxyAgent('http://10.36.232.125:8080')
+      }
+    },
 
     // Various Dev Server settings
 

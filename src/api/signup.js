@@ -1,10 +1,11 @@
 import request from '@/utils/request'
 
-export function signUp(username, email, password) {
+export function signUp(username, email, password, detail) {
   const data = {
     username,
     email,
-    password
+    password,
+    detail
   }
   return request({
     url: '/user/new',

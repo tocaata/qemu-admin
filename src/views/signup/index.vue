@@ -19,6 +19,18 @@
         />
       </el-form-item>
 
+      <el-form-item prop="name">
+        <span class="svg-container">
+          <svg-icon icon-class="user" />
+        </span>
+        <el-input
+          v-model="signupForm.name"
+          :placeholder="$t('signup.name')"
+          name="username"
+          type="text"
+        />
+      </el-form-item>
+
       <el-form-item prop="email">
         <span class="svg-container">
           <svg-icon icon-class="email" />
@@ -82,10 +94,11 @@ export default {
   data() {
     return {
       signupForm: {
-        name: '',
-        email: '',
-        password: '',
-        repeatPassword: ''
+        username: 'tocaata',
+        name: 'tocaata',
+        email: 'tuotaka@gmail.com',
+        password: '8312277',
+        repeatPassword: '8312277'
       },
       passwordType: 'password',
       repeatPasswordType: 'password',
@@ -94,9 +107,13 @@ export default {
   },
   methods: {
     handleSignUp() {
-      const { name, email, password } = this.signupForm
-      signUp(name, email, password).then((response)=> {
-        1
+      const { username, email, password } = this.signupForm
+      signUp(username, email, password, "a user").then(({data}) => {
+        this.$message({
+          type: 'success',
+          message: data.message
+        });
+        console.log(data);
       }).catch((err) => {
         console.log(err)
       })
