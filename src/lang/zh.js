@@ -75,6 +75,7 @@ export default {
   signup: {
     title: '注册账户',
     username: '账号',
+    name: '昵称',
     email: '邮箱',
     password: '密码',
     repeatPassword: '重复密码',

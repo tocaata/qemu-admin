@@ -59,7 +59,7 @@
     "vue-i18n": "7.3.2",
     "vue-router": "3.0.1",
     "vue-splitpane": "1.0.2",
-    "vuedraggable": "^2.16.0",
+    "vuedraggable": "^2.20.0",
     "vuex": "3.0.1",
     "xlsx": "^0.11.16"
   },
@@ -90,7 +90,7 @@
     "lint-staged": "7.2.2",
     "mini-css-extract-plugin": "0.4.1",
     "node-notifier": "5.2.1",
-    "node-sass": "^4.7.2",
+    "node-sass": "^4.12.0",
     "optimize-css-assets-webpack-plugin": "5.0.0",
     "ora": "3.0.0",
     "path-to-regexp": "2.4.0",
