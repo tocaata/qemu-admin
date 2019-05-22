@@ -100,6 +100,14 @@ export default {
         password: '8312277',
         repeatPassword: '8312277'
       },
+      signupRules: {
+        username: { required: true, message: 'Please input your user name', trigger: 'blur' },
+        name: { required: true, message: 'Please input your nickname', trigger: 'blur' },
+        password: [
+          { required: true, message: 'Please input your password', trigger: 'blur' },
+          { min: 6, message: 'Password should be 6 digits at least', trigger: 'blur' }
+        ]
+      },
       passwordType: 'password',
       repeatPasswordType: 'password',
       loading: false
