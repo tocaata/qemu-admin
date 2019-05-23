@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="container">
     <el-form ref="searchVM" :model="searchVM" :rules="searchVMRules" class="inline-form" label-width="auto">
       <el-form-item prop="name" label="Name">
         <el-input
@@ -25,11 +25,18 @@
         type="primary">
         Search
       </el-button>
+      <el-button
+        :loading="loading"
+        type="primary">
+        Create
+      </el-button>
     </el-form>
-    <el-table :data="vms" border align="center"
+    <el-table :data="vms" border
+              header-align="center" align="center"
               @sort-change="sortChange"
               :default-sort = "{ prop: 'created_at', order: 'descending' }"
               v-loading="loading"
+              class="vm-table"
               fit highlight-current-row>
       <el-table-column
         sortable="custom"
@@ -140,8 +147,6 @@
 
 <style scoped>
   .inline-form {
-    margin-left: 50px;
-    margin-top: 20px;
     display: inline-block;
   }
 
@@ -158,5 +163,9 @@
   .inline-form label {
     float: none;
     display: inline-block;
+  }
+
+  .container {
+    padding: 30px;
   }
 </style>
