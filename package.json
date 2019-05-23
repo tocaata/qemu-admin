@@ -48,6 +48,7 @@
     "jsonlint": "1.6.3",
     "jszip": "3.2.1",
     "mockjs": "1.0.1-beta3",
+    "moment": "^2.24.0",
     "normalize.css": "8.0.1",
     "nprogress": "0.2.0",
     "screenfull": "4.2.0",

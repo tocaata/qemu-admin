@@ -12,18 +12,11 @@ export function loginByUsername(username, password) {
   })
 }
 
-export function logout() {
+
+export function vmList(data) {
   return request({
-    url: '/user/logout',
-    method: 'post'
+    url: '/vm/list',
+    method: 'post',
+    data
   })
 }
-
-export function getUserInfo(userId, token) {
-  return request({
-    url: `/user/detail/${ encodeURIComponent(userId) }`,
-    method: 'get',
-    params: { token }
-  })
-}
-
