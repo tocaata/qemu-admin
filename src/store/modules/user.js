@@ -4,6 +4,7 @@ import { getToken, setToken, removeToken } from '@/utils/auth'
 const user = {
   state: {
     user: '',
+    userId: '',
     status: '',
     code: '',
     token: getToken(),
@@ -19,6 +20,10 @@ const user = {
   mutations: {
     SET_CODE: (state, code) => {
       state.code = code
+    },
+    SET_USER_INFO: (state, userInfo) => {
+      state.token = userInfo.token;
+      state.userId = userInfo.userId;
     },
     SET_TOKEN: (state, token) => {
       state.token = token
@@ -46,11 +51,10 @@ const user = {
   actions: {
     // 用户名登录
     LoginByUsername({ commit }, userInfo) {
-      debugger
       const username = userInfo.username.trim()
       return loginByUsername(username, userInfo.password).then(response => {
         const data = response.data
-        commit('SET_TOKEN', data.token)
+        commit('SET_USER_INFO', { token: data.token, userId: data.userId });
         setToken(response.data.token)
       })
     },
@@ -58,7 +62,7 @@ const user = {
     // 获取用户信息
     GetUserInfo({ commit, state }) {
       return new Promise((resolve, reject) => {
-        getUserInfo(state.token).then(response => {
+        getUserInfo(state.userId, state.token).then(response => {
           if (!response.data) { // 由于mockjs 不支持自定义状态码只能这样hack
             reject('error')
           }
