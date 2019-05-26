@@ -62,7 +62,7 @@ const user = {
     // 获取用户信息
     GetUserInfo({ commit, state }) {
       return new Promise((resolve, reject) => {
-        getUserInfo(state.userId, state.token).then(response => {
+        getUserInfo(state.token).then(response => {
           if (!response.data) { // 由于mockjs 不支持自定义状态码只能这样hack
             reject('error')
           }

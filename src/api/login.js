@@ -19,11 +19,11 @@ export function logout() {
   })
 }
 
-export function getUserInfo(userId, token) {
+export function getUserInfo(token) {
   return request({
-    url: `/user/detail/${ encodeURIComponent(userId) }`,
+    url: `/user/detail`,
     method: 'get',
-    params: { token }
+    data: { token }
   })
 }
 

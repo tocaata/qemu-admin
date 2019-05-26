@@ -26,11 +26,46 @@
         Search
       </el-button>
       <el-button
-        :loading="loading"
-        type="primary">
+        @click="dialogVisible = true"
+        icon="el-icon-plus">
         Create
       </el-button>
     </el-form>
+
+    <el-dialog
+      modal
+      title="Create Machine"
+      width="40%"
+      :visible.sync="dialogVisible">
+      <div class="margin">
+        <el-form :model="newVM" class="inline-form" label-width="auto">
+          <div v-if="activeStep === 0">
+
+              <el-form-item label="VM Name:" prop="name">
+                <el-input v-model="newVM.name"
+                          style="width: 300px"
+                          placeholder="Please input VM name">
+                </el-input>
+              </el-form-item>
+          </div>
+
+          <div v-if="activeStep === 1">
+              <el-form-item label="   OS:" prop="os">
+                <el-input v-model="newVM.os"
+                          style="width: 300px"
+                          placeholder="Please OS name">
+                </el-input>
+              </el-form-item>
+          </div>
+        </el-form>
+      </div>
+
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="dialogVisible = false">取 消</el-button>
+        <el-button type="primary" @click="activeStep += 1">下一步</el-button>
+      </span>
+    </el-dialog>
+
     <el-table :data="vms" border
               header-align="center" align="center"
               @sort-change="sortChange"
@@ -106,7 +141,14 @@
           os: '',
           status: ''
         },
-        searchVMRules: {}
+        searchVMRules: {},
+
+        dialogVisible: false,
+        activeStep: 0,
+        newVM: {
+          name: '',
+          os: '',
+        }
       };
     },
     mounted() {
