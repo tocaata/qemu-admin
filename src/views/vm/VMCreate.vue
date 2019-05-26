@@ -1,11 +1,6 @@
 <template>
-  <div>
-    <el-form :model="newVM" ref="newVM" :rules="newVMRules">
-      <el-form-item>
-        <el-input v-model="newVM.name">
-        </el-input>
-      </el-form-item>
-    </el-form>
+  <div class="vm-create">
+
   </div>
 </template>
 
@@ -14,6 +9,7 @@
     name: 'VMCreate',
     data() {
       return {
+        activeStep: 0,
         newVM: {
           name: '',
         },
@@ -25,5 +21,22 @@
 </script>
 
 <style scoped>
+  .vm-create,.margin {
+    margin: 30px;
+  }
 
+  .inline-form {
+    display: inline-block;
+  }
+
+  .inline-form .el-form-item {
+    display: inline-block;
+    margin-right: 10px;
+    vertical-align: top;
+  }
+
+  .inline-form label {
+    float: none;
+    display: inline-block;
+  }
 </style>
