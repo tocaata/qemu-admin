@@ -1,6 +1,26 @@
 <template>
   <div class="margin">
-    <el-button icon="el-icon-plus" @click="dialogVisible = true">Add</el-button>
+    <el-button icon="el-icon-plus" @click="dialogVisible = true" type="primary">Add</el-button>
+
+    <el-table :data="options" border style="margin-top: 30px">
+      <el-table-column prop="arg" label="arg">
+      </el-table-column>
+      <el-table-column prop="name" label="name">
+      </el-table-column>
+      <el-table-column prop="config" label="config">
+      </el-table-column>
+    </el-table>
+    <el-pagination
+      background
+      @current-change="handleCurrentChange"
+      @size-change="handleSizeChange"
+      :current-page.sync="pageIndex"
+      :page-size="pageSize"
+      :total="total"
+      class="pagination-container"
+      :page-sizes="[10,20,50]"
+      layout="total, sizes, prev, pager, next, jumper">
+    </el-pagination>
 
     <el-dialog :visible.sync="dialogVisible" width="75%" title="Add new argument template">
       <el-form :model="newConfig" size="small" label-width="auto">
@@ -59,23 +79,29 @@
 
       <span slot="footer" class="dialog-footer">
         <el-button @click="dialogVisible = false">Cancel</el-button>
-        <el-button type="primary" @click="saveConfig">Save</el-button>
+        <el-button type="primary" @click="saveConfig" :loading="loading">Save</el-button>
       </span>
     </el-dialog>
   </div>
 </template>
 
 <script>
+  import { saveVmOption, listOption } from '../../api/vm'
+
   export default {
     name: 'VmConfig',
     data() {
       return {
         dialogVisible: false,
+        loading: false,
         newConfig: {
-          title: '',
-          arg: '',
-          template: '',
-          params: []
+          title: 'smp',
+          arg: 'smp',
+          template: '$1,threads=$2',
+          params: [
+            {"name":"$1","label":"cpu count","type":"number","options":[],"component":"el-input-number","key":1558962702577},
+            {"name":"$2","label":"thread count per core","type":"number","options":[],"component":"el-input-number", "key":1558962702578}
+          ]
         },
         newParams: {
           name: '',
@@ -94,23 +120,62 @@
           { label: 'select', value: 'el-select' },
           { label: 'switch', value: 'el-switch' },
           { label: 'number', value: 'el-input-number' }
-        ]
+        ],
+
+        options: [],
+        pageIndex: 1,
+        pageSize: 10,
+        total: 0
       };
     },
     mounted() {
       this.newConfig.params.push(Object.assign({}, this.newParams, { key: Date.now() }));
+      this.search();
     },
     methods: {
       addParam() {
-        this.newConfig.params.push(Object.assign({}, this.newParams));
+        this.newConfig.params.push(Object.assign({}, this.newParams, { key: Date.now() }));
       },
       removeParam(key) {
         const index = this.newConfig.params.indexOf(p => p.key === key);
         this.newConfig.params.splice(index, 1);
       },
       saveConfig() {
-        1
-      }
+        this.loading = true;
+        saveVmOption(this.newConfig).then(res => {
+          this.loading = false;
+          this.dialogVisible = false;
+          this.$message({
+            type: 'success',
+            message: res.message
+          });
+
+          this.search();
+        }).catch(() => {
+          this.loading = false;
+        })
+      },
+
+      search() {
+        this.loading = true;
+        const { pageIndex, pageSize } = this;
+        listOption({ pageIndex, pageSize }).then(res => {
+          this.options = res.data.list;
+          this.total = res.data.totalSize;
+          this.loading = false;
+        }).catch(() => {
+          this.loading = false;
+        })
+      },
+
+      handleCurrentChange(value) {
+        this.pageIndex = value;
+        this.search();
+      },
+      handleSizeChange(value) {
+        this.pageSize = value;
+        this.search();
+      },
     }
   }
 </script>
