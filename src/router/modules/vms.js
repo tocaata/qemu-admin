@@ -21,6 +21,12 @@ const vmsRouter = {
       component: () => import('@/views/vm/VMCreate'),
       name: 'VMCreate',
       meta: { title: 'Create Machine', noCache: true, icon: 'edit' }
+    },
+    {
+      path: 'vmconfig',
+      component: () => import('@/views/vm/VmConfig'),
+      name: 'VmConfig',
+      meta: { title: 'KVM parameters', noCache: true, icon: 'edit' }
     }
   ]
 }
