@@ -3,11 +3,11 @@
     <el-button icon="el-icon-plus" @click="dialogVisible = true" type="primary">Add</el-button>
 
     <el-table :data="options" border style="margin-top: 30px">
-      <el-table-column prop="arg" label="arg">
+      <el-table-column prop="arg" label="arg" width="200">
       </el-table-column>
-      <el-table-column prop="name" label="name">
+      <el-table-column prop="name" label="name" width="200">
       </el-table-column>
-      <el-table-column prop="config" label="config">
+      <el-table-column prop="config" label="config" width="1200">
       </el-table-column>
     </el-table>
     <el-pagination
@@ -89,7 +89,7 @@
   import { saveVmOption, listOption } from '../../api/vm'
 
   export default {
-    name: 'VmConfig',
+    name: 'KvmArg',
     data() {
       return {
         dialogVisible: false,

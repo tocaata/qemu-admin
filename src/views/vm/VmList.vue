@@ -94,7 +94,7 @@
   import VmDialog from './VmDialog/VmDialog'
 
   export default {
-    name: 'VMList',
+    name: 'VmList',
     components: { VmDialog },
     data() {
       return {
