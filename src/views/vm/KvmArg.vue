@@ -7,6 +7,12 @@
       </el-table-column>
       <el-table-column prop="name" label="Name" width="200">
       </el-table-column>
+      <el-table-column prop="is_primary" label="Primary"
+                       show-overflow-tooltip>
+        <template slot-scope="scope">
+          <el-tag type="primary" v-if="scope.row.is_primary === 1">Primary</el-tag>
+        </template>
+      </el-table-column>
       <el-table-column prop="config" label="Config"
                        show-overflow-tooltip>
       </el-table-column>
@@ -16,6 +22,7 @@
             placement="right"
             width="400"
             trigger="click">
+            <p><strong>Template: </strong><el-tag type="info">{{ getCmd(scope.row.config) }}</el-tag></p>
             {{ scope.row.config }}
             <el-link type="primary" icon="el-icon-view" slot="reference">Detail</el-link>
           </el-popover>
@@ -36,19 +43,24 @@
 
     <el-dialog :visible.sync="dialogVisible" width="75%" title="Add new argument template">
       <el-form :model="newConfig" size="small" label-width="auto">
-        <el-form-item label="Title" prop="title">
+        <el-form-item label="Title:" prop="title">
           <el-input style="width: 35%" v-model="newConfig.title"></el-input>
         </el-form-item>
         <el-row>
-          <el-form-item label="Argument" prop="arg">
-            <el-input style="width: 35%" v-model="newConfig.arg"></el-input>
+          <el-form-item label="Argument:" prop="arg">
+            <el-input style="width: 35%" v-model="newConfig.arg">
+              <template slot="prepend">-</template>
+            </el-input>
           </el-form-item>
         </el-row>
         <el-row>
-          <el-form-item label="Template" prop="template">
+          <el-form-item label="Template:" prop="template">
             <el-input style="width: 35%" type="textarea" v-model="newConfig.template"></el-input>
           </el-form-item>
         </el-row>
+        <el-form-item label="Primary:" prop="isPrimary">
+          <el-switch v-model="newConfig.isPrimary"></el-switch>
+        </el-form-item>
       </el-form>
 
       <el-form :model="newConfig" inline size="small">
@@ -110,6 +122,7 @@
           title: 'smp',
           arg: 'smp',
           template: '$1,threads=$2',
+          isPrimary: false,
           params: [
             {"name":"$1","label":"cpu count","type":"number","options":[],"component":"el-input-number","key":1558962702577},
             {"name":"$2","label":"thread count per core","type":"number","options":[],"component":"el-input-number", "key":1558962702578}
@@ -188,8 +201,9 @@
         this.pageSize = value;
         this.search();
       },
-      detail(config) {
-        return JSON.stringify(JSON.parse(config), undefined, 4);
+      getCmd(config) {
+        const object = JSON.parse(config);
+        return `-${object.arg} ${object.template}`;
       }
     }
   }
