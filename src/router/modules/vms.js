@@ -12,21 +12,21 @@ const vmsRouter = {
   children: [
     {
       path: 'list',
-      component: () => import('@/views/vm/VMList'),
-      name: 'VMList',
+      component: () => import('@/views/vm/VmList'),
+      name: 'VmList',
       meta: { title: 'Machine List', noCache: true, icon: 'list' }
     },
     {
       path: 'new',
-      component: () => import('@/views/vm/VMCreate'),
-      name: 'VMCreate',
+      component: () => import('@/views/vm/VmCreate'),
+      name: 'VmCreate',
       meta: { title: 'Create Machine', noCache: true, icon: 'edit' }
     },
     {
-      path: 'vmconfig',
-      component: () => import('@/views/vm/VmConfig'),
-      name: 'VmConfig',
-      meta: { title: 'KVM parameters', noCache: true, icon: 'edit' }
+      path: 'kvmarg',
+      component: () => import('@/views/vm/KvmArg'),
+      name: 'KvmArg',
+      meta: { title: 'KVM Args', noCache: true, icon: 'edit' }
     }
   ]
 }
