@@ -3,11 +3,23 @@
     <el-button icon="el-icon-plus" @click="dialogVisible = true" type="primary">Add</el-button>
 
     <el-table :data="options" border style="margin-top: 30px">
-      <el-table-column prop="arg" label="arg" width="200">
+      <el-table-column prop="arg" label="Arg" width="200">
       </el-table-column>
-      <el-table-column prop="name" label="name" width="200">
+      <el-table-column prop="name" label="Name" width="200">
       </el-table-column>
-      <el-table-column prop="config" label="config" width="1200">
+      <el-table-column prop="config" label="Config"
+                       show-overflow-tooltip>
+      </el-table-column>
+      <el-table-column label="Action" width="200">
+        <template slot-scope="scope">
+          <el-popover
+            placement="right"
+            width="400"
+            trigger="click">
+            {{ scope.row.config }}
+            <el-link type="primary" icon="el-icon-view" slot="reference">Detail</el-link>
+          </el-popover>
+        </template>
       </el-table-column>
     </el-table>
     <el-pagination
@@ -176,6 +188,9 @@
         this.pageSize = value;
         this.search();
       },
+      detail(config) {
+        return JSON.stringify(JSON.parse(config), undefined, 4);
+      }
     }
   }
 </script>
