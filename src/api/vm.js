@@ -26,3 +26,27 @@ export function listOption(data) {
   })
 }
 
+export function getPrimaryOptions() {
+  return request({
+    url: '/vm/primaryOptions',
+    method: 'get'
+  })
+}
+
+export function deleteArg(id) {
+  return request({
+    url: '/vm/deleteArg',
+    method: 'post',
+    data: { id }
+  })
+}
+
+
+
+export function createVm(data) {
+  return request({
+    url: '/vm/create',
+    method: 'post',
+    data
+  })
+}

@@ -8,6 +8,7 @@
       <el-table-column prop="name" label="Name" width="200">
       </el-table-column>
       <el-table-column prop="is_primary" label="Primary"
+                       width="200"
                        show-overflow-tooltip>
         <template slot-scope="scope">
           <el-tag type="primary" v-if="scope.row.is_primary === 1">Primary</el-tag>
@@ -22,10 +23,11 @@
             placement="right"
             width="400"
             trigger="click">
-            <p><strong>Template: </strong><el-tag type="info">{{ getCmd(scope.row.config) }}</el-tag></p>
+            <p><strong>Template: </strong><el-tag type="info" style="font-size: 1em;">{{ getCmd(scope.row.config) }}</el-tag></p>
             {{ scope.row.config }}
             <el-link type="primary" icon="el-icon-view" slot="reference">Detail</el-link>
           </el-popover>
+          <el-link type="primary" @click="deleteArg(scope.row.id)" icon="el-icon-delete">Delete</el-link>
         </template>
       </el-table-column>
     </el-table>
@@ -41,7 +43,9 @@
       layout="total, sizes, prev, pager, next, jumper">
     </el-pagination>
 
-    <el-dialog :visible.sync="dialogVisible" width="75%" title="Add new argument template">
+    <el-dialog :visible.sync="dialogVisible"
+               :close-on-click-modal="false"
+               width="75%" title="Add new argument template">
       <el-form :model="newConfig" size="small" label-width="auto">
         <el-form-item label="Title:" prop="title">
           <el-input style="width: 35%" v-model="newConfig.title"></el-input>
@@ -53,11 +57,12 @@
             </el-input>
           </el-form-item>
         </el-row>
-        <el-row>
-          <el-form-item label="Template:" prop="template">
-            <el-input style="width: 35%" type="textarea" v-model="newConfig.template"></el-input>
-          </el-form-item>
-        </el-row>
+        <el-form-item label="Template:" prop="template">
+          <el-input style="width: 35%" type="textarea" v-model="newConfig.template"></el-input>
+        </el-form-item>
+        <el-form-item label="Desc:" prop="desc">
+          <el-input style="width: 35%" type="textarea" v-model="newConfig.desc"></el-input>
+        </el-form-item>
         <el-form-item label="Primary:" prop="isPrimary">
           <el-switch v-model="newConfig.isPrimary"></el-switch>
         </el-form-item>
@@ -110,7 +115,7 @@
 </template>
 
 <script>
-  import { saveVmOption, listOption } from '../../api/vm'
+  import { saveVmOption, listOption, deleteArg } from '../../api/vm'
 
   export default {
     name: 'KvmArg',
@@ -122,6 +127,7 @@
           title: 'smp',
           arg: 'smp',
           template: '$1,threads=$2',
+          desc: '',
           isPrimary: false,
           params: [
             {"name":"$1","label":"cpu count","type":"number","options":[],"component":"el-input-number","key":1558962702577},
@@ -191,6 +197,20 @@
         }).catch(() => {
           this.loading = false;
         })
+      },
+
+      deleteArg(id) {
+        this.loading = true;
+
+        deleteArg(id).then(res => {
+          this.loading = false;
+          this.$message({
+            type: 'success',
+            message: res.message
+          });
+          this.search();
+        });
+        this.loading = false;
       },
 
       handleCurrentChange(value) {
