@@ -85,7 +85,7 @@
       layout="total, sizes, prev, pager, next, jumper">
     </el-pagination>
 
-    <vm-dialog :visible="dialogVisible" @trigger="dialogVisible = $event"></vm-dialog>
+    <vm-dialog :visible="dialogVisible" @trigger="dialogVisible = $event" @created="created"></vm-dialog>
   </div>
 </template>
 
@@ -101,7 +101,7 @@
         loading: false,
         pageIndex: 1,
         pageSize: 10,
-        ascending: true,
+        ascending: false,
         orderBy: 'created_at',
         total: 0,
         vms: [],
@@ -111,7 +111,7 @@
           status: ''
         },
         searchVMRules: {},
-        dialogVisible: false
+        dialogVisible: false,
       };
     },
     mounted() {
@@ -144,6 +144,9 @@
       sortChange({order, prop}) {
         this.ascending = order === 'ascending';
         this.orderBy = prop || 'created_at';
+        this.search();
+      },
+      created() {
         this.search();
       }
     }
