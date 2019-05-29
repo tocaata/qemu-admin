@@ -2,6 +2,8 @@
   <el-dialog
     modal
     center
+    @close="reset"
+    :close-on-click-modal="false"
     title="Create Machine"
     width="40%"
     :visible.sync="visible">
@@ -82,10 +84,17 @@
             type: 'success',
             message: res.message
           });
+
           this.$emit('created', undefined);
         }).catch(() => {
           this.loading = false;
         })
+      },
+      reset() {
+        this.newVM = {
+          name: '',
+          arguments: []
+        };
       }
     }
   }
