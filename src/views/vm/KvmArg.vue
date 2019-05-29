@@ -17,7 +17,7 @@
       <el-table-column prop="config" label="Config"
                        show-overflow-tooltip>
       </el-table-column>
-      <el-table-column label="Action" width="200">
+      <el-table-column label="Action" width="200" align="center">
         <template slot-scope="scope">
           <el-popover
             placement="right"
@@ -27,7 +27,12 @@
             {{ scope.row.config }}
             <el-link type="primary" icon="el-icon-view" slot="reference">Detail</el-link>
           </el-popover>
-          <el-link type="primary" @click="deleteArg(scope.row.id)" icon="el-icon-delete">Delete</el-link>
+          <el-link type="primary"
+                   style="margin-left: 15px"
+                   @click="deleteArg(scope.row.id)"
+                   icon="el-icon-delete">
+            Delete
+          </el-link>
         </template>
       </el-table-column>
     </el-table>

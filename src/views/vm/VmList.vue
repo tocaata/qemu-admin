@@ -47,6 +47,9 @@
         sortable="custom"
         label="Status"
         prop="status">
+        <template slot-scope="scope">
+          <el-tag :type="['info','success','warning','danger'][scope.row.status]">{{ scope.row.status | mapStatus }}</el-tag>
+        </template>
       </el-table-column>
       <el-table-column
         sortable="custom"
@@ -70,7 +73,16 @@
         prop="created_at">
       </el-table-column>
       <el-table-column
+        align="center"
         label="action">
+        <template slot-scope="scope">
+          <el-link type="primary"
+                   style="margin-left: 15px"
+                   @click="deleteVm(scope.row.id)"
+                   icon="el-icon-delete">
+            Delete
+          </el-link>
+        </template>
       </el-table-column>
     </el-table>
     <el-pagination
@@ -85,7 +97,7 @@
       layout="total, sizes, prev, pager, next, jumper">
     </el-pagination>
 
-    <vm-dialog :visible="dialogVisible" @trigger="dialogVisible = $event" @created="created"></vm-dialog>
+    <vm-dialog :visible.sync="dialogVisible" @trigger="dialogVisible = $event" @created="created"></vm-dialog>
   </div>
 </template>
 
@@ -117,6 +129,11 @@
     mounted() {
       this.search();
     },
+    filters: {
+      mapStatus(value) {
+        return ['stopped', 'running', 'pending', 'down'][value] || value;
+      }
+    },
     methods: {
       search() {
         const { name, os } = this.searchVM;
@@ -147,7 +164,10 @@
         this.search();
       },
       created() {
+        this.dialogVisible = false;
         this.search();
+      },
+      deleteVm(id) {
       }
     }
   }
