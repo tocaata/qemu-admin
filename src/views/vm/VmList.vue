@@ -76,12 +76,7 @@
         align="center"
         label="action">
         <template slot-scope="scope">
-          <el-link type="primary"
-                   style="margin-left: 15px"
-                   @click="deleteVm(scope.row.id)"
-                   icon="el-icon-delete">
-            Delete
-          </el-link>
+          <delete-link @click="deleteVm(scope.row.id)"></delete-link>
         </template>
       </el-table-column>
     </el-table>
@@ -97,17 +92,18 @@
       layout="total, sizes, prev, pager, next, jumper">
     </el-pagination>
 
-    <vm-dialog :visible.sync="dialogVisible" @trigger="dialogVisible = $event" @created="created"></vm-dialog>
+    <vm-dialog :visible.sync="dialogVisible" @created="vmCreated"></vm-dialog>
   </div>
 </template>
 
 <script>
-  import { vmList } from '../../api/vm'
+  import { vmList, deleteVm } from '../../api/vm'
   import VmDialog from './VmDialog/VmDialog'
+  import DeleteLink from '@/components/DeleteLink'
 
   export default {
     name: 'VmList',
-    components: { VmDialog },
+    components: { VmDialog, DeleteLink },
     data() {
       return {
         loading: false,
@@ -143,7 +139,7 @@
           this.vms = res.data.list;
           this.total = res.data.totalSize;
           this.loading = false;
-        }).catch(err => {
+        }).catch(() => {
           this.loading = false;
         })
       },
@@ -163,11 +159,23 @@
         this.orderBy = prop || 'created_at';
         this.search();
       },
-      created() {
+      vmCreated() {
         this.dialogVisible = false;
         this.search();
       },
       deleteVm(id) {
+        this.loading = true;
+        deleteVm(id).then(res => {
+          this.loading = false;
+          this.$message({
+            type: 'success',
+            message: res.message
+          });
+
+          this.search();
+        }).catch(() => {
+          this.loading = false;
+        })
       }
     }
   }
