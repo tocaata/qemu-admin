@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h4>{{ configObject.desc }}</h4>
+    <p style="margin-bottom: 20px">{{ configObject.desc }}</p>
     <el-form-item v-for="(param, index) in configObject.params" :label="param.label" :key="param.name">
       <component :is="param.component" v-model="args[index]">
         <template v-if="param.component === 'el-select'">
@@ -15,14 +15,9 @@
 <script>
   export default {
     name: 'KvmWizardControl',
-    data() {
-      return {
-        args: []
-      };
-    },
     props: {
       config: String,
-      value: Array
+      value: Object
     },
     computed: {
       configObject() {
@@ -36,10 +31,21 @@
         return [arg, template];
       }
     },
+    data() {
+      return {
+        args: []
+      };
+    },
+    mounted() {
+      this.args = this.configObject.params.map(p => p.default || '');
+    },
     watch: {
-      argument(newValue) {
-        this.$emit("input", newValue);
-        // console.log(newValue);
+      args(newValue) {
+        let valueHash = {};
+        for (let [index, param] of Object.entries(this.configObject.params)) {
+          valueHash[param.name] = newValue[index];
+        }
+        this.$emit("input", valueHash);
       }
     }
   }

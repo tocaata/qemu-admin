@@ -2,7 +2,26 @@
   <div class="margin">
     <el-button icon="el-icon-plus" @click="dialogVisible = true" type="primary">Add</el-button>
 
-    <el-table :data="options" border style="margin-top: 30px">
+    <el-table :data="options" border style="margin-top: 30px" @expand-change="handleExpandChange">
+      <el-table-column type="expand">
+        <template slot-scope="scope">
+          <el-form label-position="left">
+            <el-form-item label="name:">
+              <span>{{ scope.row.name }}</span>
+            </el-form-item>
+            <el-form-item label="Template:">
+              <el-tag type="info" style="font-size: 1em;">{{ getCmd(scope.row.config) }}</el-tag>
+            </el-form-item>
+            <el-form-item label="config:">
+              <el-card shadow="never">
+                <pre class="prettyprint code">
+                  {{ JSON.stringify(JSON.parse(scope.row.config), null, 2) }}
+                </pre>
+              </el-card>
+            </el-form-item>
+          </el-form>
+        </template>
+      </el-table-column>
       <el-table-column prop="arg" label="Arg" width="200">
       </el-table-column>
       <el-table-column prop="name" label="Name" width="200">
@@ -19,20 +38,7 @@
       </el-table-column>
       <el-table-column label="Action" width="200" align="center">
         <template slot-scope="scope">
-          <el-popover
-            placement="right"
-            width="400"
-            trigger="click">
-            <p><strong>Template: </strong><el-tag type="info" style="font-size: 1em;">{{ getCmd(scope.row.config) }}</el-tag></p>
-            {{ scope.row.config }}
-            <el-link type="primary" icon="el-icon-view" slot="reference">Detail</el-link>
-          </el-popover>
-          <el-link type="primary"
-                   style="margin-left: 15px"
-                   @click="deleteArg(scope.row.id)"
-                   icon="el-icon-delete">
-            Delete
-          </el-link>
+          <delete-link @click="deleteArg(scope.row.id)"></delete-link>
         </template>
       </el-table-column>
     </el-table>
@@ -74,15 +80,15 @@
       </el-form>
 
       <el-form :model="newConfig" inline size="small">
-        <el-row v-for="param in newConfig.params" :key="param.key">
-          <el-form-item label="Name" prop="name">
-            <el-input v-model="param.name"></el-input>
+        <el-row class="border-row" v-for="param in newConfig.params" :key="param.key">
+          <el-form-item prop="name">
+            <el-input v-model="param.name" placeholder="Name:"></el-input>
           </el-form-item>
-          <el-form-item label="Label" style="margin-left: auto" prop="label">
-            <el-input v-model="param.label"></el-input>
+          <el-form-item prop="label">
+            <el-input v-model="param.label" placeholder="Label:"></el-input>
           </el-form-item>
-          <el-form-item label="Type" prop="type">
-            <el-select v-model="param.type">
+          <el-form-item prop="type">
+            <el-select v-model="param.type" placeholder="Type:">
               <el-option
                 v-for="t in types"
                 :key="t.value"
@@ -91,8 +97,8 @@
               </el-option>
             </el-select>
           </el-form-item>
-          <el-form-item label="Component" prop="component">
-            <el-select v-model="param.component">
+          <el-form-item prop="component">
+            <el-select v-model="param.component" placeholder="Component:">
               <el-option v-for="c in componentOptions"
                          :key="c.value"
                          :label="c.label"
@@ -100,11 +106,15 @@
               </el-option>
             </el-select>
           </el-form-item>
-          <el-form-item label="Options" prop="options" v-if="param.component === 'el-select'">
-            <el-select v-model="param.options" multiple allow-create filterable default-first-option>
+          <el-form-item prop="options" v-if="param.component === 'el-select'">
+            <el-select placeholder="Selected Options:" v-model="param.options" multiple allow-create filterable default-first-option>
             </el-select>
           </el-form-item>
-          <el-button @click="removeParam(param.key)" type="info" icon="el-icon-minus" size="small" circle></el-button>
+          <el-form-item prop="default">
+            <el-input placeholder="Default:" v-model="param.default" />
+          </el-form-item>
+          <el-button @click="removeParam(param.key)" type="text" icon="el-icon-delete"></el-button>
+          <div class="divider"></div>
         </el-row>
         <el-form-item>
           <el-button @click="addParam" type="primary" icon="el-icon-plus">Add Param</el-button>
@@ -121,9 +131,11 @@
 
 <script>
   import { saveVmOption, listOption, deleteArg } from '../../api/vm'
+  import DeleteLink from '@/components/DeleteLink'
 
   export default {
     name: 'KvmArg',
+    components: { DeleteLink },
     data() {
       return {
         dialogVisible: false,
@@ -144,7 +156,8 @@
           label: '',
           type: '',
           options: [],
-          component: ''
+          component: '',
+          default: ''
         },
         types: [
           { label: 'String', value: 'string' },
@@ -166,7 +179,9 @@
     },
     mounted() {
       this.newConfig.params.push(Object.assign({}, this.newParams, { key: Date.now() }));
-      this.search();
+      this.search()
+    },
+    filters: {
     },
     methods: {
       addParam() {
@@ -195,7 +210,7 @@
       search() {
         this.loading = true;
         const { pageIndex, pageSize } = this;
-        listOption({ pageIndex, pageSize }).then(res => {
+        return listOption({ pageIndex, pageSize }).then(res => {
           this.options = res.data.list;
           this.total = res.data.totalSize;
           this.loading = false;
@@ -226,6 +241,11 @@
         this.pageSize = value;
         this.search();
       },
+      handleExpandChange(e, b) {
+        this.$nextTick(() => {
+          PR.prettyPrint();
+        });
+      },
       getCmd(config) {
         const object = JSON.parse(config);
         return `-${object.arg} ${object.template}`;
@@ -237,5 +257,36 @@
 <style scoped>
   .margin {
     margin: 30px;
+  }
+
+  .code {
+    line-height: 1.2rem;
+    border: 0;
+    margin-top: 5px;
+    margin-bottom: 5px;
+  }
+
+  pre.code :first-child, pre.code :last-child {
+    display: none;
+  }
+
+  .divider {
+    height: 1px;
+    width: 100%;
+    background: #DCDFE6;
+    /*border-bottom: 1px solid #DCDFE6;*/
+    position: relative;
+    top: -10px;
+  }
+</style>
+
+<style>
+  .divider:not(:last-child) {
+    height: 1px;
+    width: 100%;
+    background: #DCDFE6;
+    /*border-bottom: 1px solid #DCDFE6;*/
+    position: relative;
+    top: -10px;
   }
 </style>

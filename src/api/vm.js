@@ -50,3 +50,11 @@ export function createVm(data) {
     data
   })
 }
+
+export function deleteVm(id) {
+  return request({
+    url: '/vm/delete',
+    method: 'post',
+    data: { id }
+  })
+}
