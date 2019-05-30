@@ -56,7 +56,7 @@
 
     <el-dialog :visible.sync="dialogVisible"
                :close-on-click-modal="false"
-               width="75%" title="Add new argument template">
+               width="60%" title="Add new argument template">
       <el-form :model="newConfig" size="small" label-width="auto">
         <el-form-item label="Title:" prop="title">
           <el-input style="width: 35%" v-model="newConfig.title"></el-input>
