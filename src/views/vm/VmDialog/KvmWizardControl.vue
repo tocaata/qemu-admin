@@ -16,12 +16,12 @@
   export default {
     name: 'KvmWizardControl',
     props: {
-      config: String,
+      config: [String, Object],
       value: Object
     },
     computed: {
       configObject() {
-        return JSON.parse(this.config);
+        return typeof(this.config) === 'object' ? this.config : JSON.parse(this.config);
       },
       argument() {
         let { template, params, arg } = this.configObject;
