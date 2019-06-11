@@ -242,9 +242,11 @@
         this.search();
       },
       handleExpandChange(e, b) {
-        this.$nextTick(() => {
-          PR.prettyPrint();
-        });
+        if (b.length > 0) {
+          this.$nextTick(() => {
+            PR.prettyPrint();
+          });
+        }
       },
       getCmd(config) {
         const object = JSON.parse(config);

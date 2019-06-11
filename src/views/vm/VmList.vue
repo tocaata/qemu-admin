@@ -37,7 +37,12 @@
               :default-sort = "{ prop: 'created_at', order: 'descending' }"
               v-loading="loading"
               class="vm-table"
+              @expand-change="handleExpandChange"
               fit highlight-current-row>
+      <el-table-column type="expand">
+        <template slot-scope="scope">
+        </template>
+      </el-table-column>
       <el-table-column
         sortable="custom"
         label="Name"
@@ -76,6 +81,7 @@
         align="center"
         label="action">
         <template slot-scope="scope">
+          <el-link @click="false" icon="el-icon-video-play" type="primary"></el-link>
           <delete-link @click="deleteVm(scope.row.id)"></delete-link>
         </template>
       </el-table-column>
@@ -176,6 +182,11 @@
         }).catch(() => {
           this.loading = false;
         })
+      },
+      handleExpandChange(rows, expandedRows) {
+        if (expandedRows.length > 0) {
+          expandedRows
+        }
       }
     }
   }
