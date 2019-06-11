@@ -17,12 +17,6 @@ const vmsRouter = {
       meta: { title: 'Machine List', noCache: true, icon: 'list' }
     },
     {
-      path: 'new',
-      component: () => import('@/views/vm/VmCreate'),
-      name: 'VmCreate',
-      meta: { title: 'Create Machine', noCache: true, icon: 'edit' }
-    },
-    {
       path: 'kvmarg',
       component: () => import('@/views/vm/KvmArg'),
       name: 'KvmArg',
