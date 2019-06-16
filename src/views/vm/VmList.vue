@@ -41,6 +41,26 @@
               fit highlight-current-row>
       <el-table-column type="expand">
         <template slot-scope="scope">
+          <el-form label-position="left">
+            <el-form-item label="Name:">
+              <span>{{ scope.row.name }}</span>
+            </el-form-item>
+            <el-form-item label="Status:">
+              <el-tag type="info" style="font-size: 1em;">{{ scope.row.status }}</el-tag>
+            </el-form-item>
+            <el-form-item label="Command Arguments:" class="newline-item">
+              <el-row>
+                <el-table class="cmd-args" v-loading="scope.row.loading"
+                          :data="scope.row.cmdArgs" style="width: 80%">
+                  <el-table-column label="options"
+                                   :formatter="argFormatter"
+                                   prop="option" width="180">
+                  </el-table-column>
+                  <el-table-column label="value" prop="value"></el-table-column>
+                </el-table>
+              </el-row>
+            </el-form-item>
+          </el-form>
         </template>
       </el-table-column>
       <el-table-column
@@ -81,7 +101,7 @@
         align="center"
         label="action">
         <template slot-scope="scope">
-          <el-link @click="false" icon="el-icon-video-play" type="primary"></el-link>
+          <el-link @click="runMachine(scope.row.id)" icon="el-icon-video-play" type="primary"></el-link>
           <delete-link @click="deleteVm(scope.row.id)"></delete-link>
         </template>
       </el-table-column>
@@ -103,7 +123,7 @@
 </template>
 
 <script>
-  import { vmList, deleteVm } from '../../api/vm'
+  import { vmList, deleteVm, getCmd,run } from '../../api/vm'
   import VmDialog from './VmDialog/VmDialog'
   import DeleteLink from '@/components/DeleteLink'
 
@@ -142,7 +162,11 @@
         const { pageSize, pageIndex, orderBy, ascending } = this;
         this.loading = true;
         vmList({ name, os, pageSize, pageIndex, orderBy, ascending }).then(res => {
-          this.vms = res.data.list;
+          this.vms = res.data.list.map(vm => {
+            vm.cmdArgs = null;
+            vm.loading = false;
+            return vm;
+          });
           this.total = res.data.totalSize;
           this.loading = false;
         }).catch(() => {
@@ -160,10 +184,21 @@
       dateFormatter(row, column, cellValue) {
         return moment(cellValue).format('YYYY-MM-DD hh:mm:ss');
       },
+      argFormatter(row, column, cellValue) {
+        console.log(cellValue);
+        return '-' + cellValue;
+      },
       sortChange({order, prop}) {
         this.ascending = order === 'ascending';
         this.orderBy = prop || 'created_at';
         this.search();
+      },
+      runMachine(id) {
+        run(id).then(res => {
+          this.$message({ type: 'success', message: res.message });
+        }).catch(err => {
+
+        })
       },
       vmCreated() {
         this.dialogVisible = false;
@@ -185,7 +220,17 @@
       },
       handleExpandChange(rows, expandedRows) {
         if (expandedRows.length > 0) {
-          expandedRows
+          expandedRows.forEach(row => {
+            if (('cmdArgs' in row) && !row.cmdArgs) {
+              this.$set(row, 'loading', true);
+              getCmd(row.id).then(res => {
+                this.$set(row, 'cmdArgs', res.data.map(([option, value]) => { return { option, value } }));
+                this.$set(row, 'loading', false);
+              }).catch(() => {
+                this.$set(row, 'loading', false);
+              })
+            }
+          });
         }
       }
     }
@@ -195,5 +240,20 @@
 <style scoped>
   .container {
     padding: 30px;
+  }
+
+  .cmd-args {
+    margin-top: 20px;
+    margin-bottom: 20px;
+  }
+</style>
+
+<style>
+  .newline-item label {
+    float: none;
+  }
+
+  .cmd-args td, .cmd-args th {
+    border-right: none;
   }
 </style>
