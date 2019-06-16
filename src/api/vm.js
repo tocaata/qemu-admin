@@ -58,3 +58,19 @@ export function deleteVm(id) {
     data: { id }
   })
 }
+
+export function getCmd(id) {
+  return request({
+    url: '/vm/getCmd',
+    method: 'post',
+    data: { id }
+  })
+}
+
+export function run(id) {
+  return request({
+    url: '/vm/run',
+    method: 'post',
+    data: { id }
+  })
+}
