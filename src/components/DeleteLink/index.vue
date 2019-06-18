@@ -9,7 +9,7 @@
     name: 'DeleteLink',
     props: {
       message: { type: String, default: 'Do you confirm to delete this item?' },
-      type: { type: String, default: 'primary' }
+      type: { type: String, default: 'danger' }
     },
     methods: {
       handleClick(e) {
