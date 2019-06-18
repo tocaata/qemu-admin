@@ -101,8 +101,8 @@
         align="center"
         label="action">
         <template slot-scope="scope">
-          <el-link @click="runMachine(scope.row.id)" icon="el-icon-video-play" type="primary"></el-link>
-          <delete-link @click="deleteVm(scope.row.id)"></delete-link>
+          <el-link class="middle-icon" @click="runMachine(scope.row.id)" icon="el-icon-video-play" type="primary"></el-link>
+          <delete-link class="middle-icon" @click="deleteVm(scope.row.id)"></delete-link>
         </template>
       </el-table-column>
     </el-table>
@@ -245,6 +245,11 @@
   .cmd-args {
     margin-top: 20px;
     margin-bottom: 20px;
+  }
+
+  .middle-icon {
+    font-size: 16px;
+    margin-right: 10px;
   }
 </style>
 
