@@ -8,13 +8,11 @@
         <el-form-item label="Title:" prop="title">
           <el-input style="width: 35%" v-model="newConfig.title" clearable></el-input>
         </el-form-item>
-        <el-row>
-          <el-form-item label="Argument:" prop="arg">
-            <el-input style="width: 35%" v-model="newConfig.arg" clearable>
-              <template slot="prepend">-</template>
-            </el-input>
-          </el-form-item>
-        </el-row>
+        <el-form-item label="Argument:" prop="arg">
+          <el-input style="width: 35%" v-model="newConfig.arg" clearable>
+            <template slot="prepend">-</template>
+          </el-input>
+        </el-form-item>
         <el-form-item label="Template:" prop="template">
           <el-input style="width: 35%" type="textarea" v-model="newConfig.template" clearable></el-input>
         </el-form-item>
@@ -70,8 +68,8 @@
       </el-form>
 
       <span slot="footer" class="dialog-footer">
-        <el-button @click="dialogVisible = false">Cancel</el-button>
-        <el-button type="primary" @click="saveConfig" :loading="loading">Save</el-button>
+        <el-button icon="el-icon-check" type="primary" @click="saveConfig" :loading="loading">Save</el-button>
+        <el-button icon="el-icon-close" @click="dialogVisible = false">Cancel</el-button>
       </span>
     </el-dialog>
   </div>
