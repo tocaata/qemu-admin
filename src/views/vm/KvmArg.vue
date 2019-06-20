@@ -6,21 +6,7 @@
     <el-table :data="options" border style="margin-top: 30px" @expand-change="handleExpandChange">
       <el-table-column type="expand">
         <template slot-scope="scope">
-          <el-form label-position="left">
-            <el-form-item label="name:">
-              <span>{{ scope.row.name }}</span>
-            </el-form-item>
-            <el-form-item label="Template:">
-              <el-tag type="info" style="font-size: 1em;">{{ getCmd(scope.row.config) }}</el-tag>
-            </el-form-item>
-            <el-form-item label="config:">
-              <el-card shadow="never">
-                <pre class="prettyprint code">
-                  {{ JSON.stringify(JSON.parse(scope.row.config), null, 2) }}
-                </pre>
-              </el-card>
-            </el-form-item>
-          </el-form>
+          <arg-detail :data="scope.row"></arg-detail>
         </template>
       </el-table-column>
       <el-table-column prop="arg" label="Arg" width="200">
@@ -58,13 +44,14 @@
 </template>
 
 <script>
-  import { listOption, deleteArg } from '../../api/vm'
-  import NewArgDialog from './Components/NewArgDialog';
-  import DeleteLink from '@/components/DeleteLink'
+  import { listOption, deleteArg } from '../../api/vm';
+  import NewArgDialog from './components/NewArgDialog';
+  import DeleteLink from '@/components/DeleteLink';
+  import ArgDetail from './components/ArgDetail';
 
   export default {
     name: 'KvmArg',
-    components: { DeleteLink, NewArgDialog },
+    components: { ArgDetail, DeleteLink, NewArgDialog },
     data() {
       return {
         loading: false,
@@ -88,8 +75,6 @@
     filters: {
     },
     methods: {
-
-
       search() {
         this.loading = true;
         const { pageIndex, pageSize } = this;
@@ -133,10 +118,6 @@
       },
       handleCreate() {
         this.search();
-      },
-      getCmd(config) {
-        const object = JSON.parse(config);
-        return `-${object.arg} ${object.template}`;
       }
     }
   }
@@ -146,35 +127,7 @@
   .margin {
     margin: 30px;
   }
-
-  .code {
-    line-height: 1.2rem;
-    border: 0;
-    margin-top: 5px;
-    margin-bottom: 5px;
-  }
-
-  pre.code :first-child, pre.code :last-child {
-    display: none;
-  }
-
-  .divider {
-    height: 1px;
-    width: 100%;
-    background: #DCDFE6;
-    /*border-bottom: 1px solid #DCDFE6;*/
-    position: relative;
-    top: -10px;
-  }
 </style>
 
 <style>
-  .divider:not(:last-child) {
-    height: 1px;
-    width: 100%;
-    background: #DCDFE6;
-    /*border-bottom: 1px solid #DCDFE6;*/
-    position: relative;
-    top: -10px;
-  }
 </style>
