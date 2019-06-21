@@ -3,7 +3,8 @@
     <new-arg-dialog :on-create="handleCreate">
     </new-arg-dialog>
 
-    <el-table :data="options" border style="margin-top: 30px" @expand-change="handleExpandChange">
+    <el-table :data="options" border class="arg-table"
+              style="margin-top: 30px" @expand-change="handleExpandChange">
       <el-table-column type="expand">
         <template slot-scope="scope">
           <arg-detail :data="scope.row"></arg-detail>

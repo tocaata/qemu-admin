@@ -3,21 +3,16 @@
     <el-button icon="el-icon-plus" @click="dialogVisible = true" type="primary">Add</el-button>
     <el-dialog :visible.sync="dialogVisible"
                :close-on-click-modal="false"
-               width="60%" title="Add new argument template">
-      <el-form :model="newConfig" size="small" label-width="auto">
+               width="50%" title="Add new argument template">
+      <el-form :model="newConfig" :rules="newConfigRules" size="small" label-width="auto">
         <el-form-item label="Title:" prop="title">
-          <el-input style="width: 35%" v-model="newConfig.title" clearable></el-input>
-        </el-form-item>
-        <el-form-item label="Argument:" prop="arg">
-          <el-input style="width: 35%" v-model="newConfig.arg" clearable>
-            <template slot="prepend">-</template>
-          </el-input>
+          <el-input style="width: 40%" v-model="newConfig.title" clearable></el-input>
         </el-form-item>
         <el-form-item label="Template:" prop="template">
-          <el-input style="width: 35%" type="textarea" v-model="newConfig.template" clearable></el-input>
+          <el-input style="width: 40%" type="textarea" v-model.trim="newConfig.template" clearable></el-input>
         </el-form-item>
         <el-form-item label="Desc:" prop="desc">
-          <el-input style="width: 35%" type="textarea" v-model="newConfig.desc" clearable></el-input>
+          <el-input style="width: 40%" type="textarea" v-model="newConfig.desc" clearable></el-input>
         </el-form-item>
         <el-form-item label="Primary:" prop="isPrimary">
           <el-switch v-model="newConfig.isPrimary"></el-switch>
@@ -26,31 +21,39 @@
 
       <el-form :model="newConfig" inline size="small">
         <el-row class="border-row" v-for="param in newConfig.params" :key="param.key">
-          <el-form-item prop="name">
-            <el-input v-model="param.name" placeholder="Name:" clearable></el-input>
-          </el-form-item>
-          <el-form-item prop="label">
-            <el-input v-model="param.label" placeholder="Label:" clearable></el-input>
-          </el-form-item>
-          <el-form-item prop="type">
-            <el-select v-model="param.type" placeholder="Type:" clearable>
-              <el-option
-                v-for="t in types"
-                :key="t.value"
-                :label="t.label"
-                :value="t.value">
-              </el-option>
-            </el-select>
-          </el-form-item>
-          <el-form-item prop="component">
-            <el-select v-model="param.component" placeholder="Component:" clearable>
-              <el-option v-for="c in componentOptions"
-                         :key="c.value"
-                         :label="c.label"
-                         :value="c.value">
-              </el-option>
-            </el-select>
-          </el-form-item>
+          <el-col :span="3">
+            <el-form-item prop="name">
+              <el-input v-model="param.name" placeholder="Name:" clearable></el-input>
+            </el-form-item>
+          </el-col>
+          <el-col :span="4">
+            <el-form-item prop="label">
+              <el-input v-model="param.label" placeholder="Label:" clearable></el-input>
+            </el-form-item>
+          </el-col>
+          <el-col :span="3">
+            <el-form-item prop="type">
+              <el-select v-model="param.type" placeholder="Type:" clearable>
+                <el-option
+                  v-for="t in types"
+                  :key="t.value"
+                  :label="t.label"
+                  :value="t.value">
+                </el-option>
+              </el-select>
+            </el-form-item>
+          </el-col>
+          <el-col :span="3">
+            <el-form-item prop="component">
+              <el-select v-model="param.component" placeholder="Component:" clearable>
+                <el-option v-for="c in componentOptions"
+                           :key="c.value"
+                           :label="c.label"
+                           :value="c.value">
+                </el-option>
+              </el-select>
+            </el-form-item>
+          </el-col>
           <el-form-item prop="options" v-if="param.component === 'el-select'">
             <el-select placeholder="Selected Options:" clearable
                        v-model="param.options" multiple allow-create filterable default-first-option>
@@ -80,20 +83,35 @@
 
   export default {
     name: 'NewArgDialog',
+    components: {
+    },
     props: {
       onCreate: { type: Function }
     },
     data() {
+      const templateValidator = (rule, value, callback) => {
+        if (/-{1,2}\w{1,16} [^ ]/.test(value)){
+          callback();
+        } else {
+          callback(new Error('Please input correct template.'));
+        }
+      }
+
       return {
         newConfig: {
           title: 'smp',
-          arg: 'smp',
-          template: '$1,threads=$2',
+          arg: '',
+          template: '-smp $1,threads=$2',
           desc: '',
           isPrimary: false,
           params: [
             {"name":"$1","label":"cpu count","type":"number","options":[],"component":"el-input-number","key":1558962702577},
             {"name":"$2","label":"thread count per core","type":"number","options":[],"component":"el-input-number", "key":1558962702578}
+          ]
+        },
+        newConfigRules: {
+          template: [
+            { validator: templateValidator, trigger: 'blur' }
           ]
         },
         newParams: {
@@ -132,7 +150,14 @@
       },
       saveConfig() {
         this.loading = true;
-        saveVmOption(this.newConfig).then(res => {
+        const template = this.newConfig.template;
+        const edit = {
+          arg: template.slice(0, template.indexOf(' ')),
+          template: template.slice(template.indexOf(' '), template.length)
+        };
+        const data = Object.assign({}, this.newConfig, edit)
+
+        saveVmOption(data).then(res => {
           this.loading = false;
           this.dialogVisible = false;
           this.$message({
