@@ -1,8 +1,9 @@
 <template>
-  <div>
-
+  <div class="detail">
     <!--Show (not editable)-->
-    <el-form label-position="left" v-show="notEditable">
+    <show-arg :value="config" v-show="notEditable"></show-arg>
+
+    <el-form label-position="left" v-show="false">
       <el-form-item label="name:">
         <span>{{ data.name }}</span>
       </el-form-item>
@@ -19,10 +20,7 @@
     </el-form>
 
     <!--Editable-->
-    <el-form>
-      <el-form-item>
-      </el-form-item>
-    </el-form>
+    <edit-arg v-model="config" v-if="!notEditable"></edit-arg>
 
     <el-button icon="el-icon-edit-outline" type="primary" v-if="notEditable" @click="notEditable = false">Edit</el-button>
     <div v-else>
@@ -33,20 +31,28 @@
 </template>
 
 <script>
+  import EditArg from './EditArg';
+  import ShowArg from './showArg'
+
   export default {
     name: 'ArgDetail',
     props: {
       data: { type: Object }
     },
+    components: {
+      ShowArg,
+      EditArg
+    },
     data() {
       return {
-        notEditable: true
+        notEditable: true,
+        config: JSON.parse(this.data.config)
       };
     },
     filters: {
       getCmd(config) {
         const object = JSON.parse(config);
-        return `-${object.arg} ${object.template}`;
+        return `${object.arg} ${object.template}`;
       }
     },
     methods: {
@@ -67,7 +73,6 @@
   pre.code :first-child, pre.code :last-child {
     display: none;
   }
-
 </style>
 
 <style>

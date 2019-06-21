@@ -53,7 +53,6 @@
                 <el-table class="cmd-args" v-loading="scope.row.loading"
                           :data="scope.row.cmdArgs" style="width: 80%">
                   <el-table-column label="options"
-                                   :formatter="argFormatter"
                                    prop="option" width="180">
                   </el-table-column>
                   <el-table-column label="value" prop="value"></el-table-column>
@@ -183,10 +182,6 @@
       },
       dateFormatter(row, column, cellValue) {
         return moment(cellValue).format('YYYY-MM-DD hh:mm:ss');
-      },
-      argFormatter(row, column, cellValue) {
-        console.log(cellValue);
-        return '-' + cellValue;
       },
       sortChange({order, prop}) {
         this.ascending = order === 'ascending';
