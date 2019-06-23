@@ -232,23 +232,9 @@
       },
 
       machineDetail(machineId) {
-
-        // window.router = this.$router;
-        // this.$router.addRoutes([{
-        //   path: '/vm/show',
-        //   component: () => import('@/views/layout/Layout'),
-        //   children: [
-        //     {
-        //       path: 'index',
-        //       component: () => import('@/views/vm/MachineDetail'),
-        //       name: 'Show',
-        //       meta: { title: 'Machine Detail', icon: 'el-icon-s-platform', noCache: true }
-        //     }
-        //   ]
-        // }])
         this.$router.push({
           path: '/vm/show',
-          query: { scope: machineId }
+          query: { machineId }
         })
       }
     }
