@@ -162,6 +162,20 @@ export const asyncRouterMap = [
     ]
   },
 
+  {
+    path: '/kvmarg',
+    component: Layout,
+    children: [
+      {
+        path: 'index',
+        component: () => import('@/views/vm/KvmArg'),
+        name: 'KvmArg',
+        meta: { title: 'KVM Args', noCache: true, icon: 'icon' }
+      }
+    ]
+  },
+
+
   /** When your routing table is too long, you can split it into small modules**/
   vmsRouter,
   usersRouter,

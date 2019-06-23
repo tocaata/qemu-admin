@@ -21,6 +21,7 @@
       </el-form-item>
       <el-button
         @click="search"
+        icon="el-icon-search"
         :loading="loading"
         type="primary">
         Search
@@ -31,7 +32,7 @@
         Create
       </el-button>
     </el-form>
-    <el-table :data="vms" border
+    <el-table :data="vms" stripe
               header-align="center" align="center"
               @sort-change="sortChange"
               :default-sort = "{ prop: 'created_at', order: 'descending' }"
@@ -101,6 +102,7 @@
         label="action">
         <template slot-scope="scope">
           <el-link class="middle-icon" @click="runMachine(scope.row.id)" icon="el-icon-video-play" type="primary"></el-link>
+          <el-link class="middle-icon" icon="el-icon-setting" @click="machineDetail(scope.row.id)"></el-link>
           <delete-link class="middle-icon" @click="deleteVm(scope.row.id)"></delete-link>
         </template>
       </el-table-column>
@@ -122,9 +124,9 @@
 </template>
 
 <script>
-  import { vmList, deleteVm, getCmd,run } from '../../api/vm'
-  import VmDialog from './VmDialog/VmDialog'
-  import DeleteLink from '@/components/DeleteLink'
+  import { vmList, deleteVm, getCmd,run } from '../../api/vm';
+  import VmDialog from './VmDialog/VmDialog';
+  import DeleteLink from '@/components/DeleteLink';
 
   export default {
     name: 'VmList',
@@ -227,6 +229,27 @@
             }
           });
         }
+      },
+
+      machineDetail(machineId) {
+
+        // window.router = this.$router;
+        // this.$router.addRoutes([{
+        //   path: '/vm/show',
+        //   component: () => import('@/views/layout/Layout'),
+        //   children: [
+        //     {
+        //       path: 'index',
+        //       component: () => import('@/views/vm/MachineDetail'),
+        //       name: 'Show',
+        //       meta: { title: 'Machine Detail', icon: 'el-icon-s-platform', noCache: true }
+        //     }
+        //   ]
+        // }])
+        this.$router.push({
+          path: '/vm/show',
+          query: { scope: machineId }
+        })
       }
     }
   }

@@ -3,11 +3,11 @@
     <new-arg-dialog :on-create="handleCreate">
     </new-arg-dialog>
 
-    <el-table :data="options" border class="arg-table"
-              style="margin-top: 30px" @expand-change="handleExpandChange">
+    <el-table :data="args" class="arg-table" stripe highlight-current-row :expand-row-keys="expand"
+              style="margin-top: 30px" row-key="id" v-loading="loading" @expand-change="handleExpandChange">
       <el-table-column type="expand">
         <template slot-scope="scope">
-          <arg-detail :data="scope.row"></arg-detail>
+          <edit-arg :data="scope.row.config | json" :arg-id="scope.row.id" @change="search"></edit-arg>
         </template>
       </el-table-column>
       <el-table-column prop="arg" label="Arg" width="200">
@@ -26,7 +26,8 @@
       </el-table-column>
       <el-table-column label="Action" width="200" align="center">
         <template slot-scope="scope">
-          <delete-link @click="deleteArg(scope.row.id)"></delete-link>
+          <el-link icon="el-icon-view" type="primary" class="middle-icon" @click="toggleExpand(scope.row.id)"></el-link>
+          <delete-link class="middle-icon" @click="deleteArg(scope.row.id)"></delete-link>
         </template>
       </el-table-column>
     </el-table>
@@ -49,10 +50,11 @@
   import NewArgDialog from './components/NewArgDialog';
   import DeleteLink from '@/components/DeleteLink';
   import ArgDetail from './components/ArgDetail';
+  import EditArg from './components/EditArg'
 
   export default {
     name: 'KvmArg',
-    components: { ArgDetail, DeleteLink, NewArgDialog },
+    components: { EditArg, ArgDetail, DeleteLink, NewArgDialog },
     data() {
       return {
         loading: false,
@@ -64,23 +66,27 @@
           component: '',
           default: ''
         },
-        options: [],
+        args: [],
         pageIndex: 1,
         pageSize: 10,
-        total: 0
+        total: 0,
+        expand: []
       };
     },
     mounted() {
       this.search()
     },
     filters: {
+      json(data) {
+        return JSON.parse(data);
+      }
     },
     methods: {
       search() {
         this.loading = true;
         const { pageIndex, pageSize } = this;
         return listOption({ pageIndex, pageSize }).then(res => {
-          this.options = res.data.list;
+          this.args = res.data.list;
           this.total = res.data.totalSize;
           this.loading = false;
         }).catch(() => {
@@ -111,14 +117,18 @@
         this.search();
       },
       handleExpandChange(e, b) {
-        if (b.length > 0) {
-          this.$nextTick(() => {
-            PR.prettyPrint();
-          });
-        }
+        this.expand = b.map(x => x.id);
       },
       handleCreate() {
         this.search();
+      },
+      toggleExpand(id) {
+        let i;
+        if ((i = this.expand.indexOf(id)) >= 0) {
+          this.expand.splice(i, 1);
+        } else {
+          this.expand.push(id);
+        }
       }
     }
   }
@@ -127,6 +137,11 @@
 <style scoped>
   .margin {
     margin: 30px;
+  }
+
+  .middle-icon {
+    font-size: 16px;
+    margin-right: 10px;
   }
 </style>
 

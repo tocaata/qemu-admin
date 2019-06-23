@@ -20,11 +20,11 @@
     </el-form>
 
     <!--Editable-->
-    <edit-arg v-model="config" v-if="!notEditable"></edit-arg>
+    <edit-arg ref="editConfig" v-model="config" v-if="!notEditable"></edit-arg>
 
     <el-button icon="el-icon-edit-outline" type="primary" v-if="notEditable" @click="notEditable = false">Edit</el-button>
     <div v-else>
-      <el-button icon="el-icon-check" type="primary">Save</el-button>
+      <el-button icon="el-icon-check" type="primary" @click="editArg">Save</el-button>
       <el-button icon="el-icon-close" type="primary" @click="notEditable = true">Cancel</el-button>
     </div>
   </div>
@@ -33,6 +33,7 @@
 <script>
   import EditArg from './EditArg';
   import ShowArg from './showArg'
+  import { editArg } from '../../../api/vm';
 
   export default {
     name: 'ArgDetail',
@@ -56,7 +57,17 @@
       }
     },
     methods: {
-
+      editArg() {
+        this.$refs.editConfig.validate((valid) => {
+          if (valid) {
+            editArg(this.config).then(res => {
+              console.log(res);
+            }).catch(err => {
+              1
+            })
+          }
+        })
+      }
     }
   }
 </script>
