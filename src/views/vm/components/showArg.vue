@@ -5,9 +5,9 @@
         <span>{{ value.title }}</span>
       </el-form-item>
       <el-form-item label="Template:" prop="template">
-        <el-tag type="primary">{{ value.template }}</el-tag>
+        <el-tag type="info">{{ value.template }}</el-tag>
       </el-form-item>
-      <el-form-item label="Desc:" prop="desc">
+      <el-form-item label="Description:" prop="desc">
         <span>{{ value.desc }}</span>
       </el-form-item>
       <el-form-item label="Primary:" prop="isPrimary">
@@ -33,7 +33,7 @@
       value: {
         type: Object,
         validator: (value) => {
-          if (['title', 'arg', 'template', 'is_primary'].every(x => x in value)) {
+          if (['title', 'arg', 'template', 'isPrimary'].every(x => x in value)) {
             if ('params' in value) {
               if (Array.isArray(value.params)) {
                 return value.params.every(p => {
@@ -48,6 +48,8 @@
         }
       }
     },
+    mounted() {
+    }
   }
 </script>
 

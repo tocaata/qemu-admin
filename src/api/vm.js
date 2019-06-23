@@ -11,7 +11,7 @@ export function vmList(data) {
 
 export function saveVmOption(data) {
   return request({
-    url: '/vm/newOption',
+    url: '/vmOptionTemplate/new',
     method: 'post',
     data
   })
@@ -20,7 +20,7 @@ export function saveVmOption(data) {
 
 export function listOption(data) {
   return request({
-    url: '/vm/listOption',
+    url: '/vmOptionTemplate/list',
     method: 'post',
     data
   })
@@ -28,20 +28,26 @@ export function listOption(data) {
 
 export function getPrimaryOptions() {
   return request({
-    url: '/vm/primaryOptions',
+    url: '/vmOptionTemplate/primary',
     method: 'get'
   })
 }
 
 export function deleteArg(id) {
   return request({
-    url: '/vm/deleteArg',
+    url: '/vmOptionTemplate/delete',
     method: 'post',
     data: { id }
   })
 }
 
-
+export function editArg(data) {
+  return request({
+    url: '/vmOptionTemplate/update',
+    method: 'post',
+    data
+  })
+}
 
 export function createVm(data) {
   return request({

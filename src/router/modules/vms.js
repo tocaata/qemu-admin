@@ -17,11 +17,12 @@ const vmsRouter = {
       meta: { title: 'Machine List', noCache: true, icon: 'list' }
     },
     {
-      path: 'kvmarg',
-      component: () => import('@/views/vm/KvmArg'),
-      name: 'KvmArg',
-      meta: { title: 'KVM Args', noCache: true, icon: 'edit' }
-    }
+      path: 'show',
+      component: () => import('@/views/vm/MachineDetail'),
+      name: 'VmShow',
+      meta: { title: 'Machine Detail', icon: 'el-icon-s-platform', noCache: true },
+      hidden: true
+    },
   ]
 }
 
