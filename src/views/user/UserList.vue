@@ -1,6 +1,6 @@
 <template>
-  <div>
-    <el-table :data="users" border align="center"
+  <div class="container">
+    <el-table :data="users" align="center"
               v-loading="loading"
               fit highlight-current-row>
       <el-table-column
