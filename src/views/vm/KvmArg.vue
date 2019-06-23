@@ -49,12 +49,11 @@
   import { listOption, deleteArg } from '../../api/vm';
   import NewArgDialog from './components/NewArgDialog';
   import DeleteLink from '@/components/DeleteLink';
-  import ArgDetail from './components/ArgDetail';
   import EditArg from './components/EditArg'
 
   export default {
     name: 'KvmArg',
-    components: { EditArg, ArgDetail, DeleteLink, NewArgDialog },
+    components: { EditArg, DeleteLink, NewArgDialog },
     data() {
       return {
         loading: false,
