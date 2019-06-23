@@ -1,33 +1,19 @@
 <template>
   <div class="container">
-    <el-form ref="searchVM" :model="searchVM" :rules="searchVMRules" inline>
-      <el-form-item prop="name" label="Name">
+    <el-form ref="searchVM" :model="searchVM" :rules="searchVMRules" @submit.native.prevent="search" inline>
+      <el-form-item prop="searchStr" label="">
         <el-input
-          placeholder="vm name"
-          v-model="searchVM.name">
+          clearable
+          placeholder="Searching String"
+          v-model="searchVM.searchStr">
+          <el-button slot="append" icon="el-icon-search"
+                     :loading="loading" @click="search">
+          </el-button>
         </el-input>
       </el-form-item>
-      <el-form-item prop="os" label="OS">
-        <el-input
-          placeholder="vm os name"
-          v-model="searchVM.os">
-        </el-input>
-      </el-form-item>
-      <el-form-item prop="status" label="Status">
-        <el-input
-          placeholder="vm status"
-          v-model="searchVM.status">
-        </el-input>
-      </el-form-item>
-      <el-button
-        @click="search"
-        icon="el-icon-search"
-        :loading="loading"
-        type="primary">
-        Search
-      </el-button>
       <el-button
         @click="dialogVisible = true"
+        type="primary"
         icon="el-icon-plus">
         Create
       </el-button>
@@ -49,17 +35,16 @@
             <el-form-item label="Status:">
               <el-tag type="info" style="font-size: 1em;">{{ scope.row.status }}</el-tag>
             </el-form-item>
-            <el-form-item label="Command Arguments:" class="newline-item">
-              <el-row>
-                <el-table class="cmd-args" v-loading="scope.row.loading"
-                          :data="scope.row.cmdArgs" style="width: 80%">
-                  <el-table-column label="options"
-                                   prop="option" width="180">
-                  </el-table-column>
-                  <el-table-column label="value" prop="value"></el-table-column>
-                </el-table>
-              </el-row>
-            </el-form-item>
+            <el-form-item label="Command Arguments:" class="newline-item"></el-form-item>
+            <el-row>
+              <el-table class="cmd-args" v-loading="scope.row.loading"
+                        :data="scope.row.cmdArgs" style="width: 80%">
+                <el-table-column label="options"
+                                 prop="option" width="180">
+                </el-table-column>
+                <el-table-column label="value" prop="value"></el-table-column>
+              </el-table>
+            </el-row>
           </el-form>
         </template>
       </el-table-column>
@@ -141,9 +126,7 @@
         total: 0,
         vms: [],
         searchVM: {
-          name: '',
-          os: '',
-          status: ''
+          searchStr: ''
         },
         searchVMRules: {},
         dialogVisible: false,
@@ -159,10 +142,10 @@
     },
     methods: {
       search() {
-        const { name, os } = this.searchVM;
+        const { searchStr } = this.searchVM;
         const { pageSize, pageIndex, orderBy, ascending } = this;
         this.loading = true;
-        vmList({ name, os, pageSize, pageIndex, orderBy, ascending }).then(res => {
+        vmList({ searchStr, pageSize, pageIndex, orderBy, ascending }).then(res => {
           this.vms = res.data.list.map(vm => {
             vm.cmdArgs = null;
             vm.loading = false;
@@ -172,6 +155,8 @@
           this.loading = false;
         }).catch(() => {
           this.loading = false;
+        }).finally(() => {
+          // this.searchVM.searchStr = '';
         })
       },
       handleCurrentChange(value) {
@@ -242,10 +227,6 @@
 </script>
 
 <style scoped>
-  .container {
-    padding: 30px;
-  }
-
   .cmd-args {
     margin-top: 20px;
     margin-bottom: 20px;
@@ -264,5 +245,9 @@
 
   .cmd-args td, .cmd-args th {
     border-right: none;
+  }
+
+  .container .el-form-item__content {
+    width: 300px;
   }
 </style>

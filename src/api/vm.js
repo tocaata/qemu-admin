@@ -9,6 +9,14 @@ export function vmList(data) {
   })
 }
 
+export function vmShow(id) {
+  return request({
+    url: '/vm/show',
+    method: 'get',
+    params: { id }
+  })
+}
+
 export function saveVmOption(data) {
   return request({
     url: '/vmOptionTemplate/new',

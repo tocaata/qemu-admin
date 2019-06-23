@@ -6,8 +6,8 @@
         <el-input v-else style="width: 40%" v-model="newConfig.title" clearable></el-input>
       </el-form-item>
       <el-form-item label="Template:" prop="argTemplate">
-        <span class="el-tag" v-if="isShow">{{ argTemplate }}</span>
-        <el-input v-else style="width: 40%" type="textarea" :rows="1" v-model="argTemplate"></el-input>
+        <span class="el-tag" v-if="isShow">{{ newConfig.argTemplate }}</span>
+        <el-input v-else style="width: 40%" type="textarea" :rows="1" v-model="newConfig.argTemplate"></el-input>
       </el-form-item>
       <el-form-item label="Description:" prop="desc">
         <span v-if="isShow">{{ newConfig.desc }}</span>
@@ -76,7 +76,7 @@
         </template>
       </el-table-column>
       <el-table-column label="Action" align="center" width="100">
-        <template slot-scope="scope">
+        <template slot-scope="scope" v-if="!isShow">
           <el-button @click="removeParam(scope.row)" type="text" icon="el-icon-delete"></el-button>
         </template>
       </el-table-column>
@@ -86,7 +86,8 @@
       <el-button icon="el-icon-edit-outline" type="primary" v-if="isShow" @click="isShow = false">Edit</el-button>
       <div v-else>
         <el-button icon="el-icon-check" type="primary" @click="editArg">Save</el-button>
-        <el-button icon="el-icon-close" type="primary" @click="isShow = true">Cancel</el-button>
+        <el-button icon="el-icon-plus" @click="addParam">Add Param</el-button>
+        <el-button icon="el-icon-close" @click="handleCancel">Cancel</el-button>
       </div>
     </div>
   </div>
@@ -122,7 +123,7 @@
     },
     data() {
       const templateValidator = (rule, value, callback) => {
-        if (/-{1,2}\w{1,16}( [^ ]+)?$/.test(this.argTemplate)){
+        if (/-{1,2}\w{1,16}( [^ ]+)?$/.test(value)){
           callback();
         } else {
           callback(new Error('Please input correct template.'));
@@ -136,11 +137,11 @@
           title,
           arg,
           template,
+          argTemplate: arg + (template ? (' ' + template) : ''),
           desc,
           isPrimary,
           params: params || []
         },
-        argTemplate: arg + (template ? (' ' + template) : ''),
         newConfigRules: {
           argTemplate: [
             { validator: templateValidator, trigger: 'blur' }
@@ -177,7 +178,7 @@
       }
     },
     watch: {
-      argTemplate(newValue, oldValue) {
+      ['newConfig.argTemplate'](newValue) {
         [this.newConfig.arg, this.newConfig.template] = newValue.split(' ');
       }
     },
@@ -207,6 +208,10 @@
             })
           }
         })
+      },
+      handleCancel() {
+        this.isShow = true;
+        this.$refs.newConfig.resetFields();
       }
     }
   }
