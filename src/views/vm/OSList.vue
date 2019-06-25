@@ -11,12 +11,7 @@
           </el-button>
         </el-input>
       </el-form-item>
-      <el-button
-        @click="true"
-        type="primary"
-        icon="el-icon-plus">
-        Create
-      </el-button>
+      <newos-conf-dialog></newos-conf-dialog>
     </el-form>
 
     <el-table :data="oss" v-loading="loading">
@@ -28,7 +23,7 @@
       </el-table-column>
       <el-table-column prop="created_at" label="Created Date" :formatter="dateFormatter">
       </el-table-column>
-      <el-table-column label="Actions">
+      <el-table-column label="Actions" align="center">
         <template slot-scope="scope">
           <delete-link class="middle-icon" @click="deleteOS(scope.row.id)"></delete-link>
         </template>
@@ -51,13 +46,15 @@
 
 <script>
   import DeleteLink from '@/components/DeleteLink';
+  import NewosConfDialog from './components/NewOSConfDialog';
 
   import { OSList, deleteOS } from '../../api/vm';
 
   export default {
     name: 'OSList',
     components: {
-      DeleteLink
+      DeleteLink,
+      NewosConfDialog
     },
     data() {
       return {
