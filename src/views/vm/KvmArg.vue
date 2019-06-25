@@ -137,11 +137,6 @@
   .margin {
     margin: 30px;
   }
-
-  .middle-icon {
-    font-size: 16px;
-    margin-right: 10px;
-  }
 </style>
 
 <style>

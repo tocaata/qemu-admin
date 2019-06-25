@@ -231,11 +231,6 @@
     margin-top: 20px;
     margin-bottom: 20px;
   }
-
-  .middle-icon {
-    font-size: 16px;
-    margin-right: 10px;
-  }
 </style>
 
 <style>
