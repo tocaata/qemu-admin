@@ -88,3 +88,19 @@ export function run(id) {
     data: { id }
   })
 }
+
+export function OSList(data) {
+  return request({
+    url: '/os/list',
+    method: 'post',
+    data
+  })
+}
+
+export function deleteOS(id) {
+  return request({
+    url: '/os/delete',
+    method: 'post',
+    data: { id }
+  })
+}
