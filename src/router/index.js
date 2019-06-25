@@ -175,6 +175,19 @@ export const asyncRouterMap = [
     ]
   },
 
+  {
+    path: '/OS',
+    component: Layout,
+    children: [
+      {
+        path: 'index',
+        component: () => import('@/views/vm/OSList'),
+        name: 'OSList',
+        meta: { title: 'OS Template', noCache: true, icon: 'windows' }
+      }
+    ]
+  },
+
 
   /** When your routing table is too long, you can split it into small modules**/
   vmsRouter,
