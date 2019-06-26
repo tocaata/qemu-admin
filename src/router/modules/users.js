@@ -4,14 +4,14 @@ const usersRouter = {
   path: '/user',
   component: Layout,
   redirect: 'noredirect',
-  name: 'User List',
+  name: 'User',
   meta: {
-    title: 'User List',
+    title: 'User',
     icon: 'peoples'
   },
   children: [
     {
-      path: 'list',
+      path: 'index',
       component: () => import('@/views/user/UserList'),
       name: 'UserList',
       meta: { title: 'User List', noCache: true }
