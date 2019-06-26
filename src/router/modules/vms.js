@@ -4,9 +4,9 @@ const vmsRouter = {
   path: '/vm',
   component: Layout,
   redirect: 'noredirect',
-  name: 'Machines',
+  name: 'Machine',
   meta: {
-    title: 'Machines',
+    title: 'Machine',
     icon: 'example'
   },
   children: [
@@ -14,7 +14,7 @@ const vmsRouter = {
       path: 'list',
       component: () => import('@/views/vm/VmList'),
       name: 'VmList',
-      meta: { title: 'Machine List', noCache: true, icon: 'list' }
+      meta: { title: 'Machine List', noCache: true, icon: 'vm' }
     },
     {
       path: 'show',
