@@ -11,7 +11,7 @@
           </el-button>
         </el-input>
       </el-form-item>
-      <newos-conf-dialog></newos-conf-dialog>
+      <newos-conf-dialog @created="search"></newos-conf-dialog>
     </el-form>
 
     <el-table :data="oss" v-loading="loading">
@@ -25,6 +25,7 @@
       </el-table-column>
       <el-table-column label="Actions" align="center">
         <template slot-scope="scope">
+          <el-link class="middle-icon" @click="handleEdit" type="primary" icon="el-icon-setting"></el-link>
           <delete-link class="middle-icon" @click="deleteOS(scope.row.id)"></delete-link>
         </template>
       </el-table-column>
@@ -41,12 +42,14 @@
       :page-sizes="[10,20,50]"
       layout="total, sizes, prev, pager, next, jumper">
     </el-pagination>
+    <editos-conf-dialog></editos-conf-dialog>
   </div>
 </template>
 
 <script>
   import DeleteLink from '@/components/DeleteLink';
   import NewosConfDialog from './components/NewOSConfDialog';
+  import EditosConfDialog from './components/EditOSConfDialog';
 
   import { OSList, deleteOS } from '../../api/vm';
 
@@ -54,7 +57,8 @@
     name: 'OSList',
     components: {
       DeleteLink,
-      NewosConfDialog
+      NewosConfDialog,
+      EditosConfDialog
     },
     data() {
       return {
@@ -84,7 +88,6 @@
         this.search();
       },
 
-
       search() {
         this.loading = true;
         const { pageIndex, pageSize, ascending, orderBy } = this;
@@ -95,6 +98,10 @@
         }).catch(() => {
           this.loading = false;
         })
+      },
+
+      handleEdit() {
+        1
       },
 
       deleteOS(id) {

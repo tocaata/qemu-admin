@@ -1,15 +1,11 @@
 <template>
   <div style="display: inline-block">
-    <el-button icon="el-icon-plus" @click="dialogVisible = true" type="primary">
-      Create
-    </el-button>
-
     <el-dialog :visible.sync="dialogVisible"
                :close-on-click-modal="false"
                append-to-body
                width="800px"
                class="transfer-dialog"
-               title="Create OS Template">
+               :title="name">
       <div class="form-container" v-if="step === 0">
         <el-form class="newOS" :model="newOS" label-position="left" label-width="100px">
           <el-form-item prop="name" label="OS Name">
@@ -52,7 +48,15 @@
   import { getAllOptions, saveOS } from '@/api/vm';
 
   export default {
-    name: 'NewOSConfDialog',
+    name: 'EditOSConfDialog',
+    props: {
+      data: {
+        type: Object,
+        validator(value) {
+          return 'id' in value && 'name' in value && 'type' in value;
+        }
+      }
+    },
     data() {
       return {
         loading: false,
@@ -99,7 +103,7 @@
             type: 'success',
             message: res.message
           });
-          this.$emit('created', undefined);
+          this.$emit('update', undefined);
         }).catch(_ => {
           this.loading = false;
         });
