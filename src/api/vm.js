@@ -41,6 +41,14 @@ export function getPrimaryOptions() {
   })
 }
 
+export function getAllOptions() {
+  return request({
+    url: '/vmOptionTemplate/all',
+    method: 'get'
+  })
+}
+
+
 export function deleteArg(id) {
   return request({
     url: '/vmOptionTemplate/delete',
@@ -102,5 +110,14 @@ export function deleteOS(id) {
     url: '/os/delete',
     method: 'post',
     data: { id }
+  })
+}
+
+
+export function saveOS(data) {
+  return request({
+    url: '/os/new',
+    method: 'post',
+    data
   })
 }
