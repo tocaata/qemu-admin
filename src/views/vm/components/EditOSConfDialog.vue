@@ -1,5 +1,5 @@
 <template>
-  <div style="display: inline-block">
+  <div>
     <el-dialog :visible.sync="dialogVisible"
                :close-on-click-modal="false"
                append-to-body
@@ -60,7 +60,7 @@
     data() {
       return {
         loading: false,
-        dialogVisible: false,
+        dialogVisible: true,
         data: [],
         selectedConfig: [],
         step: 0,

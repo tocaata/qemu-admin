@@ -42,7 +42,6 @@
       :page-sizes="[10,20,50]"
       layout="total, sizes, prev, pager, next, jumper">
     </el-pagination>
-    <editos-conf-dialog></editos-conf-dialog>
   </div>
 </template>
 
@@ -52,6 +51,7 @@
   import EditosConfDialog from './components/EditOSConfDialog';
 
   import { OSList, deleteOS } from '../../api/vm';
+  import Vue from 'vue';
 
   export default {
     name: 'OSList',
@@ -101,7 +101,12 @@
       },
 
       handleEdit() {
-        1
+        const EditDialog = Vue.extend(EditosConfDialog);
+        // const editDialog = this.$createElement('editos-conf-dialog', {}, null);
+        const editDialog = new EditDialog({});
+
+        editDialog.$mount();
+        document.body.appendChild(editDialog.$el);
       },
 
       deleteOS(id) {
