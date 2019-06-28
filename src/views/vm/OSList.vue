@@ -25,7 +25,7 @@
       </el-table-column>
       <el-table-column label="Actions" align="center">
         <template slot-scope="scope">
-          <el-link class="middle-icon" @click="handleEdit" type="primary" icon="el-icon-setting"></el-link>
+          <el-link class="middle-icon" @click="handleEdit(scope.row)" type="primary" icon="el-icon-setting"></el-link>
           <delete-link class="middle-icon" @click="deleteOS(scope.row.id)"></delete-link>
         </template>
       </el-table-column>
@@ -42,6 +42,10 @@
       :page-sizes="[10,20,50]"
       layout="total, sizes, prev, pager, next, jumper">
     </el-pagination>
+
+    <component v-for="item in dynamicComponents"
+               v-bind="item.props" :key="item.key" :is="item.component">
+    </component>
   </div>
 </template>
 
@@ -52,6 +56,7 @@
 
   import { OSList, deleteOS } from '../../api/vm';
   import Vue from 'vue';
+  const EditDialog = Vue.extend(EditosConfDialog);
 
   export default {
     name: 'OSList',
@@ -67,6 +72,7 @@
         },
         searchOSRules: {},
         oss: [],
+        dynamicComponents: [],
         loading: false,
         pageIndex: 1,
         pageSize: 10,
@@ -97,16 +103,39 @@
           this.oss = data.list;
         }).catch(() => {
           this.loading = false;
-        })
+        });
       },
 
-      handleEdit() {
-        const EditDialog = Vue.extend(EditosConfDialog);
-        // const editDialog = this.$createElement('editos-conf-dialog', {}, null);
-        const editDialog = new EditDialog({});
+      handleEdit(OS) {
+        console.log(OS);
+        const component = {
+          component: 'EditosConfDialog',
+          key: OS.id,
+          props: {
+            data: OS,
+            onClose: () => {
+              this.dynamicComponents.splice(component);
+            }
+          }
+        };
+        this.dynamicComponents.push(component);
+      },
 
-        editDialog.$mount();
-        document.body.appendChild(editDialog.$el);
+      handleEdit2() {
+        let ele = null;
+        const onClose = () => {
+          document.body.removeChild(ele);
+          document.body.removeChild(document.querySelector('.v-modal'));
+        };
+
+        const editDialog = new EditDialog({
+          propsData: {
+            onClose
+          }
+        });
+
+        ele = editDialog.$mount().$el;
+        document.body.appendChild(ele);
       },
 
       deleteOS(id) {

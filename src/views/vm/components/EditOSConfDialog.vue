@@ -2,9 +2,9 @@
   <div>
     <el-dialog :visible.sync="dialogVisible"
                :close-on-click-modal="false"
-               append-to-body
                width="800px"
                class="transfer-dialog"
+               @closed="handleClose"
                :title="name">
       <div class="form-container" v-if="step === 0">
         <el-form class="newOS" :model="newOS" label-position="left" label-width="100px">
@@ -33,7 +33,7 @@
       </div>
 
       <span slot="footer" class="dialog-footer">
-        <el-button icon="el-icon-close" @click="dialogVisible = false">Cancel</el-button>
+        <el-button icon="el-icon-close" @click="onClose">Cancel</el-button>
         <el-button @click="step--" :disabled="step === 0">Back</el-button>
         <el-button @click="step++" v-if="step < totalStep - 1">Next</el-button>
         <el-button v-else
@@ -53,15 +53,21 @@
       data: {
         type: Object,
         validator(value) {
+          console.log(value);
           return 'id' in value && 'name' in value && 'type' in value;
         }
+      },
+      onClose: {
+        type: Function
       }
+    },
+    mounted() {
+      console.log(this.data);
     },
     data() {
       return {
         loading: false,
         dialogVisible: true,
-        data: [],
         selectedConfig: [],
         step: 0,
         totalStep: 2,
@@ -90,7 +96,7 @@
 
             return { key: temp.id, label: template };
           });
-        })
+        });
       },
 
       saveOS() {
@@ -111,6 +117,10 @@
 
       filterConfigs(query, item) {
         return item.label.indexOf(query) > -1;
+      },
+
+      handleClose() {
+        this.onClose();
       }
     }
   }
