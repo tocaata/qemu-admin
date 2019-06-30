@@ -45,7 +45,7 @@
 </template>
 
 <script>
-  import { getAllOptions, saveOS } from '@/api/vm';
+  import { getAllOptions, saveOS, OSDetail } from '@/api/vm';
 
   export default {
     name: 'EditOSConfDialog',
@@ -60,9 +60,6 @@
       onClose: {
         type: Function
       }
-    },
-    mounted() {
-      console.log(this.data);
     },
     data() {
       return {
@@ -97,6 +94,14 @@
             return { key: temp.id, label: template };
           });
         });
+
+        OSDetail(this.data.id).then(res => {
+          const data = res.data;
+
+          const { name, type, detail } = res.data;
+          this.newOS = { name, type, detail };
+          this.selectedConfig = data.vmOptionTemplates.map(temp => temp.id);
+        })
       },
 
       saveOS() {

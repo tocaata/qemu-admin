@@ -105,6 +105,14 @@ export function OSList(data) {
   })
 }
 
+export function OSDetail(id) {
+  return request({
+    url: '/os/detail',
+    method: 'post',
+    data: {id}
+  })
+}
+
 export function deleteOS(id) {
   return request({
     url: '/os/delete',
