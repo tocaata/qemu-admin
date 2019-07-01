@@ -5,7 +5,7 @@
                width="800px"
                class="transfer-dialog"
                @closed="handleClose"
-               :title="name">
+               :title="data.name">
       <div class="form-container" v-if="step === 0">
         <el-form class="newOS" :model="newOS" label-position="left" label-width="100px">
           <el-form-item prop="name" label="OS Name">
@@ -28,7 +28,7 @@
           filter-placeholder="Please input config"
           :titles="['All Templates', 'Enabled Templates']"
           v-model="selectedConfig"
-          :data="data">
+          :data="allConfig">
         </el-transfer>
       </div>
 
@@ -53,7 +53,6 @@
       data: {
         type: Object,
         validator(value) {
-          console.log(value);
           return 'id' in value && 'name' in value && 'type' in value;
         }
       },
@@ -66,9 +65,11 @@
         loading: false,
         dialogVisible: true,
         selectedConfig: [],
+        allConfig: [],
         step: 0,
         totalStep: 2,
         newOS: {
+          id: this.data.id,
           name: '',
           type: null,
           detail: ''
@@ -87,7 +88,7 @@
     methods: {
       getData() {
         getAllOptions().then(res => {
-          this.data = res.data.map(temp => {
+          this.allConfig = res.data.map(temp => {
             const data = JSON.parse(temp.config);
             const template = data.arg + (data.template ? ' ' + data.template : '');
 

@@ -107,7 +107,6 @@
       },
 
       handleEdit(OS) {
-        console.log(OS);
         const component = {
           component: 'EditosConfDialog',
           key: OS.id,
