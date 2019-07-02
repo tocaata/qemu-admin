@@ -37,15 +37,15 @@
         <el-button @click="step--" :disabled="step === 0">Back</el-button>
         <el-button @click="step++" v-if="step < totalStep - 1">Next</el-button>
         <el-button v-else
-                   icon="el-icon-plus" type="primary"
-                   @click="saveOS" :loading="loading">Create</el-button>
+                   icon="el-icon-check" type="primary"
+                   @click="updateOS" :loading="loading">Save</el-button>
       </span>
     </el-dialog>
   </div>
 </template>
 
 <script>
-  import { getAllOptions, saveOS, OSDetail } from '@/api/vm';
+  import { getAllOptions, updateOS, OSDetail } from '@/api/vm';
 
   export default {
     name: 'EditOSConfDialog',
@@ -58,6 +58,9 @@
       },
       onClose: {
         type: Function
+      },
+      onUpdate: {
+        type: Function
       }
     },
     data() {
@@ -69,7 +72,6 @@
         step: 0,
         totalStep: 2,
         newOS: {
-          id: this.data.id,
           name: '',
           type: null,
           detail: ''
@@ -105,9 +107,9 @@
         })
       },
 
-      saveOS() {
+      updateOS() {
         this.loading = true;
-        saveOS({...this.newOS, templates: this.selectedConfig}).then(res => {
+        updateOS({...this.newOS, id: this.data.id, templates: this.selectedConfig}).then(res => {
           this.loading = false;
           this.step = 0;
           this.dialogVisible = false;
@@ -115,7 +117,9 @@
             type: 'success',
             message: res.message
           });
-          this.$emit('update', undefined);
+          if (this.onUpdate) {
+            this.onUpdate();
+          }
         }).catch(_ => {
           this.loading = false;
         });
