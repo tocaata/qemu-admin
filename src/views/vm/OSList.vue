@@ -114,6 +114,9 @@
             data: OS,
             onClose: () => {
               this.dynamicComponents.splice(component);
+            },
+            onUpdate: () => {
+              this.search();
             }
           }
         };

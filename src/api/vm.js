@@ -129,3 +129,11 @@ export function saveOS(data) {
     data
   })
 }
+
+export function updateOS(data) {
+  return request({
+    url: '/os/update',
+    method: 'post',
+    data
+  })
+}
