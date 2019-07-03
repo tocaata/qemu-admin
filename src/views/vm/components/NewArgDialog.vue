@@ -14,6 +14,9 @@
         <el-form-item label="Desc:" prop="desc">
           <el-input style="width: 40%" type="textarea" v-model="newConfig.desc" clearable></el-input>
         </el-form-item>
+        <el-form-item label="Type:" prop="type">
+          <el-input style="width: 40%" type="textarea" v-model="newConfig.type" clearable></el-input>
+        </el-form-item>
         <el-form-item label="Primary:" prop="isPrimary">
           <el-switch v-model="newConfig.isPrimary"></el-switch>
         </el-form-item>
@@ -103,6 +106,7 @@
           arg: '',
           template: '-smp $1,threads=$2',
           desc: '',
+          type: '',
           isPrimary: false,
           params: [
             {"name":"$1","label":"cpu count","type":"number","options":[],"component":"el-input-number","key":1558962702577},
@@ -138,11 +142,11 @@
       };
     },
     mounted() {
-      this.newConfig.params.push(Object.assign({}, this.newParams, { key: Date.now() }));
+      this.newConfig.params.push({ ...this.newParams, key: Date.now() });
     },
     methods: {
       addParam() {
-        this.newConfig.params.push(Object.assign({}, this.newParams, { key: Date.now() }));
+        this.newConfig.params.push({ ...this.newParams, key: Date.now() });
       },
       removeParam(key) {
         const index = this.newConfig.params.indexOf(p => p.key === key);
@@ -155,9 +159,8 @@
           arg: template.slice(0, template.indexOf(' ')),
           template: template.slice(template.indexOf(' '), template.length)
         };
-        const data = Object.assign({}, this.newConfig, edit)
 
-        saveVmOption(data).then(res => {
+        saveVmOption({...this.newConfig, ...edit}).then(res => {
           this.loading = false;
           this.dialogVisible = false;
           this.$message({
