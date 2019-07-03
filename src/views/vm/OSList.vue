@@ -21,6 +21,11 @@
       </el-table-column>
       <el-table-column prop="detail" label="Detail" show-overflow-tooltip>
       </el-table-column>
+      <el-table-column prop="enabled" label="Enabled">
+        <template slot-scope="{ row }">
+          <el-tag v-if="row.enabled" type="primary">enabled</el-tag>
+        </template>
+      </el-table-column>
       <el-table-column prop="created_at" label="Created Date" :formatter="dateFormatter">
       </el-table-column>
       <el-table-column label="Actions" align="center">

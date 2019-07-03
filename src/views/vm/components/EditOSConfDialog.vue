@@ -19,6 +19,9 @@
           <el-form-item prop="detail" label="OS Detail">
             <el-input v-model="newOS.detail" type="textarea"></el-input>
           </el-form-item>
+          <el-form-item prop="enabled" label="Enabled">
+            <el-switch v-model="newOS.enabled"></el-switch>
+          </el-form-item>
         </el-form>
       </div>
       <div class="form-container" v-if="step === 1">
@@ -74,7 +77,8 @@
         newOS: {
           name: '',
           type: null,
-          detail: ''
+          detail: '',
+          enabled: false
         },
         OSTypes: [
           { label: 'Windows', value: 'windows' },
@@ -101,8 +105,8 @@
         OSDetail(this.data.id).then(res => {
           const data = res.data;
 
-          const { name, type, detail } = res.data;
-          this.newOS = { name, type, detail };
+          const { name, type, detail, enabled } = res.data;
+          this.newOS = { name, type, detail, enabled: enabled === 1 };
           this.selectedConfig = data.vmOptionTemplates.map(temp => temp.id);
         })
       },

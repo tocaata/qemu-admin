@@ -105,6 +105,13 @@ export function OSList(data) {
   })
 }
 
+export function OSEnabled() {
+  return request({
+    url: '/os/enabled',
+    method: 'get'
+  })
+}
+
 export function OSDetail(id) {
   return request({
     url: '/os/detail',

@@ -14,6 +14,8 @@
       </el-table-column>
       <el-table-column prop="name" label="Name" width="200">
       </el-table-column>
+      <el-table-column prop="type" label="Type" width="200">
+      </el-table-column>
       <el-table-column prop="is_primary" label="Primary"
                        width="200"
                        show-overflow-tooltip>

@@ -11,7 +11,11 @@
                class="transfer-dialog"
                title="Create OS Template">
       <div class="form-container" v-if="step === 0">
-        <el-form class="newOS" :model="newOS" label-position="left" label-width="100px">
+        <p>
+          OS template is a set of qemu arguments to create a virtual machine.
+        </p>
+        <el-divider></el-divider>
+        <el-form class="newOS" :model="newOS" label-position="right" label-width="100px">
           <el-form-item prop="name" label="OS Name">
             <el-input v-model="newOS.name"></el-input>
           </el-form-item>
@@ -23,9 +27,16 @@
           <el-form-item prop="detail" label="OS Detail">
             <el-input v-model="newOS.detail" type="textarea"></el-input>
           </el-form-item>
+          <el-form-item prop="enabled" label="Enabled">
+            <el-switch v-model="newOS.enabled"></el-switch>
+          </el-form-item>
         </el-form>
       </div>
       <div class="form-container" v-if="step === 1">
+        <p>
+          Specify the parameters for this OS template.
+        </p>
+        <el-divider></el-divider>
         <el-transfer
           filterable
           :filter-method="filterConfigs"
@@ -64,7 +75,8 @@
         newOS: {
           name: '',
           type: null,
-          detail: ''
+          detail: '',
+          enabled: true
         },
         OSTypes: [
           { label: 'Windows', value: 'windows' },

@@ -1,6 +1,8 @@
 <template>
   <div>
-    <p style="margin-bottom: 20px">{{ configObject.desc }}</p>
+    <h3>{{ configObject.title }}</h3>
+    <p>{{ configObject.desc }}</p>
+    <el-divider></el-divider>
     <el-form-item v-for="(param, index) in configObject.params" :label="param.label" :key="param.name">
       <component :is="param.component" v-model="args[index]">
         <template v-if="param.component === 'el-select'">

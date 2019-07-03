@@ -11,7 +11,11 @@
       </el-form-item>
       <el-form-item label="Description:" prop="desc">
         <span v-if="isShow">{{ newConfig.desc }}</span>
-        <el-input v-else style="width: 40%" type="textarea" :rows="1" v-model.trim="newConfig.desc"></el-input>
+        <el-input v-else style="width: 40%" type="textarea" :rows="1" v-model="newConfig.desc"></el-input>
+      </el-form-item>
+      <el-form-item label="Type:" prop="type">
+        <span v-if="isShow">{{ newConfig.type }}</span>
+        <el-input v-else style="width: 40%" type="textarea" :rows="1" v-model="newConfig.type"></el-input>
       </el-form-item>
       <el-form-item label="Primary:" prop="isPrimary">
         <span v-if="isShow">{{ newConfig.isPrimary }}</span>
@@ -102,7 +106,7 @@
       data: {
         type: Object,
         validator: (value) => {
-          if (['title', 'arg', 'template', 'isPrimary'].every(x => x in value)) {
+          if (['title', 'arg', 'template', 'type', 'isPrimary'].every(x => x in value)) {
             if ('params' in value) {
               if (Array.isArray(value.params)) {
                 return value.params.every(p => {
@@ -130,7 +134,7 @@
         }
       };
 
-      const { title, arg, template, desc, isPrimary, params } = this.data;
+      const { title, arg, template, desc, type, isPrimary, params } = this.data;
 
       return {
         newConfig: {
@@ -139,6 +143,7 @@
           template,
           argTemplate: arg + (template ? (' ' + template) : ''),
           desc,
+          type,
           isPrimary,
           params: params || []
         },
@@ -191,7 +196,7 @@
         return this.$refs['newConfig'].validate(callback);
       },
       addParam() {
-        this.newConfig.params.push(Object.assign({}, this.newParams, { key: Date.now() }));
+        this.newConfig.params.push({ ...this.newParams, key: Date.now() });
       },
       removeParam(key) {
         const index = this.newConfig.params.indexOf(p => p.key === key);
