@@ -30,7 +30,7 @@ English | [简体中文](./README.zh-CN.md)
 
 ## Introduction
 
-[vue-element-admin](http://panjiachen.github.io/vue-element-admin) is a front-end management background integration solution. It based on [vue](https://github.com/vuejs/vue) and use the UI Toolkit [element](https://github.com/ElemeFE/element).
+qemu-admin is a front-end management for qemu/kvm virtual machine. It based on [vue](https://github.com/vuejs/vue) and [vue-element-admin](http://panjiachen.github.io/vue-element-admin) and use the UI Toolkit [element](https://github.com/ElemeFE/element).
 
 It is a magical vue admin based on the newest development stack of vue, built-in i18n solution, typical templates for enterprise applications, lots of awesome features. It helps you build a large complex Single-Page Applications. I believe whatever your needs are, this project will help you.
 
@@ -135,11 +135,15 @@ Understanding and learning this knowledge in advance will greatly help the use o
 - Markdown to html
 ```
 
+![machine-list](https://raw.github.com/tocaata/qemu-admin/master/doc/machine-list.png)
+![os-template](https://raw.github.com/tocaata/qemu-admin/master/doc/os-template.png)
+![kvm-args](https://raw.github.com/tocaata/qemu-admin/master/doc/kvm-args.png)
+
 ## Getting started
 
 ```bash
 # clone the project
-git clone https://github.com/PanJiaChen/vue-element-admin.git
+git clone https://github.com/tocaata/qemu-admin.git
 
 # install dependency
 npm install
@@ -179,25 +183,10 @@ npm run lint
 npm run lint -- --fix
 ```
 
-Refer to [Documentation](https://panjiachen.github.io/vue-element-admin-site/guide/essentials/deploy.html) for more information
-
-## Changelog
-
-Detailed changes for each release are documented in the [release notes](https://github.com/PanJiaChen/vue-element-admin/releases).
-
-## Online Demo
-
-[Preview](http://panjiachen.github.io/vue-element-admin)
-
 ## Donate
 
 If you find this project useful, you can buy author a glass of juice :tropical_drink:
 
-![donate](https://wpimg.wallstcn.com/bd273f0d-83a0-4ef2-92e1-9ac8ed3746b9.png)
-
-[Paypal Me](https://www.paypal.me/panfree23)
-
-[Buy me a coffee](https://www.buymeacoffee.com/Pan)
 
 ## Browsers support
 
@@ -207,8 +196,5 @@ Modern browsers and Internet Explorer 10+.
 | --------- | --------- | --------- | --------- |
 | IE10, IE11, Edge| last 2 versions| last 2 versions| last 2 versions
 
-## License
 
-[MIT](https://github.com/PanJiaChen/vue-element-admin/blob/master/LICENSE)
-
-Copyright (c) 2017-present PanJiaChen
+Copyright (c) 2019-present Tocaata
