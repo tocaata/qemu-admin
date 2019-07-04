@@ -65,9 +65,9 @@ Understanding and learning this knowledge in advance will greatly help the use o
 
 ---
 
- <p align="center">
-  <img width="900" src="https://wpimg.wallstcn.com/a5894c1b-f6af-456e-82df-1151da0839bf.png">
-</p>
+![machine-list](https://raw.github.com/tocaata/qemu-admin/master/doc/machine-list.png)
+![os-template](https://raw.github.com/tocaata/qemu-admin/master/doc/os-template.png)
+![kvm-args](https://raw.github.com/tocaata/qemu-admin/master/doc/kvm-args.png)
 
 ## Features
 
@@ -134,10 +134,6 @@ Understanding and learning this knowledge in advance will greatly help the use o
 - Clipboard
 - Markdown to html
 ```
-
-![machine-list](https://raw.github.com/tocaata/qemu-admin/master/doc/machine-list.png)
-![os-template](https://raw.github.com/tocaata/qemu-admin/master/doc/os-template.png)
-![kvm-args](https://raw.github.com/tocaata/qemu-admin/master/doc/kvm-args.png)
 
 ## Getting started
 
