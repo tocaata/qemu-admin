@@ -111,6 +111,8 @@
           return d;
         });
 
+        return ;
+
         [this.configurableArgs, this.unconfigArgs] = allVmArgs.reduce((total, cur) => {
           if (cur.config.params.length > 0) {
             total[0].push(cur);

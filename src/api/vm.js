@@ -11,7 +11,7 @@ export function vmList(data) {
 
 export function vmShow(id) {
   return request({
-    url: '/vm/show',
+    url: '/vm/detail',
     method: 'get',
     params: { id }
   })
