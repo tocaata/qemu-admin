@@ -52,7 +52,7 @@
 </template>
 
 <script>
-  import { getPrimaryOptions, OSEnabled, createVm } from '@/api/vm';
+  import { getPrimaryOptions, OSEnabled, createVm, OSDetail } from '@/api/vm';
   import KvmWizardControl from './KvmWizardControl';
 
   export default {
@@ -87,6 +87,30 @@
         oss: {}
       };
     },
+    watch: {
+      ['newVM.os'](newValue) {
+        OSDetail(newValue[1]).then(({ data }) => {
+          const templates = data['vmOptionTemplates'];
+
+          const allVmArgs = templates.map(x => {
+            x.config = JSON.parse(x.config);
+            return x;
+          });
+
+          [this.configurableArgs, this.unconfigArgs] = allVmArgs.reduce((total, cur) => {
+            if (cur.config.params.length > 0) {
+              total[0].push(cur);
+            } else {
+              total[1].push(cur);
+            }
+            return total;
+          }, [[], []]);
+
+          Object.freeze(this.configurableArgs);
+          Object.freeze(this.unconfigArgs);
+        });
+      }
+    },
     mounted () {
       OSEnabled().then(res => {
         const { data } = res;
@@ -104,6 +128,8 @@
           return total;
         }, []);
       })
+
+      return;
 
       getPrimaryOptions().then(res => {
         const allVmArgs = res.data.map(d => {

@@ -57,8 +57,8 @@
         sortable="custom"
         label="Status"
         prop="status">
-        <template slot-scope="scope">
-          <el-tag :type="['info','success','warning','danger'][scope.row.status]">{{ scope.row.status | mapStatus }}</el-tag>
+        <template slot-scope="{ row }">
+          <el-tag :type="row.status | mapStatus">{{ row.status }}</el-tag>
         </template>
       </el-table-column>
       <el-table-column
@@ -85,10 +85,11 @@
       <el-table-column
         align="center"
         label="action">
-        <template slot-scope="scope">
-          <el-link class="middle-icon" @click="runMachine(scope.row.id)" icon="el-icon-video-play" type="primary"></el-link>
-          <el-link class="middle-icon" icon="el-icon-setting" @click="machineDetail(scope.row.id)"></el-link>
-          <delete-link class="middle-icon" @click="deleteVm(scope.row.id)"></delete-link>
+        <template slot-scope={row}>
+          <el-link class="middle-icon" @click="runMachine(row.id)" icon="el-icon-video-play" type="primary"></el-link>
+          <el-link class="middle-icon" @click="exec(row.id, 'stop')" icon="el-icon-video-pause" type="primary"></el-link>
+          <el-link class="middle-icon" icon="el-icon-setting" @click="machineDetail(row.id)"></el-link>
+          <delete-link class="middle-icon" @click="deleteVm(row.id)"></delete-link>
         </template>
       </el-table-column>
     </el-table>
@@ -109,7 +110,7 @@
 </template>
 
 <script>
-  import { vmList, deleteVm, getCmd,run } from '../../api/vm';
+  import { vmList, deleteVm, getCmd, run, exec } from '../../api/vm';
   import VmDialog from './VmDialog/VmDialog';
   import DeleteLink from '@/components/DeleteLink';
 
@@ -137,7 +138,11 @@
     },
     filters: {
       mapStatus(value) {
-        return ['stopped', 'running', 'pending', 'down'][value] || value;
+        switch (value) {
+          case 'running': return 'success';
+          case 'stopped': return 'info';
+          case 'resume': return 'warning';
+        }
       }
     },
     methods: {
@@ -181,6 +186,14 @@
         }).catch(err => {
 
         })
+      },
+
+      exec(id, cmd) {
+        exec(id, cmd).then(res => {
+          this.$message({ type: 'success', message: res.message });
+        }).catch(err => {
+
+        });
       },
       vmCreated() {
         this.dialogVisible = false;

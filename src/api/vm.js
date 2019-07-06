@@ -89,6 +89,14 @@ export function getCmd(id) {
   })
 }
 
+export function exec(id, cmd) {
+  return request({
+    url: '/vm/exec',
+    method: 'post',
+    data: { id, cmd }
+  })
+}
+
 export function run(id) {
   return request({
     url: '/vm/run',
