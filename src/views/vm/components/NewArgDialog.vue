@@ -8,8 +8,8 @@
         <el-form-item label="Title:" prop="title">
           <el-input style="width: 40%" v-model="newConfig.title" clearable></el-input>
         </el-form-item>
-        <el-form-item label="Template:" prop="template">
-          <el-input style="width: 40%" type="textarea" v-model.trim="newConfig.template" clearable></el-input>
+        <el-form-item label="Template:" prop="argTemplate">
+          <el-input style="width: 40%" type="textarea" v-model.lazy="newConfig.argTemplate" clearable></el-input>
         </el-form-item>
         <el-form-item label="Desc:" prop="desc">
           <el-input style="width: 40%" type="textarea" v-model="newConfig.desc" clearable></el-input>
@@ -93,7 +93,7 @@
     },
     data() {
       const templateValidator = (rule, value, callback) => {
-        if (/-{1,2}\w{1,16} [^ ]/.test(value)){
+        if (/-{1,2}\w{1,16}( [^ ]+)?$/.test(value)){
           callback();
         } else {
           callback(new Error('Please input correct template.'));
@@ -105,6 +105,7 @@
           title: 'smp',
           arg: '',
           template: '-smp $1,threads=$2',
+          argTemplate: '-smp $1,threads=$2',
           desc: '',
           type: '',
           isPrimary: false,
@@ -141,6 +142,11 @@
         loading: false
       };
     },
+    watch: {
+      ['newConfig.argTemplate'](newValue) {
+        [this.newConfig.arg, this.newConfig.template] = newValue.split(' ');
+      }
+    },
     mounted() {
       this.newConfig.params.push({ ...this.newParams, key: Date.now() });
     },
@@ -154,13 +160,13 @@
       },
       saveConfig() {
         this.loading = true;
-        const template = this.newConfig.template;
-        const edit = {
-          arg: template.slice(0, template.indexOf(' ')),
-          template: template.slice(template.indexOf(' '), template.length)
-        };
+        // const template = this.newConfig.template;
+        // const edit = {
+        //   arg: template.slice(0, template.indexOf(' ')),
+        //   template: template.slice(template.indexOf(' '), template.length)
+        // };
 
-        saveVmOption({...this.newConfig, ...edit}).then(res => {
+        saveVmOption({...this.newConfig}).then(res => {
           this.loading = false;
           this.dialogVisible = false;
           this.$message({
