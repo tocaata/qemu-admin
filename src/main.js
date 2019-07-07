@@ -19,12 +19,19 @@ import './errorLog' // error log
 import './permission' // permission control
 // import './mock' // simulation data
 
+import VueSocketIO from 'vue-socket.io';
+import io from 'socket.io-client';
+
 import * as filters from './filters' // global filters
 
 Vue.use(Element, {
   size: Cookies.get('size') || 'medium', // set element-ui default size
   i18n: (key, value) => i18n.t(key, value)
 })
+
+Vue.use(new VueSocketIO({
+  connection: io(process.env.SERVER)
+}));
 
 // register global utility filters.
 Object.keys(filters).forEach(key => {
