@@ -24,21 +24,45 @@
               :default-sort = "{ prop: 'created_at', order: 'descending' }"
               v-loading="loading"
               class="vm-table"
+              :expand-row-keys="expand"
+              row-key="id"
               @expand-change="handleExpandChange"
               fit highlight-current-row>
       <el-table-column type="expand">
-        <template slot-scope="scope">
+        <template slot-scope="{row}">
           <el-form label-position="left">
+            <el-form-item label="Action:">
+              <el-tooltip effect="dark" content="Start" placement="top" :open-delay="1000">
+                <el-button type="text" style="font-size: 20px"
+                           @click="runMachine(row.id)" :disabled="row.status !== 'stopped'">
+                  <svg-icon icon-class="start"/>
+                </el-button>
+              </el-tooltip>
+
+              <el-tooltip effect="dark" content="Shutdown" placement="top" :open-delay="1000">
+                <el-button type="text" style="font-size: 20px"
+                           @click="exec(row.id, 'shutdown')" :disabled="row.status === 'stopped'">
+                  <svg-icon icon-class="shutdown"/>
+                </el-button>
+              </el-tooltip>
+
+              <el-tooltip effect="dark" content="power off" placement="top" :open-delay="1000">
+                <el-button type="text" style="font-size: 20px"
+                           @click="exec(row.id, 'stop')" :disabled="row.status === 'stopped'">
+                  <svg-icon icon-class="close"/>
+                </el-button>
+              </el-tooltip>
+            </el-form-item>
             <el-form-item label="Name:">
-              <span>{{ scope.row.name }}</span>
+              <span>{{ row.name }}</span>
             </el-form-item>
             <el-form-item label="Status:">
-              <el-tag type="info" style="font-size: 1em;">{{ scope.row.status }}</el-tag>
+              <el-tag :type="row.status | mapStatus" style="font-size: 1em;">{{ row.status }}</el-tag>
             </el-form-item>
             <el-form-item label="Command Arguments:" class="newline-item"></el-form-item>
             <el-row>
-              <el-table class="cmd-args" v-loading="scope.row.loading"
-                        :data="scope.row.cmdArgs" style="width: 80%">
+              <el-table class="cmd-args" v-loading="loading"
+                        :data="row.cmdArgs" style="width: 80%">
                 <el-table-column label="options"
                                  prop="option" width="180">
                 </el-table-column>
@@ -86,8 +110,10 @@
         align="center"
         label="action">
         <template slot-scope={row}>
-          <el-link class="middle-icon" @click="runMachine(row.id)" icon="el-icon-video-play" type="primary"></el-link>
-          <el-link class="middle-icon" @click="exec(row.id, 'stop')" icon="el-icon-video-pause" type="primary"></el-link>
+          <el-link v-show="row.status === 'stopped'" class="middle-icon" @click="runMachine(row.id)"
+                   icon="el-icon-video-play" type="primary"></el-link>
+          <el-link v-show="row.status !== 'stopped'" class="middle-icon" @click="exec(row.id, 'stop')"
+                   icon="el-icon-video-pause" type="primary"></el-link>
           <el-link class="middle-icon" icon="el-icon-setting" @click="machineDetail(row.id)"></el-link>
           <delete-link class="middle-icon" @click="deleteVm(row.id)"></delete-link>
         </template>
@@ -126,11 +152,13 @@
         orderBy: 'created_at',
         total: 0,
         vms: [],
+        cmdArgs: [],
         searchVM: {
           searchStr: ''
         },
         searchVMRules: {},
         dialogVisible: false,
+        expand: []
       };
     },
     mounted() {
@@ -158,6 +186,7 @@
           });
           this.total = res.data.totalSize;
           this.loading = false;
+          this.handleExpandChange(null, this.vms.filter(x => this.expand.indexOf(x.id) >= 0));
         }).catch(() => {
           this.loading = false;
         }).finally(() => {
@@ -227,6 +256,8 @@
             }
           });
         }
+
+        this.expand = expandedRows.map(x => x.id);
       },
 
       machineDetail(machineId) {
@@ -234,6 +265,12 @@
           path: '/vm/show',
           query: { machineId }
         })
+      }
+    },
+    sockets: {
+      updateMachineList(data) {
+        console.log('updateMachineList', data);
+        this.search();
       }
     }
   }

@@ -6,8 +6,8 @@
     <el-table :data="args" class="arg-table" stripe highlight-current-row :expand-row-keys="expand"
               style="margin-top: 30px" row-key="id" v-loading="loading" @expand-change="handleExpandChange">
       <el-table-column type="expand">
-        <template slot-scope="scope">
-          <edit-arg :data="scope.row.config | json" :arg-id="scope.row.id" @change="search"></edit-arg>
+        <template slot-scope="{ row }">
+          <edit-arg :data="row.config | json" :arg-id="row.id" @change="search"></edit-arg>
         </template>
       </el-table-column>
       <el-table-column prop="arg" label="Arg" width="200">
@@ -19,17 +19,17 @@
       <el-table-column prop="is_primary" label="Primary"
                        width="200"
                        show-overflow-tooltip>
-        <template slot-scope="scope">
-          <el-tag type="primary" v-if="scope.row.is_primary === 1">Primary</el-tag>
+        <template slot-scope="{ row }">
+          <el-tag type="primary" v-if="row.is_primary === 1">Primary</el-tag>
         </template>
       </el-table-column>
       <el-table-column prop="config" label="Config"
                        show-overflow-tooltip>
       </el-table-column>
       <el-table-column label="Action" width="200" align="center">
-        <template slot-scope="scope">
-          <el-link icon="el-icon-view" type="primary" class="middle-icon" @click="toggleExpand(scope.row.id)"></el-link>
-          <delete-link class="middle-icon" @click="deleteArg(scope.row.id)"></delete-link>
+        <template slot-scope="{ row }">
+          <el-link icon="el-icon-view" type="primary" class="middle-icon" @click="toggleExpand(row.id)"></el-link>
+          <delete-link class="middle-icon" @click="deleteArg(row.id)"></delete-link>
         </template>
       </el-table-column>
     </el-table>
