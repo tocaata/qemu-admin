@@ -81,6 +81,14 @@ export function deleteVm(id) {
   })
 }
 
+export function editVm(data) {
+  return request({
+    url: '/vm/edit',
+    method: 'post',
+    data
+  })
+}
+
 export function getCmd(id) {
   return request({
     url: '/vm/getCmd',

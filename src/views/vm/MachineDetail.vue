@@ -4,20 +4,23 @@
     </el-page-header>
 
     <div class="container">
-      <el-collapse v-model="activeName" accordion v-loading="loading">
-        <el-collapse-item v-for="c in configs" :title="getCmd(c)" :key="c.id" :name="c.id">
-          <el-form label-position="top">
-            <el-form-item v-for="param in c.config.params"
-                          :key="param.key"
-                          :label="param.label">
-              <component :is="param.component" v-model="newVM.arguments[c.id][param.name]"></component>
-            </el-form-item>
-          </el-form>
-        </el-collapse-item>
-      </el-collapse>
+      <el-card shadow="never" style="width: 50%">
+        <el-collapse v-model="activeName" accordion v-loading="loading">
+          <el-collapse-item v-for="c in configsFiltered" :title="getCmd(c)" :key="c.id" :name="c.id">
+            <el-form label-position="top">
+              <el-form-item v-for="param in c.config.params"
+                            :key="param.key"
+                            :label="param.label">
+                <component :is="param.component" v-model="newVM.arguments[c.id].value[param.name]"></component>
+              </el-form-item>
+            </el-form>
+            <el-button @click="deleteArg(c.id)" type="danger" size="small">Delete</el-button>
+          </el-collapse-item>
+        </el-collapse>
+      </el-card>
 
       <div style="padding-top: 30px">
-        <el-button type="primary">Save</el-button>
+        <el-button type="primary" @click="editVM">Save</el-button>
         <el-button>Cancel</el-button>
       </div>
     </div>
@@ -25,13 +28,14 @@
 </template>
 
 <script>
-  import { vmShow } from '../../api/vm';
+  import { vmShow, editVm } from '../../api/vm';
 
   export default {
     name: 'MachineDetail',
     data() {
       return {
         loading: false,
+        machineId: this.$route.query['machineId'],
         activeName: 1,
         configs: [],
         newVM: {
@@ -40,6 +44,12 @@
           arguments: {}
         }
       };
+    },
+    computed: {
+      configsFiltered() {
+        const keys = Object.keys(this.newVM.arguments);
+        return this.configs.filter(x => keys.includes(x.id.toString()));
+      }
     },
     mounted() {
       this.getData();
@@ -50,7 +60,7 @@
       },
       getData() {
         this.loading = true;
-        vmShow(this.$route.query['machineId']).then(({ data }) => {
+        vmShow(this.machineId).then(({ data }) => {
           console.log(data);
           this.configs = data['vmOptionTemplates'].map(x => {
             x.config = JSON.parse(x.config);
@@ -58,7 +68,7 @@
           });
 
           this.newVM.arguments = this.configs.reduce((total, cur) => {
-            total[cur.id] = JSON.parse(cur.values.value);
+            total[cur.id] = { value: JSON.parse(cur.values.value), configId: cur.values.id };
             return total;
           }, {});
 
@@ -77,11 +87,29 @@
         }
 
         return arg + (template ? ' ' + template : '');
+      },
+      editVM() {
+        editVm({ id: this.machineId, ...this.newVM }).then(res => {
+        }).catch(err => {
+        });
+      },
+      deleteArg(key) {
+        // console.log(key);
+        this.$delete(this.newVM.arguments, key);
       }
     }
   }
 </script>
 
-<style scoped>
+<style rel="stylesheet/scss" lang="scss" scoped>
+  .container {
+    /deep/ .el-form-item__content {
+      width: auto;
+      padding-left: 20px;
 
+      input.el-input {
+        width: 300px;
+      }
+    }
+  }
 </style>
