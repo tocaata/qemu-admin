@@ -4,7 +4,7 @@
     <p>{{ configObject.desc }}</p>
     <el-divider></el-divider>
     <el-form-item v-for="(param, index) in configObject.params" :label="param.label" :key="param.name">
-      <component :is="param.component" v-model="args[index]">
+      <component :is="param.component" v-model="args[index]" :class="{ 'wide': param.component === 'el-input' }">
         <template v-if="param.component === 'el-select'">
           <el-option v-for="v in param.options" :key="v" :label="v" :value="v">
           </el-option>
@@ -54,5 +54,7 @@
 </script>
 
 <style scoped>
-
+  .wide {
+    width: 300px;
+  }
 </style>

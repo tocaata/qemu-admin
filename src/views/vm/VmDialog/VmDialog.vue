@@ -46,7 +46,7 @@
       <el-button @click="mutableVisible = false">取 消</el-button>
       <el-button @click="activeStep -= 1" v-show="activeStep > 0">上一步</el-button>
       <el-button type="primary" @click="activeStep += 1" v-if="activeStep <= configurableArgs.length">下一步</el-button>
-      <el-button type="primary" @click="createVm" v-else v-loading>创建</el-button>
+      <el-button type="primary" @click="createVm" v-loading v-else :disabled="createDisabled">创建</el-button>
     </span>
   </el-dialog>
 </template>
@@ -82,6 +82,7 @@
           os: null,
           arguments: {}
         },
+        createDisabled: true,
         configurableArgs: [],
         unconfigArgs: [],
         oss: {}
@@ -89,26 +90,29 @@
     },
     watch: {
       ['newVM.os'](newValue) {
-        OSDetail(newValue[1]).then(({ data }) => {
-          const templates = data['vmOptionTemplates'];
+        if (newValue != null && newValue[1] != null) {
+          OSDetail(newValue[1]).then(({ data }) => {
+            const templates = data['vmOptionTemplates'];
 
-          const allVmArgs = templates.map(x => {
-            x.config = JSON.parse(x.config);
-            return x;
+            const allVmArgs = templates.map(x => {
+              x.config = JSON.parse(x.config);
+              return x;
+            });
+
+            [this.configurableArgs, this.unconfigArgs] = allVmArgs.reduce((total, cur) => {
+              if (cur.config.params.length > 0) {
+                total[0].push(cur);
+              } else {
+                total[1].push(cur);
+              }
+              return total;
+            }, [[], []]);
+
+            Object.freeze(this.configurableArgs);
+            Object.freeze(this.unconfigArgs);
+            this.createDisabled = false;
           });
-
-          [this.configurableArgs, this.unconfigArgs] = allVmArgs.reduce((total, cur) => {
-            if (cur.config.params.length > 0) {
-              total[0].push(cur);
-            } else {
-              total[1].push(cur);
-            }
-            return total;
-          }, [[], []]);
-
-          Object.freeze(this.configurableArgs);
-          Object.freeze(this.unconfigArgs);
-        });
+        }
       }
     },
     mounted () {
@@ -193,7 +197,7 @@
 
     /deep/ .el-form-item__content {
       width: auto;
-
+      padding-left: 20px;
       /deep/ .el-cascader-menu:last-child{
         border-right: solid 1px #E4E7ED;
       }
