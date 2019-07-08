@@ -179,14 +179,19 @@
         const { pageSize, pageIndex, orderBy, ascending } = this;
         this.loading = true;
         vmList({ searchStr, pageSize, pageIndex, orderBy, ascending }).then(res => {
+          const cmds = this.vms.reduce((total, cur) => {
+            total[cur.id] = cur.cmdArgs;
+            return total;
+          }, {});
+
           this.vms = res.data.list.map(vm => {
-            vm.cmdArgs = null;
+            vm.cmdArgs = cmds[vm.id];
             vm.loading = false;
             return vm;
           });
           this.total = res.data.totalSize;
           this.loading = false;
-          this.handleExpandChange(null, this.vms.filter(x => this.expand.indexOf(x.id) >= 0));
+          // this.handleExpandChange(null, this.vms.filter(x => this.expand.indexOf(x.id) >= 0));
         }).catch(() => {
           this.loading = false;
         }).finally(() => {
@@ -210,18 +215,24 @@
         this.search();
       },
       runMachine(id) {
-        run(id).then(res => {
+        this.loading = true;
+        return run(id).then(res => {
           this.$message({ type: 'success', message: res.message });
+          const vm = this.vms.find(x => x.id === id);
+          vm.status = 'in process';
+          this.loading = false;
         }).catch(err => {
-
-        })
+          this.loading = false;
+        });
       },
 
       exec(id, cmd) {
+        this.loading = true;
         exec(id, cmd).then(res => {
           this.$message({ type: 'success', message: res.message });
+          this.loading = false;
         }).catch(err => {
-
+          this.loading = false;
         });
       },
       vmCreated() {
