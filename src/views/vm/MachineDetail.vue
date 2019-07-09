@@ -4,7 +4,26 @@
     </el-page-header>
 
     <div class="container">
-      <el-card shadow="never" style="width: 50%">
+      <el-table :data="configs">
+        <el-table-column type="expand">
+          <template slot-scope="{ row }">
+            <el-form>
+              <el-form-item></el-form-item>
+              <el-button type="primary" size="small">Save</el-button>
+            </el-form>
+          </template>
+        </el-table-column>
+        <el-table-column prop="arg" label="Option">
+        </el-table-column>
+        <el-table-column prop="cmd" label="Value">
+        </el-table-column>
+        <el-table-column label="Action" align="center">
+          <template slot-scope="{ row }">
+            <delete-link class="middle-icon" @click="deleteArg(row.values.id)"></delete-link>
+          </template>
+        </el-table-column>
+      </el-table>
+      <el-card v-if="false" shadow="never" style="width: 50%">
         <el-collapse v-model="activeName" accordion v-loading="loading">
           <el-collapse-item v-for="c in configsFiltered" :title="getCmd(c)" :key="c.id" :name="c.id">
             <el-form label-position="top">
@@ -28,10 +47,14 @@
 </template>
 
 <script>
-  import { vmShow, editVm } from '../../api/vm';
+  import { vmShow, editVm, deleteConfig } from '../../api/vm';
+  import DeleteLink from '@/components/DeleteLink';
 
   export default {
     name: 'MachineDetail',
+    components: {
+      DeleteLink
+    },
     data() {
       return {
         loading: false,
@@ -61,16 +84,15 @@
       getData() {
         this.loading = true;
         vmShow(this.machineId).then(({ data }) => {
-          console.log(data);
+          // console.log(data);
           this.configs = data['vmOptionTemplates'].map(x => {
             x.config = JSON.parse(x.config);
+            x.values.value = JSON.parse(x.values.value);
+            x.cmd = this.getCmd(x);
             return x;
           });
 
-          this.newVM.arguments = this.configs.reduce((total, cur) => {
-            total[cur.id] = { value: JSON.parse(cur.values.value), configId: cur.values.id };
-            return total;
-          }, {});
+          console.log('bbb');
 
           this.loading = false;
         }).catch(() => {
@@ -78,24 +100,38 @@
         });
       },
       getCmd(config) {
-        const kvs = JSON.parse(config['values']['value']);
-        // const optTemp = JSON.parse(config['vmOptionTemplate']['config']);
-        let { template, arg } = config['config'];
+        try {
+          const kvs = config['values']['value'];
+          // const optTemp = JSON.parse(config['vmOptionTemplate']['config']);
+          let { template, arg } = config['config'];
 
-        for (let [k, v] of Object.entries(kvs)) {
-          template = template.replace(k, v);
+          for (let [k, v] of Object.entries(kvs)) {
+            template = template.replace(k, v);
+          }
+
+          return arg + (template ? ' ' + template : '');
+        } catch (e) {
+          console.error(e);
         }
-
-        return arg + (template ? ' ' + template : '');
       },
       editVM() {
         editVm({ id: this.machineId, ...this.newVM }).then(res => {
         }).catch(err => {
         });
       },
-      deleteArg(key) {
-        // console.log(key);
-        this.$delete(this.newVM.arguments, key);
+      deleteArg(configId) {
+        this.loading = true;
+        deleteConfig(this.machineId, configId).then(({ message, data }) => {
+          this.loading = false;
+          this.$message({
+            type: 'success',
+            message: message
+          });
+          this.getData();
+        }).catch(err => {
+          this.loading = false;
+        })
+        // this.$delete(this.newVM.arguments, key);
       }
     }
   }
