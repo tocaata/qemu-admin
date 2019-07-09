@@ -89,6 +89,17 @@ export function editVm(data) {
   })
 }
 
+export function deleteConfig(machineId, configId) {
+  return request({
+    url: '/vm/deleteConfig',
+    method: 'post',
+    data: {
+      machineId,
+      configId
+    }
+  });
+}
+
 export function getCmd(id) {
   return request({
     url: '/vm/getCmd',
