@@ -104,8 +104,9 @@
         const { pageIndex, pageSize, ascending, orderBy } = this;
         OSList({ pageIndex, pageSize, ascending, orderBy, searchStr: this.searchOS.searchStr }).then(res => {
           const data = res.data;
-          this.loading = false;
           this.oss = data.list;
+          this.total = data.totalSize;
+          this.loading = false;
         }).catch(() => {
           this.loading = false;
         });
