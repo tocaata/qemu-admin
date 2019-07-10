@@ -17,7 +17,7 @@
                   </template>
                 </component>
               </el-form-item>
-              <el-button type="primary" size="small" @click="editConfig(row.values.id, row.values.value)">Save</el-button>
+              <el-button type="primary" size="small" @click="editConfig(row.values.id, row.values.value, index, row.id)">Save</el-button>
               <el-button type="second" size="small" @click="fold(row.id, index)">Cancel</el-button>
             </el-form>
           </template>
@@ -49,7 +49,6 @@
 
       <div style="padding-top: 30px">
         <el-button type="primary" @click="dialogVisible = true">Add</el-button>
-        <el-button>Cancel</el-button>
       </div>
     </div>
 
@@ -117,8 +116,8 @@
         this.$router.push('/vm/list');
       },
       getData() {
-        this.loading = true;
-        vmShow(this.machineId).then(({ data }) => {
+        // this.loading = true;
+        return vmShow(this.machineId).then(({ data }) => {
           // console.log(data);
           this.configs = data['vmOptionTemplates'].map(x => {
             x.config = JSON.parse(x.config);
@@ -129,9 +128,9 @@
 
           console.log('bbb');
 
-          this.loading = false;
+          // this.loading = false;
         }).catch(() => {
-          this.loading = false;
+          // this.loading = false;
         });
       },
       getCmd(config) {
@@ -168,7 +167,7 @@
         })
         // this.$delete(this.newVM.arguments, key);
       },
-      editConfig(configId, configParams) {
+      editConfig(configId, configParams, index, rowId) {
         this.loading = true;
         editConfig(this.machineId, configId, configParams).then(({ message, data }) => {
           this.loading = false;
@@ -177,6 +176,7 @@
             message: message
           });
           this.getData();
+          this.fold(rowId, index);
         }).catch(err => {
           this.loading = false;
         })

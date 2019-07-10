@@ -3,7 +3,7 @@ import Layout from '@/views/layout/Layout'
 const vmsRouter = {
   path: '/vm',
   component: Layout,
-  redirect: 'noredirect',
+  redirect: '/vm/list',
   name: 'Machine',
   meta: {
     title: 'Machine',
