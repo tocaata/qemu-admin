@@ -4,20 +4,29 @@
     </el-page-header>
 
     <div class="container">
-      <el-table :data="configs">
+      <el-table :data="configs" v-loading="loading" :expand-row-keys="expand" row-key="id"
+                @expand-change="handleExpandChange">
         <el-table-column type="expand">
-          <template slot-scope="{ row }">
-            <el-form>
-              <el-form-item></el-form-item>
-              <el-button type="primary" size="small">Save</el-button>
+          <template slot-scope="{ row, $index: index }">
+            <el-form label-position="top" :model="row.values.value" :ref="'configForm' + index">
+              <el-form-item v-for="param in row.config.params" :key="param.key" :label="param.label" :prop="param.name">
+                <component :is="param.component" v-model="row.values.value[param.name]">
+                  <template v-if="param.component === 'el-select'">
+                    <el-option v-for="v in param.options" :key="v" :label="v" :value="v">
+                    </el-option>
+                  </template>
+                </component>
+              </el-form-item>
+              <el-button type="primary" size="small" @click="editConfig(row.values.id, row.values.value)">Save</el-button>
+              <el-button type="second" size="small" @click="fold(row.id, index)">Cancel</el-button>
             </el-form>
           </template>
         </el-table-column>
-        <el-table-column prop="arg" label="Option">
+        <el-table-column prop="arg" width="120" label="Option">
         </el-table-column>
         <el-table-column prop="cmd" label="Value">
         </el-table-column>
-        <el-table-column label="Action" align="center">
+        <el-table-column label="Action" width="240" align="center">
           <template slot-scope="{ row }">
             <delete-link class="middle-icon" @click="deleteArg(row.values.id)"></delete-link>
           </template>
@@ -39,15 +48,29 @@
       </el-card>
 
       <div style="padding-top: 30px">
-        <el-button type="primary" @click="editVM">Save</el-button>
+        <el-button type="primary" @click="dialogVisible = true">Add</el-button>
         <el-button>Cancel</el-button>
       </div>
     </div>
+
+    <el-dialog :visible.sync="dialogVisible" title="Select the template">
+      <el-form>
+        <el-form-item label="Arg template:">
+          <el-select v-model="selectedArg">
+            <el-option v-for="temp in data" :label="temp.label" :key="temp.key" :value="temp.key"></el-option>
+          </el-select>
+        </el-form-item>
+      </el-form>
+      <span slot="footer" class="dialog-footer">
+        <el-button size="small" type="primary" @click="addConfig">Create</el-button>
+        <el-button size="small" @click="dialogVisible = false">Cancel</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 
 <script>
-  import { vmShow, editVm, deleteConfig } from '../../api/vm';
+  import { vmShow, editVm, deleteConfig, editConfig, getAllOptions, addConfig } from '../../api/vm';
   import DeleteLink from '@/components/DeleteLink';
 
   export default {
@@ -65,7 +88,11 @@
           name: '',
           os: null,
           arguments: {}
-        }
+        },
+        data: [],
+        selectedArg: null,
+        dialogVisible: false,
+        expand: []
       };
     },
     computed: {
@@ -76,6 +103,14 @@
     },
     mounted() {
       this.getData();
+      getAllOptions().then(res => {
+        this.data = res.data.map(temp => {
+          const data = JSON.parse(temp.config);
+          const template = data.arg + (data.template ? ' ' + data.template : '');
+
+          return { key: temp.id, label: template };
+        });
+      })
     },
     methods: {
       goBack() {
@@ -132,6 +167,44 @@
           this.loading = false;
         })
         // this.$delete(this.newVM.arguments, key);
+      },
+      editConfig(configId, configParams) {
+        this.loading = true;
+        editConfig(this.machineId, configId, configParams).then(({ message, data }) => {
+          this.loading = false;
+          this.$message({
+            type: 'success',
+            message: message
+          });
+          this.getData();
+        }).catch(err => {
+          this.loading = false;
+        })
+      },
+      addConfig() {
+        this.loading = true;
+        addConfig(this.machineId, this.selectedArg).then(({ message, data }) => {
+          this.loading = false;
+          this.dialogVisible = false;
+          this.$message({
+            type: 'success',
+            message: message
+          });
+
+          this.getData();
+        }).catch(err => {
+          this.loading = false;
+        })
+      },
+      handleExpandChange(e, b) {
+        this.expand = b.map(x => x.id);
+      },
+      fold(key, i) {
+        const index = this.expand.indexOf(key);
+        this.$refs['configForm' + i].resetFields();
+        if (index >= 0) {
+          this.expand.splice(index, 1);
+        }
       }
     }
   }
@@ -143,7 +216,7 @@
       width: auto;
       padding-left: 20px;
 
-      input.el-input {
+      >.el-input {
         width: 300px;
       }
     }

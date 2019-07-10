@@ -100,6 +100,30 @@ export function deleteConfig(machineId, configId) {
   });
 }
 
+export function editConfig (machineId, configId, configParams ) {
+  return request({
+    url: '/vm/editConfig',
+    method: 'post',
+    data: {
+      machineId,
+      configId,
+      configParams
+    }
+  });
+}
+
+
+export function addConfig (machineId, templateId) {
+  return request({
+    url: '/vm/addConfig',
+    method: 'post',
+    data: {
+      machineId,
+      templateId
+    }
+  });
+}
+
 export function getCmd(id) {
   return request({
     url: '/vm/getCmd',

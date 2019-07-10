@@ -11,8 +11,8 @@ module.exports = {
     assetsPublicPath: '/',
     proxyTable: {
       '/api-dev': {
-        // target:'http://localhost:3000/',
-        target: 'http://192.168.0.3:3000/',
+        target:'http://localhost:3000/',
+        // target: 'http://192.168.0.3:3000/',
         // target: 'https://www.baidu.com/',
         changeOrigin: true,
         pathRewrite:{'^/api-dev':''},

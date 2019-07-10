@@ -42,6 +42,11 @@ export const constantRouterMap = [
     ]
   },
   {
+    path: '',
+    component: Layout,
+    redirect: '/vm'
+  },
+  {
     path: '/signup',
     component: () => import('@/views/signup/index'),
     hidden: true
