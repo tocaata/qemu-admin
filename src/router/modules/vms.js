@@ -14,13 +14,13 @@ const vmsRouter = {
       path: 'list',
       component: () => import('@/views/vm/VmList'),
       name: 'VmList',
-      meta: { title: 'Machine List', noCache: true, icon: 'vm' }
+      meta: { title: 'Machine List', noCache: false, icon: 'vm' }
     },
     {
       path: 'show',
       component: () => import('@/views/vm/MachineDetail'),
       name: 'VmShow',
-      meta: { title: 'Machine Detail', icon: 'el-icon-s-platform', noCache: true },
+      meta: { title: 'Machine Detail', icon: 'el-icon-s-platform', noCache: false },
       hidden: true
     },
   ]

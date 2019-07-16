@@ -133,7 +133,7 @@ export const asyncRouterMap = [
         path: 'index',
         component: () => import('@/views/vm/KvmArg'),
         name: 'KvmArg',
-        meta: { title: 'KVM Args', noCache: true, icon: 'terminal' }
+        meta: { title: 'KVM Args', noCache: false, icon: 'terminal' }
       }
     ]
   },
@@ -146,7 +146,7 @@ export const asyncRouterMap = [
         path: 'index',
         component: () => import('@/views/vm/OSList'),
         name: 'OSList',
-        meta: { title: 'OS Template', noCache: true, icon: 'windows' }
+        meta: { title: 'OS Template', noCache: false, icon: 'windows' }
       }
     ]
   },

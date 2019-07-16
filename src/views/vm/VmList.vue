@@ -4,6 +4,7 @@
       <el-form-item prop="searchStr" label="">
         <el-input
           clearable
+          :readonly="loading"
           placeholder="Searching String"
           v-model="searchVM.searchStr">
           <el-button slot="append" icon="el-icon-search"
@@ -29,7 +30,7 @@
               @expand-change="handleExpandChange"
               fit highlight-current-row>
       <el-table-column type="expand">
-        <template slot-scope="{row}">
+        <template slot-scope="{ row }">
           <el-form label-position="left">
             <el-form-item label="Action:">
               <el-tooltip effect="dark" content="Start" placement="top" :open-delay="1000">
@@ -109,7 +110,7 @@
       <el-table-column
         align="center"
         label="action">
-        <template slot-scope={row}>
+        <template slot-scope="{ row }">
           <el-link v-show="row.status === 'stopped'" class="middle-icon" @click="runMachine(row.id)"
                    icon="el-icon-video-play" type="primary"></el-link>
           <el-link v-show="row.status !== 'stopped'" class="middle-icon" @click="exec(row.id, 'stop')"
@@ -139,10 +140,12 @@
   import { vmList, deleteVm, getCmd, run, exec } from '../../api/vm';
   import VmDialog from './VmDialog/VmDialog';
   import DeleteLink from '@/components/DeleteLink';
+  import Pager from './mixins/pager';
 
   export default {
     name: 'VmList',
     components: { VmDialog, DeleteLink },
+    mixins: [ Pager ],
     data() {
       return {
         loading: false,
@@ -197,14 +200,6 @@
         }).finally(() => {
           // this.searchVM.searchStr = '';
         })
-      },
-      handleCurrentChange(value) {
-        this.pageIndex = value;
-        this.search();
-      },
-      handleSizeChange(value) {
-        this.pageSize = value;
-        this.search();
       },
       dateFormatter(row, column, cellValue) {
         return moment(cellValue).format('YYYY-MM-DD hh:mm:ss');
