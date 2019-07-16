@@ -27,21 +27,21 @@
 
     <el-table :data="newConfig.params" style="width: 80%">
       <el-table-column label="Name" prop="name" width="120">
-        <template slot-scope="scope">
-          <span v-if="isShow">{{ scope.row.name }}</span>
-          <el-input v-if="!isShow" v-model="scope.row.name" placeholder="Name:" size="small" clearable></el-input>
+        <template slot-scope="{ row }">
+          <span v-if="isShow">{{ row.name }}</span>
+          <el-input v-if="!isShow" v-model="row.name" placeholder="Name:" size="small" clearable></el-input>
         </template>
       </el-table-column>
       <el-table-column label="Label" prop="label" width="200">
-        <template slot-scope="scope">
-          <span v-if="isShow">{{ scope.row.label }}</span>
-          <el-input v-else v-model="scope.row.label" placeholder="Label:" size="small" clearable></el-input>
+        <template slot-scope="{ row }">
+          <span v-if="isShow">{{ row.label }}</span>
+          <el-input v-else v-model="row.label" placeholder="Label:" size="small" clearable></el-input>
         </template>
       </el-table-column>
       <el-table-column label="Type" prop="type" width="160">
-        <template slot-scope="scope">
-          <span v-if="isShow">{{ scope.row.type }}</span>
-          <el-select v-else v-model="scope.row.type" placeholder="Type:" size="small" clearable>
+        <template slot-scope="{ row }">
+          <span v-if="isShow">{{ row.type }}</span>
+          <el-select v-else v-model="row.type" placeholder="Type:" size="small" clearable>
             <el-option
               v-for="t in types"
               :key="t.value"
@@ -52,9 +52,9 @@
         </template>
       </el-table-column>
       <el-table-column label="Component" prop="component" width="160">
-        <template slot-scope="scope">
-          <span v-if="isShow">{{ scope.row.component }}</span>
-          <el-select v-else v-model="scope.row.component" placeholder="Component:" size="small" clearable>
+        <template slot-scope="{ row }">
+          <span v-if="isShow">{{ row.component }}</span>
+          <el-select v-else v-model="row.component" placeholder="Component:" size="small" clearable>
             <el-option v-for="c in componentOptions"
                        :key="c.value"
                        :label="c.label"
@@ -64,24 +64,24 @@
         </template>
       </el-table-column>
       <el-table-column label="Options" prop="options">
-        <template slot-scope="scope">
-          <!--<el-tag v-if="isShow" v-for="option in scope.row.options" :key="option" size="small">{{ option }}</el-tag>-->
-          <span v-if="isShow">{{ scope.row.options.join(',') }}</span>
-          <el-select v-else-if="scope.row.component === 'el-select'" size="small"
+        <template slot-scope="{ row }">
+          <!--<el-tag v-if="isShow" v-for="option in row.options" :key="option" size="small">{{ option }}</el-tag>-->
+          <span v-if="isShow">{{ row.options.join(',') }}</span>
+          <el-select v-else-if="row.component === 'el-select'" size="small"
                      placeholder="Selected Options:" clearable style="width: 100%"
-                     v-model="scope.row.options" multiple allow-create filterable default-first-option>
+                     v-model="row.options" multiple allow-create filterable default-first-option>
           </el-select>
         </template>
       </el-table-column>
       <el-table-column label="Default" prop="default">
-        <template slot-scope="scope">
-          <span v-if="isShow">{{ scope.row.default }}</span>
-          <el-input v-else v-model="scope.row.default" placeholder="Default:" size="small" clearable></el-input>
+        <template slot-scope="{ row }">
+          <span v-if="isShow">{{ row.default }}</span>
+          <el-input v-else v-model="row.default" placeholder="Default:" size="small" clearable></el-input>
         </template>
       </el-table-column>
       <el-table-column label="Action" align="center" width="100">
-        <template slot-scope="scope" v-if="!isShow">
-          <el-button @click="removeParam(scope.row)" type="text" icon="el-icon-delete"></el-button>
+        <template slot-scope="{ row }" v-if="!isShow">
+          <el-button @click="removeParam(row)" type="text" icon="el-icon-delete"></el-button>
         </template>
       </el-table-column>
     </el-table>

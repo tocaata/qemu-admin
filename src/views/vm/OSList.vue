@@ -29,9 +29,9 @@
       <el-table-column prop="created_at" label="Created Date" :formatter="dateFormatter">
       </el-table-column>
       <el-table-column label="Actions" align="center">
-        <template slot-scope="scope">
-          <el-link class="middle-icon" @click="handleEdit(scope.row)" type="primary" icon="el-icon-setting"></el-link>
-          <delete-link class="middle-icon" @click="deleteOS(scope.row.id)"></delete-link>
+        <template slot-scope="{ row }">
+          <el-link class="middle-icon" @click="handleEdit(row)" type="primary" icon="el-icon-setting"></el-link>
+          <delete-link class="middle-icon" @click="deleteOS(row.id)"></delete-link>
         </template>
       </el-table-column>
     </el-table>
@@ -58,6 +58,7 @@
   import DeleteLink from '@/components/DeleteLink';
   import NewosConfDialog from './components/NewOSConfDialog';
   import EditosConfDialog from './components/EditOSConfDialog';
+  import Pager from './mixins/pager';
 
   import { OSList, deleteOS } from '../../api/vm';
   import Vue from 'vue';
@@ -70,6 +71,7 @@
       NewosConfDialog,
       EditosConfDialog
     },
+    mixins: [ Pager ],
     data() {
       return {
         searchOS: {
@@ -90,15 +92,6 @@
       this.search();
     },
     methods: {
-      handleCurrentChange(value) {
-        this.pageIndex = value;
-        this.search();
-      },
-      handleSizeChange(value) {
-        this.pageSize = value;
-        this.search();
-      },
-
       search() {
         this.loading = true;
         const { pageIndex, pageSize, ascending, orderBy } = this;

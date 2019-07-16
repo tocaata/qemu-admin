@@ -22,8 +22,8 @@
       </el-table-column>
       <el-table-column
         label="action">
-        <template slot-scope="scope">
-          <el-link @click="deleteUser(scope.row.id)" type="primary" size="small" icon="el-icon-delete">Delete</el-link>
+        <template slot-scope="{ row }">
+          <el-link @click="deleteUser(row.id)" type="primary" size="small" icon="el-icon-delete">Delete</el-link>
         </template>
       </el-table-column>
     </el-table>
