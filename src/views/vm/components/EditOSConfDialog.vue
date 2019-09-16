@@ -140,7 +140,7 @@
   }
 </script>
 
-<style rel="stylesheet/scss" lang="scss" scoped>
+<style lang="scss" scoped>
   .transfer-dialog {
 
     /deep/ .el-dialog {

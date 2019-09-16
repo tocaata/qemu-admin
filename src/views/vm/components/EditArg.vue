@@ -222,7 +222,7 @@
   }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
   .footer {
     margin: 30px 0;
   }
