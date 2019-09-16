@@ -53,7 +53,7 @@
   }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
   .wide {
     width: 300px;
   }

@@ -282,23 +282,15 @@
   }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
   .cmd-args {
     margin-top: 20px;
     margin-bottom: 20px;
   }
-</style>
 
-<style>
-  .newline-item label {
-    float: none;
-  }
-
-  .cmd-args td, .cmd-args th {
-    border-right: none;
-  }
-
-  .container .el-form-item__content {
-    width: 300px;
+  .newline-item{
+    /deep/ label {
+      float: none;
+    }
   }
 </style>

@@ -210,7 +210,7 @@
   }
 </script>
 
-<style rel="stylesheet/scss" lang="scss" scoped>
+<style lang="scss" scoped>
   .container {
     /deep/ .el-form-item__content {
       width: auto;

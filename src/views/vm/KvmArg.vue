@@ -135,11 +135,8 @@
   }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
   .margin {
     margin: 30px;
   }
-</style>
-
-<style>
 </style>

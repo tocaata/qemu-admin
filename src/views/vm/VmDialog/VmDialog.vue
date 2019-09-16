@@ -189,7 +189,7 @@
   }
 </script>
 
-<style rel="stylesheet/scss" lang="scss" scoped>
+<style lang="scss" scoped>
 
   .new-vm-form {
     padding-left: 20px;
