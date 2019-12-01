@@ -1,10 +1,10 @@
 <template>
   <div>
-    <h3>{{ configObject.title }}</h3>
-    <p>{{ configObject.desc }}</p>
+    <h3>{{ config.title }}</h3>
+    <p>{{ config.desc }}</p>
     <el-divider></el-divider>
-    <el-form-item v-for="(param, index) in configObject.params" :label="param.label" :key="param.name">
-      <component :is="param.component" v-model="args[index]" :class="{ 'wide': param.component === 'el-input' }">
+    <el-form-item v-for="(param, index) in config.params" :label="param.label" :key="param.name">
+      <component :is="param.component" v-model.lazy="args[index]" :class="{ 'wide': param.component === 'el-input' }">
         <template v-if="param.component === 'el-select'">
           <el-option v-for="v in param.options" :key="v" :label="v" :value="v">
           </el-option>
@@ -18,15 +18,12 @@
   export default {
     name: 'KvmWizardControl',
     props: {
-      config: [String, Object],
+      config: Object,
       value: Object
     },
     computed: {
-      configObject() {
-        return typeof(this.config) === 'object' ? this.config : JSON.parse(this.config);
-      },
       argument() {
-        let { template, params, arg } = this.configObject;
+        let { template, params, arg } = this.config;
         for (let [index, param] of Object.entries(params)) {
           template = template.replace(param.name, this.args[index])
         }
@@ -39,12 +36,12 @@
       };
     },
     mounted() {
-      this.args = this.configObject.params.map(p => p.default || '');
+      this.args = this.config.params.map(p => p.default || '');
     },
     watch: {
       args(newValue) {
         let valueHash = {};
-        for (let [index, param] of Object.entries(this.configObject.params)) {
+        for (let [index, param] of Object.entries(this.config.params)) {
           valueHash[param.name] = newValue[index];
         }
         this.$emit("input", valueHash);

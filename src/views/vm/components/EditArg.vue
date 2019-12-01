@@ -6,8 +6,10 @@
         <el-input v-else style="width: 40%" v-model="newConfig.title" clearable></el-input>
       </el-form-item>
       <el-form-item label="Template:" prop="argTemplate">
-        <span class="el-tag" v-if="isShow">{{ newConfig.argTemplate }}</span>
-        <el-input v-else style="width: 40%" type="textarea" :rows="1" v-model="newConfig.argTemplate"></el-input>
+        <template v-if="isShow">
+          <span class="el-tag" v-for="template in newConfig.argTemplate.split('\n')">{{ template }}</span>
+        </template>
+        <el-input v-else style="width: 40%" type="textarea" :rows="2" v-model="newConfig.argTemplate"></el-input>
       </el-form-item>
       <el-form-item label="Description:" prop="desc">
         <span v-if="isShow">{{ newConfig.desc }}</span>
@@ -106,7 +108,7 @@
       data: {
         type: Object,
         validator: (value) => {
-          if (['title', 'arg', 'template', 'type', 'isPrimary'].every(x => x in value)) {
+          if (['title', 'arg', 'type', 'isPrimary'].every(x => x in value)) {
             if ('params' in value) {
               if (Array.isArray(value.params)) {
                 return value.params.every(p => {
@@ -134,14 +136,20 @@
         }
       };
 
-      const { title, arg, template, desc, type, isPrimary, params } = this.data;
+      const { title, arg = [], template = [], desc, type, isPrimary, params } = this.data;
+
+      const argTemplate = [];
+
+      for (let i = 0; i < arg.length; i++) {
+        argTemplate.push(arg[i] + (template[i] ? (' ' + template[i]) : ''));
+      }
 
       return {
         newConfig: {
           title,
           arg,
           template,
-          argTemplate: arg + (template ? (' ' + template) : ''),
+          argTemplate: argTemplate.join('\n'),
           desc,
           type,
           isPrimary,
@@ -149,7 +157,7 @@
         },
         newConfigRules: {
           argTemplate: [
-            { validator: templateValidator, trigger: 'blur' }
+            // { validator: templateValidator, trigger: 'blur' }
           ]
         },
         newParams: {
@@ -184,7 +192,12 @@
     },
     watch: {
       ['newConfig.argTemplate'](newValue) {
-        [this.newConfig.arg, this.newConfig.template] = newValue.split(' ');
+        this.newConfig.arg = [];
+        this.newConfig.template = [];
+        newValue.split('\n').map(item => item.split(' ')).forEach(([arg, tpl]) => {
+          this.newConfig.arg.push(arg);
+          this.newConfig.template.push(tpl);
+        });
       }
     },
     computed: {
@@ -225,6 +238,10 @@
 <style lang="scss" scoped>
   .footer {
     margin: 30px 0;
+  }
+
+  .el-tag:not(:last-child) {
+    margin-right: 8px;
   }
 
 </style>

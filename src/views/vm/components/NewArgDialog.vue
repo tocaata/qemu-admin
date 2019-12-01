@@ -103,8 +103,8 @@
       return {
         newConfig: {
           title: 'smp',
-          arg: '',
-          template: '-smp $1,threads=$2',
+          arg: ['-smp'],
+          template: ['$1,threads=$2'],
           argTemplate: '-smp $1,threads=$2',
           desc: '',
           type: '',
@@ -116,7 +116,7 @@
         },
         newConfigRules: {
           template: [
-            { validator: templateValidator, trigger: 'blur' }
+            // { validator: templateValidator, trigger: 'blur' }
           ]
         },
         newParams: {
@@ -144,7 +144,12 @@
     },
     watch: {
       ['newConfig.argTemplate'](newValue) {
-        [this.newConfig.arg, this.newConfig.template] = newValue.split(' ');
+        this.newConfig.arg = [];
+        this.newConfig.template = [];
+        newValue.split('\n').map(item => item.split(' ')).forEach(([arg, tpl]) => {
+          this.newConfig.arg.push(arg);
+          this.newConfig.template.push(tpl);
+        });
       }
     },
     mounted() {
