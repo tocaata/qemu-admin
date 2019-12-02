@@ -62,13 +62,19 @@
             </el-form-item>
             <el-form-item label="Command Arguments:" class="newline-item"></el-form-item>
             <el-row>
-              <el-table class="cmd-args" v-loading="loading"
-                        :data="row.cmdArgs" style="width: 80%">
-                <el-table-column label="options"
-                                 prop="option" width="180">
-                </el-table-column>
-                <el-table-column label="value" prop="value"></el-table-column>
-              </el-table>
+              <ShowMore
+                style="width: 80%"
+                :data="row.cmdArgs">
+                <template slot-scope="{ data }">
+                  <el-table class="cmd-args" v-loading="loading"
+                            :data="data">
+                    <el-table-column label="options"
+                                     prop="option" width="180">
+                    </el-table-column>
+                    <el-table-column label="value" prop="value"></el-table-column>
+                  </el-table>
+                </template>
+              </ShowMore>
             </el-row>
           </el-form>
         </template>
@@ -140,11 +146,12 @@
   import { vmList, deleteVm, getCmd, run, exec } from '../../api/vm';
   import VmDialog from './VmDialog/VmDialog';
   import DeleteLink from '@/components/DeleteLink';
+  import ShowMore from '@/components/ShowMore';
   import Pager from './mixins/pager';
 
   export default {
     name: 'VmList',
-    components: { VmDialog, DeleteLink },
+    components: { VmDialog, DeleteLink, ShowMore },
     mixins: [ Pager ],
     data() {
       return {
@@ -292,5 +299,9 @@
     /deep/ label {
       float: none;
     }
+  }
+
+  .vm-table {
+
   }
 </style>
