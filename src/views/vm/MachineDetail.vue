@@ -69,6 +69,7 @@
 </template>
 
 <script>
+  import _ from 'lodash';
   import { vmShow, editVm, deleteConfig, editConfig, getAllOptions, addConfig } from '../../api/vm';
   import DeleteLink from '@/components/DeleteLink';
 
@@ -137,13 +138,17 @@
         try {
           const kvs = config['values']['value'];
           // const optTemp = JSON.parse(config['vmOptionTemplate']['config']);
-          let { template, arg } = config['config'];
+          const args = config['config']['arg'];
+          let templates = Array.isArray(config['config']['template']) ? config['config']['template'].slice() : [];
 
-          for (let [k, v] of Object.entries(kvs)) {
-            template = template.replace(k, v);
-          }
+          templates = templates.map(template => {
+            for (let [k, v] of Object.entries(kvs)) {
+              template = template.replace(k, v);
+            }
+            return template;
+          });
 
-          return arg + (template ? ' ' + template : '');
+          return _.zip(args, templates).map((arg, template) => `${arg} ${template}`);
         } catch (e) {
           console.error(e);
         }
