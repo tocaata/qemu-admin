@@ -24,7 +24,10 @@
         </el-table-column>
         <el-table-column prop="arg" width="240" label="Option" show-overflow-tooltip>
         </el-table-column>
-        <el-table-column prop="cmd" label="Value" show-overflow-tooltip>
+        <el-table-column label="Value" show-overflow-tooltip>
+          <template slot-scope="{ row }">
+            <el-tag v-for="cmd in row.cmd" :key="cmd" effect="plain" class="command-tag">{{ cmd }}</el-tag>
+          </template>
         </el-table-column>
         <el-table-column label="Action" width="200" align="center">
           <template slot-scope="{ row }">
@@ -110,16 +113,15 @@
 
           return { key: temp.id, label: template };
         });
-      })
+      });
     },
     methods: {
       goBack() {
         this.$router.push('/vm/list');
       },
       getData() {
-        // this.loading = true;
+        this.loading = true;
         return vmShow(this.machineId).then(({ data }) => {
-          // console.log(data);
           this.configs = data['vmOptionTemplates'].map(x => {
             x.config = JSON.parse(x.config);
             x.values.value = JSON.parse(x.values.value);
@@ -127,11 +129,9 @@
             return x;
           });
 
-          console.log('bbb');
-
-          // this.loading = false;
+          this.loading = false;
         }).catch(() => {
-          // this.loading = false;
+          this.loading = false;
         });
       },
       getCmd(config) {
@@ -142,13 +142,17 @@
           let templates = Array.isArray(config['config']['template']) ? config['config']['template'].slice() : [];
 
           templates = templates.map(template => {
-            for (let [k, v] of Object.entries(kvs)) {
-              template = template.replace(k, v);
+            if (template) {
+              for (let [k, v] of Object.entries(kvs)) {
+                template = template.replace(k, v);
+              }
             }
+
             return template;
           });
 
-          return _.zip(args, templates).map((arg, template) => `${arg} ${template}`).join(' ');
+          return _.zip(args, templates)
+            .map(([arg, template]) => [arg, template].join(' '))
         } catch (e) {
           console.error(e);
         }
@@ -224,6 +228,10 @@
       >.el-input {
         width: 300px;
       }
+    }
+
+    /deep/ .command-tag:not(:last-child) {
+      margin-right: 16px;
     }
   }
 </style>
