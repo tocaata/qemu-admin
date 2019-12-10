@@ -12,7 +12,7 @@
               <el-form-item v-for="param in row.config.params" :key="param.key" :label="param.label" :prop="param.name">
                 <component :is="param.component" v-model="row.values.value[param.name]">
                   <template v-if="param.component === 'el-select'">
-                    <el-option v-for="v in param.options" :key="v" :label="v" :value="v">
+                    <el-option v-for="option in param.options" :key="option" :label="option" :value="option">
                     </el-option>
                   </template>
                 </component>
@@ -22,11 +22,11 @@
             </el-form>
           </template>
         </el-table-column>
-        <el-table-column prop="arg" width="120" label="Option">
+        <el-table-column prop="arg" width="240" label="Option" show-overflow-tooltip>
         </el-table-column>
-        <el-table-column prop="cmd" label="Value">
+        <el-table-column prop="cmd" label="Value" show-overflow-tooltip>
         </el-table-column>
-        <el-table-column label="Action" width="240" align="center">
+        <el-table-column label="Action" width="200" align="center">
           <template slot-scope="{ row }">
             <delete-link class="middle-icon" @click="deleteArg(row.values.id)"></delete-link>
           </template>
@@ -34,15 +34,15 @@
       </el-table>
       <el-card v-if="false" shadow="never" style="width: 50%">
         <el-collapse v-model="activeName" accordion v-loading="loading">
-          <el-collapse-item v-for="c in configsFiltered" :title="getCmd(c)" :key="c.id" :name="c.id">
+          <el-collapse-item v-for="config in configsFiltered" :title="getCmd(config)" :key="config.id" :name="config.id">
             <el-form label-position="top">
-              <el-form-item v-for="param in c.config.params"
+              <el-form-item v-for="param in config.config.params"
                             :key="param.key"
                             :label="param.label">
-                <component :is="param.component" v-model="newVM.arguments[c.id].value[param.name]"></component>
+                <component :is="param.component" v-model="newVM.arguments[config.id].value[param.name]"></component>
               </el-form-item>
             </el-form>
-            <el-button @click="deleteArg(c.id)" type="danger" size="small">Delete</el-button>
+            <el-button @click="deleteArg(config.id)" type="danger" size="small">Delete</el-button>
           </el-collapse-item>
         </el-collapse>
       </el-card>
@@ -148,7 +148,7 @@
             return template;
           });
 
-          return _.zip(args, templates).map((arg, template) => `${arg} ${template}`);
+          return _.zip(args, templates).map((arg, template) => `${arg} ${template}`).join(' ');
         } catch (e) {
           console.error(e);
         }
