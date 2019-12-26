@@ -166,6 +166,7 @@
 
         createVm({
           name: this.newVM.name,
+          osId: this.newVM.os[1],
           arguments: Object.assign({}, this.newVM.arguments, tmpArgs)
         }).then(res => {
           this.loading = false;
