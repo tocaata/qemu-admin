@@ -93,6 +93,13 @@
         </template>
       </el-table-column>
       <el-table-column
+        label="Auto Boot"
+        prop="auto_boot">
+        <template slot-scope="{ row }">
+          <el-tag :type="row.auto_boot | mapAutoBoot">{{ row.auto_boot === 1 ? 'yes': 'no' }}</el-tag>
+        </template>
+      </el-table-column>
+      <el-table-column
         sortable="custom"
         label="Memory"
         prop="memory">
@@ -106,6 +113,9 @@
         sortable="custom"
         label="OS"
         prop="os">
+        <template slot-scope="{ row }">
+          {{ row.os && row.os.name }}
+        </template>
       </el-table-column>
       <el-table-column
         sortable="custom"
@@ -180,6 +190,13 @@
           case 'running': return 'success';
           case 'stopped': return 'info';
           case 'resume': return 'warning';
+        }
+      },
+      mapAutoBoot(value) {
+        switch (value) {
+          case 1: return 'success';
+          case 0: return 'info';
+          default: return 'info';
         }
       }
     },
