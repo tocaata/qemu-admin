@@ -126,14 +126,14 @@ export const asyncRouterMap = [
   },
 
   {
-    path: '/kvmarg',
+    path: '/command_option',
     component: Layout,
     children: [
       {
         path: 'index',
-        component: () => import('@/views/vm/KvmArg'),
-        name: 'KvmArg',
-        meta: { title: 'KVM Args', noCache: false, icon: 'terminal' }
+        component: () => import('@/views/vm/CommandOption'),
+        name: 'CommandOption',
+        meta: { title: 'optionTemplate', noCache: false, icon: 'terminal' }
       }
     ]
   },
@@ -146,7 +146,7 @@ export const asyncRouterMap = [
         path: 'index',
         component: () => import('@/views/vm/OSList'),
         name: 'OSList',
-        meta: { title: 'OS Template', noCache: false, icon: 'windows' }
+        meta: { title: 'osTemplate', noCache: false, icon: 'windows' }
       }
     ]
   },

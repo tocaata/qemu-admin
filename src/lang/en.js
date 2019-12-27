@@ -8,6 +8,11 @@ export default {
     pagePermission: 'Page Permission',
     directivePermission: 'Directive Permission',
     icons: 'Icons',
+    optionTemplate: 'Option Template',
+    osTemplate: 'OS Template',
+    vm: 'Virtual Machine',
+    user: 'Users',
+
     components: 'Components',
     componentIndex: 'Introduction',
     tinymce: 'Tinymce',
@@ -161,5 +166,37 @@ export default {
     close: 'Close',
     closeOthers: 'Close Others',
     closeAll: 'Close All'
+  },
+  vm: {
+    add: 'Add',
+    option: 'Option',
+    name: 'Name',
+    template1: 'Template',
+    action: 'Action',
+    addVmTitle: 'New QEMU Option Template',
+    title: 'Title:',
+    template: 'Template:',
+    description: 'Desc:',
+    type: 'Type:',
+    addVariable: 'Add Variable',
+    save: 'Save',
+    cancel: 'Cancel',
+    placeholder: {
+      name: 'Name:',
+      label: 'Label:',
+      type: 'Type:',
+      componentType: 'Component Type:',
+      default: 'Default:'
+    }
+  },
+  os: {
+    searching: 'Searching',
+    create: 'Create',
+    name: 'Name',
+    osType: 'OS Type',
+    detail: 'Detail',
+    enabled: 'Enabled',
+    createdAt: 'Created At',
+    action: 'Action'
   }
 }

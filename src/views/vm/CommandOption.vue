@@ -10,11 +10,9 @@
           <edit-arg :data="row.config | json" :arg-id="row.id" @change="search"></edit-arg>
         </template>
       </el-table-column>
-      <el-table-column prop="arg" label="Arg" width="200">
+      <el-table-column prop="arg" :label="$t('vm.option')" width="200">
       </el-table-column>
-      <el-table-column prop="name" label="Name" width="200">
-      </el-table-column>
-      <el-table-column prop="type" label="Type" width="200">
+      <el-table-column prop="name" :label="$t('vm.name')" width="200">
       </el-table-column>
       <el-table-column prop="is_primary" label="Primary"
                        width="200"
@@ -23,10 +21,10 @@
           <el-tag type="primary" v-if="row.is_primary === 1">Primary</el-tag>
         </template>
       </el-table-column>
-      <el-table-column prop="config" label="Config"
+      <el-table-column prop="config" :label="$t('vm.template1')"
                        show-overflow-tooltip>
       </el-table-column>
-      <el-table-column label="Action" width="200" align="center">
+      <el-table-column :label="$t('vm.action')" width="200" align="center">
         <template slot-scope="{ row }">
           <el-link icon="el-icon-view" type="primary" class="middle-icon" @click="toggleExpand(row.id)"></el-link>
           <delete-link class="middle-icon" @click="deleteArg(row.id)"></delete-link>

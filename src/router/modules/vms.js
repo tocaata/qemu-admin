@@ -14,7 +14,7 @@ const vmsRouter = {
       path: 'list',
       component: () => import('@/views/vm/VmList'),
       name: 'VmList',
-      meta: { title: 'Machine List', noCache: false, icon: 'vm' }
+      meta: { title: 'vm', noCache: false, icon: 'vm' }
     },
     {
       path: 'show',

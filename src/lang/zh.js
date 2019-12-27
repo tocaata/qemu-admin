@@ -8,6 +8,11 @@ export default {
     pagePermission: '页面权限',
     directivePermission: '指令权限',
     icons: '图标',
+    optionTemplate: '参数模版',
+    osTemplate: '系统模版',
+    vm: '虚拟机',
+    user: '用户',
+
     components: '组件',
     componentIndex: '介绍',
     tinymce: '富文本编辑器',
@@ -161,5 +166,37 @@ export default {
     close: '关闭',
     closeOthers: '关闭其它',
     closeAll: '关闭所有'
+  },
+  vm: {
+    add: '添加',
+    option: '参数',
+    name: '名称',
+    template1: '模版',
+    action: '操作',
+    addVmTitle: 'QEMU参数模版',
+    title: '标题：',
+    template: '模版：',
+    description: '详情：',
+    type: '类型：',
+    addVariable: '添加变量',
+    save: '保存',
+    cancel: '取消',
+    placeholder: {
+      name: '名称：',
+      label: '标签：',
+      type: '类型：',
+      componentType: '组件类型：',
+      default: '默认值：'
+    }
+  },
+  os: {
+    searching: '搜索',
+    create: '创建',
+    name: '名称',
+    osType: '操作系统类型',
+    detail: '详细描述',
+    enabled: '是否可用',
+    createdAt: '创建时间',
+    action: '操作'
   }
 }

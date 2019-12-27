@@ -4,7 +4,7 @@
       <el-form-item prop="searchStr" label="">
         <el-input
           clearable
-          placeholder="Searching String"
+          :placeholder="$t('os.searching')"
           v-model="searchOS.searchStr">
           <el-button slot="append" icon="el-icon-search"
                      :loading="loading" @click="search">
@@ -15,20 +15,20 @@
     </el-form>
 
     <el-table :data="oss" v-loading="loading">
-      <el-table-column prop="name" label="Name">
+      <el-table-column prop="name" :label="$t('os.name')">
       </el-table-column>
-      <el-table-column prop="type" label="OS Type">
+      <el-table-column prop="type" :label="$t('os.osType')">
       </el-table-column>
-      <el-table-column prop="detail" label="Detail" show-overflow-tooltip>
+      <el-table-column prop="detail" :label="$t('os.detail')" show-overflow-tooltip>
       </el-table-column>
-      <el-table-column prop="enabled" label="Enabled">
+      <el-table-column prop="enabled" :label="$t('os.enabled')">
         <template slot-scope="{ row }">
           <el-tag v-if="row.enabled" type="primary">enabled</el-tag>
         </template>
       </el-table-column>
-      <el-table-column prop="created_at" label="Created Date" :formatter="dateFormatter">
+      <el-table-column prop="created_at" :label="$t('os.createdAt')" :formatter="dateFormatter">
       </el-table-column>
-      <el-table-column label="Actions" align="center">
+      <el-table-column :label="$t('os.action')" align="center">
         <template slot-scope="{ row }">
           <el-link class="middle-icon" @click="handleEdit(row)" type="primary" icon="el-icon-setting"></el-link>
           <delete-link class="middle-icon" @click="deleteOS(row.id)"></delete-link>
