@@ -1,20 +1,20 @@
 <template>
   <div>
-    <el-button icon="el-icon-plus" @click="dialogVisible = true" type="primary">Add</el-button>
+    <el-button icon="el-icon-plus" @click="dialogVisible = true" type="primary">{{ $t('vm.add') }}</el-button>
     <el-dialog :visible.sync="dialogVisible"
                :close-on-click-modal="false"
-               width="50%" title="Add new argument template">
+               width="50%" :title="$t('vm.addVmTitle')">
       <el-form :model="newConfig" :rules="newConfigRules" size="small" label-width="auto">
-        <el-form-item label="Title:" prop="title">
+        <el-form-item :label="$t('vm.title')" prop="title">
           <el-input style="width: 40%" v-model="newConfig.title" clearable></el-input>
         </el-form-item>
-        <el-form-item label="Template:" prop="argTemplate">
+        <el-form-item :label="$t('vm.template')" prop="argTemplate">
           <el-input style="width: 40%" type="textarea" v-model.lazy="newConfig.argTemplate" clearable></el-input>
         </el-form-item>
-        <el-form-item label="Desc:" prop="desc">
+        <el-form-item :label="$t('vm.description')" prop="desc">
           <el-input style="width: 40%" type="textarea" v-model="newConfig.desc" clearable></el-input>
         </el-form-item>
-        <el-form-item label="Type:" prop="type">
+        <el-form-item :label="$t('vm.type')" prop="type">
           <el-input style="width: 40%" type="textarea" v-model="newConfig.type" clearable></el-input>
         </el-form-item>
         <el-form-item label="Primary:" prop="isPrimary">
@@ -26,17 +26,17 @@
         <el-row class="border-row" v-for="param in newConfig.params" :key="param.key">
           <el-col :span="3">
             <el-form-item prop="name">
-              <el-input v-model="param.name" placeholder="Name:" clearable></el-input>
+              <el-input v-model="param.name" :placeholder="$t('vm.placeholder.name')" clearable></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="4">
             <el-form-item prop="label">
-              <el-input v-model="param.label" placeholder="Label:" clearable></el-input>
+              <el-input v-model="param.label" :placeholder="$t('vm.placeholder.label')" clearable></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="3">
             <el-form-item prop="type">
-              <el-select v-model="param.type" placeholder="Type:" clearable>
+              <el-select v-model="param.type" :placeholder="$t('vm.placeholder.type')" clearable>
                 <el-option
                   v-for="t in types"
                   :key="t.value"
@@ -48,7 +48,7 @@
           </el-col>
           <el-col :span="3">
             <el-form-item prop="component">
-              <el-select v-model="param.component" placeholder="Component:" clearable>
+              <el-select v-model="param.component" :placeholder="$t('vm.placeholder.componentType')" clearable>
                 <el-option v-for="c in componentOptions"
                            :key="c.value"
                            :label="c.label"
@@ -63,19 +63,19 @@
             </el-select>
           </el-form-item>
           <el-form-item prop="default">
-            <el-input placeholder="Default:" v-model="param.default" clearable />
+            <el-input :placeholder="$t('vm.placeholder.default')" v-model="param.default" clearable />
           </el-form-item>
           <el-button @click="removeParam(param.key)" type="text" icon="el-icon-delete"></el-button>
           <div class="divider"></div>
         </el-row>
         <el-form-item>
-          <el-button @click="addParam" type="primary" icon="el-icon-plus">Add Param</el-button>
+          <el-button @click="addParam" type="primary" icon="el-icon-plus">{{ $t('vm.addVariable') }}</el-button>
         </el-form-item>
       </el-form>
 
       <span slot="footer" class="dialog-footer">
-        <el-button icon="el-icon-check" type="primary" @click="saveConfig" :loading="loading">Save</el-button>
-        <el-button icon="el-icon-close" @click="dialogVisible = false">Cancel</el-button>
+        <el-button icon="el-icon-check" type="primary" @click="saveConfig" :loading="loading">{{ $t('vm.save') }}</el-button>
+        <el-button icon="el-icon-close" @click="dialogVisible = false">{{ $t('vm.cancel') }}</el-button>
       </span>
     </el-dialog>
   </div>
