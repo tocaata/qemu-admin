@@ -9,7 +9,7 @@ export function vmList(data) {
   })
 }
 
-export function vmShow(id) {
+export function vmDetail(id) {
   return request({
     url: '/vm/detail',
     method: 'get',
@@ -83,7 +83,7 @@ export function deleteVm(id) {
 
 export function editVm(data) {
   return request({
-    url: '/vm/edit',
+    url: '/vm/update',
     method: 'post',
     data
   })

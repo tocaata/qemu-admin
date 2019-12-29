@@ -4,6 +4,15 @@
     </el-page-header>
 
     <div class="container">
+      <el-form :model="vmSetting" class="vm-setting" inline>
+        <el-form-item :label="$t('common.name')" prop="name">
+          <el-input v-model="vmSetting.name" @change="handleSettingChange" style="width: 12rem"></el-input>
+        </el-form-item>
+        <el-form-item :label="$t('machineDetail.autoBoot')" prop="autoBoot">
+          <el-switch v-model="vmSetting.autoBoot" @change="handleSettingChange"></el-switch>
+        </el-form-item>
+      </el-form>
+
       <el-table :data="configs" v-loading="loading" :expand-row-keys="expand" row-key="id"
                 @expand-change="handleExpandChange">
         <el-table-column type="expand">
@@ -73,7 +82,7 @@
 
 <script>
   import _ from 'lodash';
-  import { vmShow, editVm, deleteConfig, editConfig, getAllOptions, addConfig } from '../../api/vm';
+  import { vmDetail, editVm, deleteConfig, editConfig, getAllOptions, addConfig, editArg } from '../../api/vm'
   import DeleteLink from '@/components/DeleteLink';
 
   export default {
@@ -86,6 +95,10 @@
         loading: false,
         machineId: this.$route.query['machineId'],
         activeName: 1,
+        vmSetting: {
+          autoBoot: false,
+          name: ''
+        },
         configs: [],
         newVM: {
           name: '',
@@ -121,7 +134,9 @@
       },
       getData() {
         this.loading = true;
-        return vmShow(this.machineId).then(({ data }) => {
+        return vmDetail(this.machineId).then(({ data }) => {
+          this.vmSetting.autoBoot = data.auto_boot === 1;
+          this.vmSetting.name = data.name;
           this.configs = data['vmOptionTemplates'].map(x => {
             x.config = JSON.parse(x.config);
             x.values.value = JSON.parse(x.values.value);
@@ -156,6 +171,22 @@
         } catch (e) {
           console.error(e);
         }
+      },
+      handleSettingChange() {
+        this.loading = true;
+        editVm({ id: this.machineId, ...this.vmSetting }).then(({message}) => {
+          this.$message({
+            type: 'success',
+            message: message
+          });
+          this.getData();
+        }).catch(err => {
+          this.$message({
+            type: 'error',
+            message: err.message
+          });
+          this.loading = false;
+        });
       },
       editVM() {
         editVm({ id: this.machineId, ...this.newVM }).then(res => {
@@ -221,6 +252,12 @@
 
 <style lang="scss" scoped>
   .container {
+    .vm-setting {
+      /deep/ .el-form-item__content {
+        padding-left: 0;
+      }
+    }
+
     /deep/ .el-form-item__content {
       width: auto;
       padding-left: 20px;
