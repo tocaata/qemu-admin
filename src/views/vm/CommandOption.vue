@@ -1,7 +1,7 @@
 <template>
   <div class="margin">
-    <new-arg-dialog :on-create="handleCreate">
-    </new-arg-dialog>
+    <new-option-dialog :on-create="handleCreate" :text="$t('common.add')">
+    </new-option-dialog>
 
     <el-table :data="args" class="arg-table" stripe highlight-current-row :expand-row-keys="expand"
               style="margin-top: 30px" row-key="id" v-loading="loading" @expand-change="handleExpandChange">
@@ -11,6 +11,9 @@
         </template>
       </el-table-column>
       <el-table-column prop="arg" :label="$t('commandOption.option')" width="200">
+        <template slot-scope="{ row }">
+          {{ JSON.parse(row.arg).join(', ') }}
+        </template>
       </el-table-column>
       <el-table-column prop="name" :label="$t('common.name')" width="200">
       </el-table-column>
@@ -49,13 +52,13 @@
 
 <script>
   import { listOption, deleteArg } from '../../api/vm';
-  import NewArgDialog from './components/NewArgDialog';
+  import NewOptionDialog from './components/NewOptionDialog';
   import DeleteLink from '@/components/DeleteLink';
   import EditCmdOption from './components/EditCmdOption'
 
   export default {
     name: 'KvmArg',
-    components: { EditCmdOption, DeleteLink, NewArgDialog },
+    components: { EditCmdOption, DeleteLink, NewOptionDialog },
     data() {
       return {
         loading: false,

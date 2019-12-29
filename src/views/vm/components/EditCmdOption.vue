@@ -7,7 +7,10 @@
       </el-form-item>
       <el-form-item :label="$t('editCmdOption.template')" prop="argTemplate">
         <template v-if="isShow">
-          <span class="el-tag" v-for="template in newConfig.argTemplate.split('\n')">{{ template }}</span>
+          <template v-for="template in newConfig.argTemplate.split('\n')">
+            <span class="el-tag">{{ template }}</span>
+            <br/>
+          </template>
         </template>
         <el-input v-else style="width: 40%" type="textarea" :rows="2" v-model="newConfig.argTemplate"></el-input>
       </el-form-item>
@@ -128,16 +131,7 @@
       }
     },
     data() {
-      const templateValidator = (rule, value, callback) => {
-        if (/-{1,2}\w{1,16}( [^ ]+)?$/.test(value)){
-          callback();
-        } else {
-          callback(new Error('Please input correct template.'));
-        }
-      };
-
       const { title, arg = [], template = [], desc, type, isPrimary, params } = this.data;
-
       const argTemplate = [];
 
       for (let i = 0; i < arg.length; i++) {
@@ -157,7 +151,8 @@
         },
         newConfigRules: {
           argTemplate: [
-            // { validator: templateValidator, trigger: 'blur' }
+            { require: true, pattern: /(-{1,2}\w{1,16}(\s[^\s]+)?\n?)+$/,
+              trigger: 'blur', message: 'Please input correct template.' }
           ]
         },
         newParams: {
@@ -205,9 +200,9 @@
     mounted() {
     },
     methods: {
-      validate(callback) {
-        return this.$refs['newConfig'].validate(callback);
-      },
+      // validate(callback) {
+      //   return this.$refs['newConfig'].validate(callback);
+      // },
       addParam() {
         this.newConfig.params.push({ ...this.newParams, key: Date.now() });
       },
@@ -223,7 +218,7 @@
               this.$message({ type: 'success', message: res.message });
               this.$emit('change', null);
             }).catch(err => {
-            })
+            });
           }
         })
       },
@@ -241,7 +236,7 @@
   }
 
   .el-tag:not(:last-child) {
-    margin-right: 8px;
+    margin: 0 8px 8px;
   }
 
 </style>
