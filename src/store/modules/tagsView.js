@@ -1,7 +1,8 @@
 const tagsView = {
   state: {
     visitedViews: [],
-    cachedViews: []
+    cachedViews: [],
+    dirtyViews: []
   },
   mutations: {
     ADD_VISITED_VIEW: (state, view) => {
@@ -16,6 +17,13 @@ const tagsView = {
       if (state.cachedViews.includes(view.name)) return
       if (!view.meta.noCache) {
         state.cachedViews.push(view.name)
+      }
+    },
+    ADD_DIRTY_VIEWS: (state, viewNames) => {
+      for (let viewName of viewNames) {
+        if (!state.dirtyViews.includes(viewName) && state.cachedViews.includes(viewName)) {
+          state.dirtyViews.push(viewName)
+        }
       }
     },
 
@@ -34,6 +42,12 @@ const tagsView = {
           state.cachedViews.splice(index, 1)
           break
         }
+      }
+    },
+    DEL_DIRTY_VIEW: (state, viewName) => {
+      const idx = state.dirtyViews.indexOf(viewName)
+      if (idx >= 0) {
+        state.dirtyViews.splice(idx, 1)
       }
     },
 
@@ -61,6 +75,9 @@ const tagsView = {
     DEL_ALL_CACHED_VIEWS: state => {
       state.cachedViews = []
     },
+    DEL_ALL_DIRTY_VIEWS: state => {
+      state.cachedViews = []
+    },
 
     UPDATE_VISITED_VIEW: (state, view) => {
       for (let v of state.visitedViews) {
@@ -83,6 +100,9 @@ const tagsView = {
     addCachedView({ commit }, view) {
       commit('ADD_CACHED_VIEW', view)
     },
+    addDirtyViews({ commit }, viewNames) {
+      commit('ADD_DIRTY_VIEWS', viewNames)
+    },
 
     delView({ dispatch, state }, view) {
       return new Promise(resolve => {
@@ -104,6 +124,12 @@ const tagsView = {
       return new Promise(resolve => {
         commit('DEL_CACHED_VIEW', view)
         resolve([...state.cachedViews])
+      })
+    },
+    delDirtyView({ commit, state }, viewName) {
+      return new Promise(resolve => {
+        commit('DEL_DIRTY_VIEW', viewName)
+        resolve([...state.dirtyViews])
       })
     },
 

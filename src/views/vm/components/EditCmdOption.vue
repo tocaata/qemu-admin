@@ -211,13 +211,13 @@
         this.newConfig.params.splice(index, 1);
       },
       editArg() {
-        debugger
         this.$refs.newConfig.validate((valid) => {
           if (valid) {
             editArg({ id: this.argId, ...this.newConfig}).then(res => {
               this.isShow = true;
               this.$message({ type: 'success', message: res.message });
               this.$emit('change', null);
+              this.$store.dispatch('addDirtyViews', ['OSList']);
             }).catch(err => {
             });
           }

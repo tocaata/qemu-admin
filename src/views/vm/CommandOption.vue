@@ -1,6 +1,6 @@
 <template>
   <div class="margin">
-    <new-option-dialog :on-create="handleCreate" :text="$t('common.add')">
+    <new-option-dialog  :on-create="handleCreate" :text="$t('common.add')">
     </new-option-dialog>
 
     <el-table :data="args" class="arg-table" stripe highlight-current-row :expand-row-keys="expand"
@@ -88,6 +88,7 @@
     methods: {
       search() {
         this.loading = true;
+
         const { pageIndex, pageSize } = this;
         return listOption({ pageIndex, pageSize }).then(res => {
           this.args = res.data.list;
@@ -101,6 +102,7 @@
       deleteArg(id) {
         this.loading = true;
 
+        this.$store.dispatch('addDirtyViews', ['OSList']);
         deleteArg(id).then(res => {
           this.loading = false;
           this.$message({

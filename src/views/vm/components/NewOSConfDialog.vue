@@ -62,6 +62,7 @@
 <script>
   import { getAllOptions, saveOS } from '@/api/vm';
   import _ from 'lodash';
+  import { mapGetters } from 'vuex'
 
   export default {
     name: 'NewOSConfDialog',
@@ -90,15 +91,22 @@
         ]
       };
     },
+    computed: {
+      ...mapGetters(['dirtyViews'])
+    },
     mounted() {
       this.getData();
+    },
+    activated() {
+      if (this.dirtyViews.includes('OSList')) {
+        this.getData();
+      }
     },
     methods: {
       getData() {
         getAllOptions().then(res => {
           this.data = res.data.map(temp => {
             const data = JSON.parse(temp.config);
-            debugger
             const template = _.zip(data.arg, data.template).map(([arg, tpl]) => arg + (tpl ? ' ' + tpl : '')).join('\n');
             return { key: temp.id, label: `${data.title} '${template}'` };
           });
