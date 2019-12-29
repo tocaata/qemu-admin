@@ -6,10 +6,16 @@
     <div class="container">
       <el-form :model="vmSetting" class="vm-setting" inline>
         <el-form-item :label="$t('common.name')" prop="name">
-          <el-input v-model="vmSetting.name" @change="handleSettingChange" style="width: 12rem"></el-input>
+          <el-input v-show="vmSettingEditable" v-model="vmSetting.name" size="small" style="width: 12rem"></el-input>
+          <div v-show="!vmSettingEditable" style="width: 12rem">{{vmSetting.name}}</div>
         </el-form-item>
         <el-form-item :label="$t('machineDetail.autoBoot')" prop="autoBoot">
-          <el-switch v-model="vmSetting.autoBoot" @change="handleSettingChange"></el-switch>
+          <el-switch v-show="vmSettingEditable" v-model="vmSetting.autoBoot"></el-switch>
+          <div v-show="!vmSettingEditable">{{!!vmSetting.autoBoot}}</div>
+        </el-form-item>
+        <el-form-item>
+          <el-link v-if="!vmSettingEditable" @click="vmSettingEditable = true" icon="el-icon-setting" type="primary" class="middle-icon"></el-link>
+          <el-link v-else @click="handleSettingChange" icon="el-icon-circle-check" type="primary" class="middle-icon"></el-link>
         </el-form-item>
       </el-form>
 
@@ -44,20 +50,6 @@
           </template>
         </el-table-column>
       </el-table>
-      <el-card v-if="false" shadow="never" style="width: 50%">
-        <el-collapse v-model="activeName" accordion v-loading="loading">
-          <el-collapse-item v-for="config in configsFiltered" :title="getCmd(config)" :key="config.id" :name="config.id">
-            <el-form label-position="top">
-              <el-form-item v-for="param in config.config.params"
-                            :key="param.key"
-                            :label="param.label">
-                <component :is="param.component" v-model="newVM.arguments[config.id].value[param.name]"></component>
-              </el-form-item>
-            </el-form>
-            <el-button @click="deleteArg(config.id)" type="danger" size="small">{{$t('common.delete')}}</el-button>
-          </el-collapse-item>
-        </el-collapse>
-      </el-card>
 
       <div style="padding-top: 30px">
         <el-button type="primary" icon="el-icon-plus" @click="dialogVisible = true">{{$t('common.add')}}</el-button>
@@ -99,6 +91,7 @@
           autoBoot: false,
           name: ''
         },
+        vmSettingEditable: false,
         configs: [],
         newVM: {
           name: '',
@@ -122,9 +115,9 @@
       getAllOptions().then(res => {
         this.data = res.data.map(temp => {
           const data = JSON.parse(temp.config);
-          const template = data.arg + (data.template ? ' ' + data.template : '');
+          const template = _.zip(data.arg, data.template).map(([arg, tpl]) => arg + (tpl ? ' ' + tpl : '')).join('\n');
 
-          return { key: temp.id, label: template };
+          return { key: temp.id, label: `${data.title} '${template}'` };
         });
       });
     },
@@ -179,6 +172,7 @@
             type: 'success',
             message: message
           });
+          this.$store.dispatch('addDirtyViews', ['VmList']);
           this.getData();
         }).catch(err => {
           this.$message({
@@ -186,6 +180,8 @@
             message: err.message
           });
           this.loading = false;
+        }).finally(() => {
+          this.vmSettingEditable = false;
         });
       },
       editVM() {

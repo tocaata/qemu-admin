@@ -62,6 +62,7 @@
 
   import { OSList, deleteOS } from '../../api/vm';
   import Vue from 'vue';
+  import { mapGetters } from 'vuex'
   const EditDialog = Vue.extend(EditOsConfDialog);
 
   export default {
@@ -88,8 +89,19 @@
         total: 0
       };
     },
+    computed: {
+      ...mapGetters(['dirtyViews'])
+    },
     mounted() {
       this.search();
+    },
+
+    activated() {
+      if (this.dirtyViews.includes('OSList')) {
+        this.$store.dispatch('delDirtyView', 'OSList').then(() => {
+          this.search();
+        })
+      }
     },
     methods: {
       search() {

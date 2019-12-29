@@ -155,6 +155,7 @@
 </template>
 
 <script>
+  import { mapGetters } from 'vuex'
   import { vmList, deleteVm, getCmd, run, exec } from '../../api/vm';
   import NewVmDialog from './VmDialog/NewVmDialog';
   import DeleteLink from '@/components/DeleteLink';
@@ -183,8 +184,18 @@
         expand: []
       };
     },
+    computed: {
+      ...mapGetters(['dirtyViews'])
+    },
     mounted() {
       this.search();
+    },
+    activated() {
+      if (this.dirtyViews.includes('VmList')) {
+        this.$store.dispatch('delDirtyView', 'VmList').then(() => {
+          this.search();
+        })
+      }
     },
     filters: {
       mapStatus(value) {

@@ -176,6 +176,7 @@
           if (this.onCreate) {
             this.onCreate();
           }
+          this.$store.dispatch('addDirtyViews', ['OSList']);
         }).catch(() => {
           this.loading = false;
         })
