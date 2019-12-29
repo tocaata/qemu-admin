@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-button icon="el-icon-plus" @click="dialogVisible = true" type="primary">{{ $t('common.add') }}</el-button>
+    <el-button icon="el-icon-plus" @click="dialogVisible = true" type="primary">{{ text }}</el-button>
     <el-dialog :visible.sync="dialogVisible"
                :close-on-click-modal="false"
                width="50%" :title="$t('commandOption.addVmTitle')">
@@ -24,7 +24,7 @@
 
       <el-form :model="newConfig" inline size="small">
         <el-row class="border-row" v-for="param in newConfig.params" :key="param.key">
-          <el-col :span="3">
+          <el-col :span="4">
             <el-form-item prop="name">
               <el-input v-model="param.name" :placeholder="$t('common.nameLabel')" clearable></el-input>
             </el-form-item>
@@ -34,7 +34,7 @@
               <el-input v-model="param.label" :placeholder="$t('commandOption.placeholder.label')" clearable></el-input>
             </el-form-item>
           </el-col>
-          <el-col :span="3">
+          <el-col :span="4">
             <el-form-item prop="type">
               <el-select v-model="param.type" :placeholder="$t('common.typeLabel')" clearable>
                 <el-option
@@ -46,7 +46,7 @@
               </el-select>
             </el-form-item>
           </el-col>
-          <el-col :span="3">
+          <el-col :span="4">
             <el-form-item prop="component">
               <el-select v-model="param.component" :placeholder="$t('commandOption.placeholder.componentType')" clearable>
                 <el-option v-for="c in componentOptions"
@@ -62,9 +62,11 @@
                        v-model="param.options" multiple allow-create filterable default-first-option>
             </el-select>
           </el-form-item>
-          <el-form-item prop="default">
-            <el-input :placeholder="$t('commandOption.placeholder.default')" v-model="param.default" clearable />
-          </el-form-item>
+          <el-col :span="4">
+            <el-form-item prop="default">
+              <el-input :placeholder="$t('commandOption.placeholder.default')" v-model="param.default" clearable />
+            </el-form-item>
+          </el-col>
           <el-button @click="removeParam(param.key)" type="text" icon="el-icon-delete"></el-button>
           <div class="divider"></div>
         </el-row>
@@ -85,21 +87,14 @@
   import { saveVmOption } from '../../../api/vm';
 
   export default {
-    name: 'NewArgDialog',
+    name: 'NewOptionDialog',
     components: {
     },
     props: {
-      onCreate: { type: Function }
+      onCreate: { type: Function },
+      text: { type: String }
     },
     data() {
-      const templateValidator = (rule, value, callback) => {
-        if (/-{1,2}\w{1,16}( [^ ]+)?$/.test(value)){
-          callback();
-        } else {
-          callback(new Error('Please input correct template.'));
-        }
-      }
-
       return {
         newConfig: {
           title: 'smp',
@@ -115,8 +110,8 @@
           ]
         },
         newConfigRules: {
-          template: [
-            // { validator: templateValidator, trigger: 'blur' }
+          argTemplate: [
+            { require: true, pattern: /(-{1,2}\w{1,16}(\s[^\s]+)?\n?)+$/, trigger: 'blur', message: 'Please input correct template.' }
           ]
         },
         newParams: {
