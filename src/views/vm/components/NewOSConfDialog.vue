@@ -61,6 +61,7 @@
 
 <script>
   import { getAllOptions, saveOS } from '@/api/vm';
+  import _ from 'lodash';
 
   export default {
     name: 'NewOSConfDialog',
@@ -97,9 +98,9 @@
         getAllOptions().then(res => {
           this.data = res.data.map(temp => {
             const data = JSON.parse(temp.config);
-            const template = data.arg + (data.template ? ' ' + data.template : '');
-
-            return { key: temp.id, label: template };
+            debugger
+            const template = _.zip(data.arg, data.template).map(([arg, tpl]) => arg + (tpl ? ' ' + tpl : '')).join('\n');
+            return { key: temp.id, label: `${data.title} '${template}'` };
           });
         })
       },

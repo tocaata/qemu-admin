@@ -211,6 +211,7 @@
         this.newConfig.params.splice(index, 1);
       },
       editArg() {
+        debugger
         this.$refs.newConfig.validate((valid) => {
           if (valid) {
             editArg({ id: this.argId, ...this.newConfig}).then(res => {
