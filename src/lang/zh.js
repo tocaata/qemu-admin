@@ -1,4 +1,31 @@
 export default {
+  common: {
+    save: '保存',
+    cancel: '取消',
+    next: '下一步',
+    back: '上一步',
+    create: '创建',
+    createdAt: '创建时间',
+    action: '操作',
+    delete: '删除',
+    add: '添加',
+    name: '名称',
+    status: '状态',
+    enabled: '是否启用',
+    isEnabled: '启用',
+    label: '标签',
+    type: '类型',
+    default: '默认值',
+    edit: '编辑',
+    showMore: '显示更多',
+    hideMore: '隐藏更多',
+    actionLabel: '操作：',
+    nameLabel: '名称：',
+    statusLabel: '状态：',
+    typeLabel: '类型：',
+    detailLabel: '详情：',
+    enabledLabel: '启用：'
+  },
   route: {
     dashboard: '首页',
     introduction: '简述',
@@ -11,6 +38,7 @@ export default {
     optionTemplate: '参数模版',
     osTemplate: '系统模版',
     vm: '虚拟机',
+    vmDetail: '虚拟机详情',
     user: '用户',
 
     components: '组件',
@@ -167,7 +195,7 @@ export default {
     closeOthers: '关闭其它',
     closeAll: '关闭所有'
   },
-  vm: {
+  commandOption: {
     add: '添加',
     option: '参数',
     name: '名称',
@@ -195,8 +223,51 @@ export default {
     name: '名称',
     osType: '操作系统类型',
     detail: '详细描述',
-    enabled: '是否可用',
     createdAt: '创建时间',
-    action: '操作'
+    action: '操作',
+
+    newDialog: {
+      createOSTemplate: '创建系统模版',
+      name: '名称',
+      type: '类型',
+      detail: '详情',
+      enabled: '启用',
+
+      allTemplates: '所有的参数模版',
+      enabledTemplates: '启用的参数模版'
+    }
+  },
+  virtualMachine: {
+    searching: '搜索',
+    autoBoot: '是否开机自启动',
+    memory: '内存',
+    os: '操作系统',
+    commandOptionsLabel: '参数：',
+    option: '参数',
+    value: '值'
+  },
+  user: {
+    name: '姓名',
+    username: '用户名',
+    createdAt: '创建时间',
+    emailAddress: '邮箱地址'
+  },
+  machineDetail: {
+    machineDetail: '虚拟机详情',
+    option: '参数',
+    value: '值',
+    selectTemplate: '选择命令行模版',
+    optionTemplate: '命令行模版：'
+  },
+  newVmDialog: {
+    createVm: '创建虚拟机'
+  },
+  editCmdOption: {
+    title: '标题：',
+    template: '模版：',
+    description: '描述：',
+    type: '类型：',
+    templateVariable: '模版变量：',
+    addVariable: '添加变量'
   }
 }

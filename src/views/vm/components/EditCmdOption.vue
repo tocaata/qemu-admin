@@ -1,21 +1,21 @@
 <template>
   <div>
     <el-form ref="newConfig" :model="newConfig" :rules="newConfigRules" size="small" label-width="auto">
-      <el-form-item label="Title:" prop="title">
+      <el-form-item :label="$t('editCmdOption.title')" prop="title">
         <span v-if="isShow">{{ newConfig.title }}</span>
         <el-input v-else style="width: 40%" v-model="newConfig.title" clearable></el-input>
       </el-form-item>
-      <el-form-item label="Template:" prop="argTemplate">
+      <el-form-item :label="$t('editCmdOption.template')" prop="argTemplate">
         <template v-if="isShow">
           <span class="el-tag" v-for="template in newConfig.argTemplate.split('\n')">{{ template }}</span>
         </template>
         <el-input v-else style="width: 40%" type="textarea" :rows="2" v-model="newConfig.argTemplate"></el-input>
       </el-form-item>
-      <el-form-item label="Description:" prop="desc">
+      <el-form-item :label="$t('editCmdOption.description')" prop="desc">
         <span v-if="isShow">{{ newConfig.desc }}</span>
         <el-input v-else style="width: 40%" type="textarea" :rows="1" v-model="newConfig.desc"></el-input>
       </el-form-item>
-      <el-form-item label="Type:" prop="type">
+      <el-form-item :label="$t('editCmdOption.type')" prop="type">
         <span v-if="isShow">{{ newConfig.type }}</span>
         <el-input v-else style="width: 40%" type="textarea" :rows="1" v-model="newConfig.type"></el-input>
       </el-form-item>
@@ -23,24 +23,24 @@
         <span v-if="isShow">{{ newConfig.isPrimary }}</span>
         <el-switch v-else v-model="newConfig.isPrimary"></el-switch>
       </el-form-item>
-      <el-form-item label="Template Parameters:">
+      <el-form-item :label="$t('editCmdOption.templateVariable')">
       </el-form-item>
     </el-form>
 
     <el-table :data="newConfig.params" style="width: 80%">
-      <el-table-column label="Name" prop="name" width="120">
+      <el-table-column :label="$t('common.name')" prop="name" width="120">
         <template slot-scope="{ row }">
           <span v-if="isShow">{{ row.name }}</span>
           <el-input v-if="!isShow" v-model="row.name" placeholder="Name:" size="small" clearable></el-input>
         </template>
       </el-table-column>
-      <el-table-column label="Label" prop="label" width="200">
+      <el-table-column :label="$t('common.label')" prop="label" width="200">
         <template slot-scope="{ row }">
           <span v-if="isShow">{{ row.label }}</span>
           <el-input v-else v-model="row.label" placeholder="Label:" size="small" clearable></el-input>
         </template>
       </el-table-column>
-      <el-table-column label="Type" prop="type" width="160">
+      <el-table-column :label="$t('common.type')" prop="type" width="160">
         <template slot-scope="{ row }">
           <span v-if="isShow">{{ row.type }}</span>
           <el-select v-else v-model="row.type" placeholder="Type:" size="small" clearable>
@@ -75,13 +75,13 @@
           </el-select>
         </template>
       </el-table-column>
-      <el-table-column label="Default" prop="default">
+      <el-table-column :label="$t('common.default')" prop="default">
         <template slot-scope="{ row }">
           <span v-if="isShow">{{ row.default }}</span>
           <el-input v-else v-model="row.default" placeholder="Default:" size="small" clearable></el-input>
         </template>
       </el-table-column>
-      <el-table-column label="Action" align="center" width="100">
+      <el-table-column :label="$t('common.action')" align="center" width="100">
         <template slot-scope="{ row }" v-if="!isShow">
           <el-button @click="removeParam(row)" type="text" icon="el-icon-delete"></el-button>
         </template>
@@ -89,11 +89,11 @@
     </el-table>
 
     <div class="footer">
-      <el-button icon="el-icon-edit-outline" type="primary" v-if="isShow" @click="isShow = false">Edit</el-button>
+      <el-button icon="el-icon-edit-outline" type="primary" v-if="isShow" @click="isShow = false">{{$t('common.edit')}}</el-button>
       <div v-else>
-        <el-button icon="el-icon-check" type="primary" @click="editArg">Save</el-button>
-        <el-button icon="el-icon-plus" @click="addParam">Add Param</el-button>
-        <el-button icon="el-icon-close" @click="handleCancel">Cancel</el-button>
+        <el-button icon="el-icon-check" type="primary" @click="editArg">{{$t('common.save')}}</el-button>
+        <el-button icon="el-icon-plus" @click="addParam">{{$t('editCmdOption.addVariable')}}</el-button>
+        <el-button icon="el-icon-close" @click="handleCancel">{{$t('common.cancel')}}</el-button>
       </div>
     </div>
   </div>
@@ -103,7 +103,7 @@
   import { editArg } from '../../../api/vm';
 
   export default {
-    name: 'EditArg',
+    name: 'EditCmdOption',
     props: {
       data: {
         type: Object,

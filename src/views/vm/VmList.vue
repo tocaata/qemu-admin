@@ -1,14 +1,16 @@
 <template>
   <div class="container">
     <el-form ref="searchVM" :model="searchVM" :rules="searchVMRules" @submit.native.prevent="search" inline>
-      <el-form-item prop="searchStr" label="">
+      <el-form-item prop="searchStr">
         <el-input
           clearable
           :readonly="loading"
-          placeholder="Searching String"
+          :placeholder="$t('virtualMachine.searching')"
           v-model="searchVM.searchStr">
-          <el-button slot="append" icon="el-icon-search"
-                     :loading="loading" @click="search">
+          <el-button slot="append"
+                     icon="el-icon-search"
+                     :loading="loading"
+                     @click="search">
           </el-button>
         </el-input>
       </el-form-item>
@@ -16,7 +18,7 @@
         @click="dialogVisible = true"
         type="primary"
         icon="el-icon-plus">
-        Create
+        {{$t('common.create')}}
       </el-button>
     </el-form>
     <el-table :data="vms" stripe
@@ -32,7 +34,7 @@
       <el-table-column type="expand">
         <template slot-scope="{ row }">
           <el-form label-position="left">
-            <el-form-item label="Action:">
+            <el-form-item :label="$t('common.actionLabel')">
               <el-tooltip effect="dark" content="Start" placement="top" :open-delay="1000">
                 <el-button type="text" style="font-size: 20px"
                            @click="runMachine(row.id)" :disabled="row.status !== 'stopped'">
@@ -54,13 +56,13 @@
                 </el-button>
               </el-tooltip>
             </el-form-item>
-            <el-form-item label="Name:">
+            <el-form-item :label="$t('common.nameLabel')">
               <span>{{ row.name }}</span>
             </el-form-item>
-            <el-form-item label="Status:">
+            <el-form-item :label="$t('common.statusLabel')">
               <el-tag :type="row.status | mapStatus" style="font-size: 1em;">{{ row.status }}</el-tag>
             </el-form-item>
-            <el-form-item label="Command Arguments:" class="newline-item"></el-form-item>
+            <el-form-item :label="$t('virtualMachine.commandOptionsLabel')" class="newline-item"></el-form-item>
             <el-row>
               <ShowMore
                 style="width: 80%"
@@ -68,10 +70,10 @@
                 <template slot-scope="{ data }">
                   <el-table class="cmd-args" v-loading="loading"
                             :data="data">
-                    <el-table-column label="options"
+                    <el-table-column :label="$t('virtualMachine.option')"
                                      prop="option" width="180">
                     </el-table-column>
-                    <el-table-column label="value" prop="value"></el-table-column>
+                    <el-table-column :label="$t('virtualMachine.value')" prop="value"></el-table-column>
                   </el-table>
                 </template>
               </ShowMore>
@@ -81,19 +83,19 @@
       </el-table-column>
       <el-table-column
         sortable="custom"
-        label="Name"
+        :label="$t('common.name')"
         prop="name">
       </el-table-column>
       <el-table-column
         sortable="custom"
-        label="Status"
+        :label="$t('common.status')"
         prop="status">
         <template slot-scope="{ row }">
           <el-tag :type="row.status | mapStatus">{{ row.status }}</el-tag>
         </template>
       </el-table-column>
       <el-table-column
-        label="Auto Boot"
+        :label="$t('virtualMachine.autoBoot')"
         prop="auto_boot">
         <template slot-scope="{ row }">
           <el-tag :type="row.auto_boot | mapAutoBoot">{{ row.auto_boot === 1 ? 'yes': 'no' }}</el-tag>
@@ -101,7 +103,7 @@
       </el-table-column>
       <el-table-column
         sortable="custom"
-        label="Memory"
+        :label="$t('virtualMachine.memory')"
         prop="memory">
       </el-table-column>
       <el-table-column
@@ -111,7 +113,7 @@
       </el-table-column>
       <el-table-column
         sortable="custom"
-        label="OS"
+        :label="$t('virtualMachine.os')"
         prop="os">
         <template slot-scope="{ row }">
           {{ row.os && row.os.name }}
@@ -119,13 +121,13 @@
       </el-table-column>
       <el-table-column
         sortable="custom"
-        label="Created Date"
+        :label="$t('common.createdAt')"
         :formatter="dateFormatter"
         prop="created_at">
       </el-table-column>
       <el-table-column
         align="center"
-        label="action">
+        :label="$t('common.action')">
         <template slot-scope="{ row }">
           <el-link v-show="row.status === 'stopped'" class="middle-icon" @click="runMachine(row.id)"
                    icon="el-icon-video-play" type="primary"></el-link>
@@ -148,20 +150,20 @@
       layout="total, sizes, prev, pager, next, jumper">
     </el-pagination>
 
-    <vm-dialog :visible.sync="dialogVisible" @created="vmCreated"></vm-dialog>
+    <new-vm-dialog :visible.sync="dialogVisible" @created="vmCreated"></new-vm-dialog>
   </div>
 </template>
 
 <script>
   import { vmList, deleteVm, getCmd, run, exec } from '../../api/vm';
-  import VmDialog from './VmDialog/VmDialog';
+  import NewVmDialog from './VmDialog/NewVmDialog';
   import DeleteLink from '@/components/DeleteLink';
   import ShowMore from '@/components/ShowMore';
   import Pager from './mixins/pager';
 
   export default {
     name: 'VmList',
-    components: { VmDialog, DeleteLink, ShowMore },
+    components: { NewVmDialog: NewVmDialog, DeleteLink, ShowMore },
     mixins: [ Pager ],
     data() {
       return {
@@ -292,7 +294,7 @@
 
       machineDetail(machineId) {
         this.$router.push({
-          path: '/vm/show',
+          path: '/vm/detail',
           query: { machineId }
         })
       }
@@ -318,7 +320,7 @@
     }
   }
 
-  .vm-table {
-
+  .el-form-item {
+    margin-bottom: 10px;
   }
 </style>
