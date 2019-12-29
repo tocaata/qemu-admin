@@ -3,8 +3,8 @@
     <slot :data="visibleData"></slot>
     <div class="show-more" @click="isMore = !isMore" v-show="this.data && this.data.length > 5">
       <i :class="{'el-icon-caret-bottom': !isMore, 'el-icon-caret-top': isMore, 'hovering': showLabel}"></i>
-      <span v-show="showLabel && !isMore">Show More</span>
-      <span v-show="showLabel && isMore">Hide More</span>
+      <span v-show="showLabel && !isMore">{{$t('common.showMore')}}</span>
+      <span v-show="showLabel && isMore">{{$t('common.hideMore')}}</span>
     </div>
   </div>
 </template>

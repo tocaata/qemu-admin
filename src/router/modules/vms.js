@@ -17,10 +17,10 @@ const vmsRouter = {
       meta: { title: 'vm', noCache: false, icon: 'vm' }
     },
     {
-      path: 'show',
+      path: 'detail',
       component: () => import('@/views/vm/MachineDetail'),
-      name: 'VmShow',
-      meta: { title: 'Machine Detail', icon: 'el-icon-s-platform', noCache: false },
+      name: 'VmDetail',
+      meta: { title: 'vmDetail', icon: 'el-icon-s-platform', noCache: false },
       hidden: true
     },
   ]

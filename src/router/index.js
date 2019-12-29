@@ -84,6 +84,7 @@ export const asyncRouterMap = [
     path: '/permission',
     component: Layout,
     redirect: '/permission/index',
+    hidden: true,
     alwaysShow: true, // will always show the root menu
     meta: {
       title: 'permission',

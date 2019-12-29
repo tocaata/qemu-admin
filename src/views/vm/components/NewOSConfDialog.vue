@@ -1,7 +1,7 @@
 <template>
   <div style="display: inline-block">
     <el-button icon="el-icon-plus" @click="dialogVisible = true" type="primary">
-      Create
+      {{ text }}
     </el-button>
 
     <el-dialog :visible.sync="dialogVisible"
@@ -9,25 +9,25 @@
                append-to-body
                width="800px"
                class="transfer-dialog"
-               title="Create OS Template">
+               :title="$t('os.newDialog.createOSTemplate')">
       <div class="form-container" v-if="step === 0">
         <p>
-          OS template is a set of qemu arguments to create a virtual machine.
+          OS template is a set of QEMU arguments to create a virtual machine.
         </p>
         <el-divider></el-divider>
         <el-form class="newOS" :model="newOS" label-position="right" label-width="100px">
-          <el-form-item prop="name" label="OS Name">
+          <el-form-item prop="name" :label="$t('common.nameLabel')">
             <el-input v-model="newOS.name"></el-input>
           </el-form-item>
-          <el-form-item prop="type" label="OS Type">
+          <el-form-item prop="type" :label="$t('common.typeLabel')">
             <el-select v-model="newOS.type">
               <el-option v-for="item of OSTypes" :key="item.value" :label="item.label" :value="item.value"></el-option>
             </el-select>
           </el-form-item>
-          <el-form-item prop="detail" label="OS Detail">
+          <el-form-item prop="detail" :label="$t('common.detailLabel')">
             <el-input v-model="newOS.detail" type="textarea"></el-input>
           </el-form-item>
-          <el-form-item prop="enabled" label="Enabled">
+          <el-form-item prop="enabled" :label="$t('common.enabledLabel')">
             <el-switch v-model="newOS.enabled"></el-switch>
           </el-form-item>
         </el-form>
@@ -41,19 +41,19 @@
           filterable
           :filter-method="filterConfigs"
           filter-placeholder="Please input config"
-          :titles="['All Templates', 'Enabled Templates']"
+          :titles="[$t('os.newDialog.allTemplates'), $t('os.newDialog.enabledTemplates')]"
           v-model="selectedConfig"
           :data="data">
         </el-transfer>
       </div>
 
       <span slot="footer" class="dialog-footer">
-        <el-button icon="el-icon-close" @click="dialogVisible = false">Cancel</el-button>
-        <el-button @click="step--" :disabled="step === 0">Back</el-button>
-        <el-button @click="step++" v-if="step < totalStep - 1">Next</el-button>
+        <el-button icon="el-icon-close" @click="dialogVisible = false">{{$t('common.cancel')}}</el-button>
+        <el-button @click="step--" :disabled="step === 0">{{$t('common.back')}}</el-button>
+        <el-button @click="step++" v-if="step < totalStep - 1">{{$t('common.next')}}</el-button>
         <el-button v-else
                    icon="el-icon-plus" type="primary"
-                   @click="saveOS" :loading="loading">Create</el-button>
+                   @click="saveOS" :loading="loading">{{$t('common.create')}}</el-button>
       </span>
     </el-dialog>
   </div>
@@ -64,6 +64,9 @@
 
   export default {
     name: 'NewOSConfDialog',
+    props: {
+      text: String
+    },
     data() {
       return {
         loading: false,

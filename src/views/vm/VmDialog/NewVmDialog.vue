@@ -3,7 +3,7 @@
       modal
       @close="reset"
       :close-on-click-modal="false"
-      title="Create Machine"
+      :title="$t('newVmDialog.createVm')"
       width="40%"
       :visible.sync="mutableVisible">
     <div>
@@ -56,7 +56,7 @@
   import KvmWizardControl from './KvmWizardControl';
 
   export default {
-    name: 'VmDialog',
+    name: 'NewVmDialog',
     components: {
       KvmWizardControl
     },

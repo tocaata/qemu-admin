@@ -4,26 +4,26 @@
               v-loading="loading"
               fit highlight-current-row>
       <el-table-column
-        label="Name"
+        :label="$t('user.name')"
         prop="name">
       </el-table-column>
       <el-table-column
-        label="Username"
+        :label="$t('user.username')"
         prop="username">
       </el-table-column>
       <el-table-column
         :formatter="dateFormatter"
-        label="Created Date"
+        :label="$t('common.createdAt')"
         prop="created_at">
       </el-table-column>
       <el-table-column
-        label="Email Address"
+        :label="$t('user.emailAddress')"
         prop="email">
       </el-table-column>
       <el-table-column
-        label="action">
+        :label="$t('common.action')">
         <template slot-scope="{ row }">
-          <el-link @click="deleteUser(row.id)" type="primary" size="small" icon="el-icon-delete">Delete</el-link>
+          <el-link @click="deleteUser(row.id)" type="primary" size="small" icon="el-icon-delete">{{$t('common.delete')}}</el-link>
         </template>
       </el-table-column>
     </el-table>

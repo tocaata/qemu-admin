@@ -8,18 +8,18 @@
                :title="data.name">
       <div class="form-container" v-if="step === 0">
         <el-form class="newOS" :model="newOS" label-position="left" label-width="100px">
-          <el-form-item prop="name" label="OS Name">
+          <el-form-item prop="name" :label="$t('common.nameLabel')">
             <el-input v-model="newOS.name"></el-input>
           </el-form-item>
-          <el-form-item prop="type" label="OS Type">
+          <el-form-item prop="type" :label="$t('common.typeLabel')">
             <el-select v-model="newOS.type">
               <el-option v-for="item of OSTypes" :key="item.value" :label="item.label" :value="item.value"></el-option>
             </el-select>
           </el-form-item>
-          <el-form-item prop="detail" label="OS Detail">
+          <el-form-item prop="detail" :label="$t('common.detailLabel')">
             <el-input v-model="newOS.detail" type="textarea"></el-input>
           </el-form-item>
-          <el-form-item prop="enabled" label="Enabled">
+          <el-form-item prop="enabled" :label="$t('common.enabledLabel')">
             <el-switch v-model="newOS.enabled"></el-switch>
           </el-form-item>
         </el-form>
@@ -29,19 +29,19 @@
           filterable
           :filter-method="filterConfigs"
           filter-placeholder="Please input config"
-          :titles="['All Templates', 'Enabled Templates']"
+          :titles="[$t('os.newDialog.allTemplates'), $t('os.newDialog.enabledTemplates')]"
           v-model="selectedConfig"
           :data="allConfig">
         </el-transfer>
       </div>
 
       <span slot="footer" class="dialog-footer">
-        <el-button icon="el-icon-close" @click="onClose">Cancel</el-button>
-        <el-button @click="step--" :disabled="step === 0">Back</el-button>
-        <el-button @click="step++" v-if="step < totalStep - 1">Next</el-button>
+        <el-button icon="el-icon-close" @click="onClose">{{$t('common.cancel')}}</el-button>
+        <el-button @click="step--" :disabled="step === 0">{{$t('common.back')}}</el-button>
+        <el-button @click="step++" v-if="step < totalStep - 1">{{$t('common.next')}}</el-button>
         <el-button v-else
                    icon="el-icon-check" type="primary"
-                   @click="updateOS" :loading="loading">Save</el-button>
+                   @click="updateOS" :loading="loading">{{$t('common.save')}}</el-button>
       </span>
     </el-dialog>
   </div>

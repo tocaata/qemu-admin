@@ -1,4 +1,31 @@
 export default {
+  common: {
+    save: 'Save',
+    cancel: 'Cancel',
+    next: 'Next',
+    back: 'Back',
+    create: 'Create',
+    createdAt: 'Created At',
+    action: 'Action',
+    delete: 'Delete',
+    add: 'Add',
+    name: 'Name',
+    status: 'Status',
+    enabled: 'Enabled',
+    isEnabled: 'Enabled',
+    label: 'Label',
+    type: 'Type',
+    default: 'Default',
+    edit: 'Edit',
+    showMore: 'Show More',
+    hideMore: 'Hide More',
+    actionLabel: 'Action:',
+    nameLabel: 'Name:',
+    statusLabel: 'Status:',
+    typeLabel: 'Type:',
+    detailLabel: 'Detail:',
+    enabledLabel: 'Enabled:'
+  },
   route: {
     dashboard: 'Dashboard',
     introduction: 'Introduction',
@@ -11,6 +38,7 @@ export default {
     optionTemplate: 'Option Template',
     osTemplate: 'OS Template',
     vm: 'Virtual Machine',
+    vmDetail: 'Vm Detail',
     user: 'Users',
 
     components: 'Components',
@@ -167,36 +195,69 @@ export default {
     closeOthers: 'Close Others',
     closeAll: 'Close All'
   },
-  vm: {
-    add: 'Add',
+  commandOption: {
     option: 'Option',
-    name: 'Name',
     template1: 'Template',
-    action: 'Action',
     addVmTitle: 'New QEMU Option Template',
     title: 'Title:',
     template: 'Template:',
     description: 'Desc:',
     type: 'Type:',
     addVariable: 'Add Variable',
-    save: 'Save',
-    cancel: 'Cancel',
     placeholder: {
-      name: 'Name:',
       label: 'Label:',
-      type: 'Type:',
       componentType: 'Component Type:',
       default: 'Default:'
     }
   },
   os: {
     searching: 'Searching',
-    create: 'Create',
-    name: 'Name',
     osType: 'OS Type',
     detail: 'Detail',
-    enabled: 'Enabled',
-    createdAt: 'Created At',
-    action: 'Action'
+    isEnabled: 'Enabled',
+
+    newDialog: {
+      createOSTemplate: 'Create OS Template',
+      name: 'OS Name',
+      type: 'OS Type',
+      detail: 'OS Detail',
+      enabled: 'Enabled',
+
+      allTemplates: 'All Templates',
+      enabledTemplates: 'Enabled Templates'
+    }
+  },
+  virtualMachine: {
+    searching: 'Searching',
+    autoBoot: 'Auto Boot',
+    memory: 'Memory',
+    os: 'OS',
+    commandOptionsLabel: 'Command Options:',
+    option: 'Option',
+    value: 'Value'
+  },
+  user: {
+    name: 'Name',
+    username: 'Username',
+    emailAddress: 'Email Address',
+    delete: 'Delete'
+  },
+  machineDetail: {
+    machineDetail: 'Machine Detail',
+    option: 'Option',
+    value: 'Value',
+    selectTemplate: 'Select the template',
+    optionTemplate: 'Arg template:'
+  },
+  newVmDialog: {
+    createVm: 'Create Virtual Machine'
+  },
+  editCmdOption: {
+    title: 'Title:',
+    template: 'Template:',
+    description: 'Description:',
+    type: 'Type:',
+    templateVariable: 'Template Variable:',
+    addVariable: 'Add Variable',
   }
 }

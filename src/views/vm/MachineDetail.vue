@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <el-page-header @back="goBack" content="Machine Detail">
+    <el-page-header @back="goBack" :content="$t('machineDetail.machineDetail')">
     </el-page-header>
 
     <div class="container">
@@ -17,19 +17,19 @@
                   </template>
                 </component>
               </el-form-item>
-              <el-button type="primary" size="small" @click="editConfig(row.values.id, row.values.value, index, row.id)">Save</el-button>
-              <el-button type="second" size="small" @click="fold(row.id, index)">Cancel</el-button>
+              <el-button type="primary" size="small" @click="editConfig(row.values.id, row.values.value, index, row.id)">{{$t('common.save')}}</el-button>
+              <el-button type="second" size="small" @click="fold(row.id, index)">{{$t('common.cancel')}}</el-button>
             </el-form>
           </template>
         </el-table-column>
-        <el-table-column prop="arg" width="240" label="Option" show-overflow-tooltip>
+        <el-table-column prop="arg" width="240" :label="$t('machineDetail.option')" show-overflow-tooltip>
         </el-table-column>
-        <el-table-column label="Value" show-overflow-tooltip>
+        <el-table-column :label="$t('machineDetail.value')" show-overflow-tooltip>
           <template slot-scope="{ row }">
             <el-tag v-for="cmd in row.cmd" :key="cmd" effect="plain" class="command-tag">{{ cmd }}</el-tag>
           </template>
         </el-table-column>
-        <el-table-column label="Action" width="200" align="center">
+        <el-table-column :label="$t('common.action')" width="200" align="center">
           <template slot-scope="{ row }">
             <delete-link class="middle-icon" @click="deleteArg(row.values.id)"></delete-link>
           </template>
@@ -45,27 +45,27 @@
                 <component :is="param.component" v-model="newVM.arguments[config.id].value[param.name]"></component>
               </el-form-item>
             </el-form>
-            <el-button @click="deleteArg(config.id)" type="danger" size="small">Delete</el-button>
+            <el-button @click="deleteArg(config.id)" type="danger" size="small">{{$t('common.delete')}}</el-button>
           </el-collapse-item>
         </el-collapse>
       </el-card>
 
       <div style="padding-top: 30px">
-        <el-button type="primary" @click="dialogVisible = true">Add</el-button>
+        <el-button type="primary" icon="el-icon-plus" @click="dialogVisible = true">{{$t('common.add')}}</el-button>
       </div>
     </div>
 
-    <el-dialog :visible.sync="dialogVisible" title="Select the template">
+    <el-dialog :visible.sync="dialogVisible" :title="$t('machineDetail.selectTemplate')">
       <el-form>
-        <el-form-item label="Arg template:">
+        <el-form-item :label="$t('machineDetail.optionTemplate')">
           <el-select v-model="selectedArg">
             <el-option v-for="temp in data" :label="temp.label" :key="temp.key" :value="temp.key"></el-option>
           </el-select>
         </el-form-item>
       </el-form>
       <span slot="footer" class="dialog-footer">
-        <el-button size="small" type="primary" @click="addConfig">Create</el-button>
-        <el-button size="small" @click="dialogVisible = false">Cancel</el-button>
+        <el-button size="small" type="primary" @click="addConfig">{{$t('common.add')}}</el-button>
+        <el-button size="small" @click="dialogVisible = false">{{$t('common.cancel')}}</el-button>
       </span>
     </el-dialog>
   </div>

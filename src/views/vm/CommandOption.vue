@@ -7,24 +7,26 @@
               style="margin-top: 30px" row-key="id" v-loading="loading" @expand-change="handleExpandChange">
       <el-table-column type="expand">
         <template slot-scope="{ row }">
-          <edit-arg :data="row.config | json" :arg-id="row.id" @change="search"></edit-arg>
+          <edit-cmd-option :data="row.config | json" :arg-id="row.id" @change="search"></edit-cmd-option>
         </template>
       </el-table-column>
-      <el-table-column prop="arg" :label="$t('vm.option')" width="200">
+      <el-table-column prop="arg" :label="$t('commandOption.option')" width="200">
       </el-table-column>
-      <el-table-column prop="name" :label="$t('vm.name')" width="200">
+      <el-table-column prop="name" :label="$t('common.name')" width="200">
       </el-table-column>
-      <el-table-column prop="is_primary" label="Primary"
-                       width="200"
-                       show-overflow-tooltip>
+      <el-table-column
+        prop="is_primary"
+        :label="$t('common.enabled')"
+        width="200"
+        show-overflow-tooltip>
         <template slot-scope="{ row }">
-          <el-tag type="primary" v-if="row.is_primary === 1">Primary</el-tag>
+          <el-tag type="primary" v-if="row.is_primary === 1">{{$t('common.isEnabled')}}</el-tag>
         </template>
       </el-table-column>
-      <el-table-column prop="config" :label="$t('vm.template1')"
+      <el-table-column prop="config" :label="$t('commandOption.template1')"
                        show-overflow-tooltip>
       </el-table-column>
-      <el-table-column :label="$t('vm.action')" width="200" align="center">
+      <el-table-column :label="$t('common.action')" width="200" align="center">
         <template slot-scope="{ row }">
           <el-link icon="el-icon-view" type="primary" class="middle-icon" @click="toggleExpand(row.id)"></el-link>
           <delete-link class="middle-icon" @click="deleteArg(row.id)"></delete-link>
@@ -49,11 +51,11 @@
   import { listOption, deleteArg } from '../../api/vm';
   import NewArgDialog from './components/NewArgDialog';
   import DeleteLink from '@/components/DeleteLink';
-  import EditArg from './components/EditArg'
+  import EditCmdOption from './components/EditCmdOption'
 
   export default {
     name: 'KvmArg',
-    components: { EditArg, DeleteLink, NewArgDialog },
+    components: { EditCmdOption, DeleteLink, NewArgDialog },
     data() {
       return {
         loading: false,

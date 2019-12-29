@@ -11,24 +11,24 @@
           </el-button>
         </el-input>
       </el-form-item>
-      <newos-conf-dialog @created="search"></newos-conf-dialog>
+      <new-os-conf-dialog @created="search" :text="$t('common.create')"></new-os-conf-dialog>
     </el-form>
 
     <el-table :data="oss" v-loading="loading">
-      <el-table-column prop="name" :label="$t('os.name')">
+      <el-table-column prop="name" :label="$t('common.name')">
       </el-table-column>
       <el-table-column prop="type" :label="$t('os.osType')">
       </el-table-column>
       <el-table-column prop="detail" :label="$t('os.detail')" show-overflow-tooltip>
       </el-table-column>
-      <el-table-column prop="enabled" :label="$t('os.enabled')">
+      <el-table-column prop="enabled" :label="$t('common.enabled')">
         <template slot-scope="{ row }">
-          <el-tag v-if="row.enabled" type="primary">enabled</el-tag>
+          <el-tag v-if="row.enabled" type="primary">{{$t('common.isEnabled')}}</el-tag>
         </template>
       </el-table-column>
-      <el-table-column prop="created_at" :label="$t('os.createdAt')" :formatter="dateFormatter">
+      <el-table-column prop="created_at" :label="$t('common.createdAt')" :formatter="dateFormatter">
       </el-table-column>
-      <el-table-column :label="$t('os.action')" align="center">
+      <el-table-column :label="$t('common.action')" align="center">
         <template slot-scope="{ row }">
           <el-link class="middle-icon" @click="handleEdit(row)" type="primary" icon="el-icon-setting"></el-link>
           <delete-link class="middle-icon" @click="deleteOS(row.id)"></delete-link>
@@ -56,20 +56,20 @@
 
 <script>
   import DeleteLink from '@/components/DeleteLink';
-  import NewosConfDialog from './components/NewOSConfDialog';
-  import EditosConfDialog from './components/EditOSConfDialog';
+  import NewOsConfDialog from './components/NewOSConfDialog';
+  import EditOsConfDialog from './components/EditOSConfDialog';
   import Pager from './mixins/pager';
 
   import { OSList, deleteOS } from '../../api/vm';
   import Vue from 'vue';
-  const EditDialog = Vue.extend(EditosConfDialog);
+  const EditDialog = Vue.extend(EditOsConfDialog);
 
   export default {
     name: 'OSList',
     components: {
       DeleteLink,
-      NewosConfDialog,
-      EditosConfDialog
+      NewOsConfDialog,
+      EditOsConfDialog
     },
     mixins: [ Pager ],
     data() {
@@ -107,7 +107,7 @@
 
       handleEdit(OS) {
         const component = {
-          component: 'EditosConfDialog',
+          component: 'EditOsConfDialog',
           key: OS.id,
           props: {
             data: OS,
