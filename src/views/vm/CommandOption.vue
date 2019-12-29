@@ -15,12 +15,12 @@
           {{ JSON.parse(row.arg).join(', ') }}
         </template>
       </el-table-column>
-      <el-table-column prop="name" :label="$t('common.name')" width="200">
+      <el-table-column prop="name" :label="$t('common.name')" width="150">
       </el-table-column>
       <el-table-column
         prop="is_primary"
         :label="$t('common.enabled')"
-        width="200"
+        width="120"
         show-overflow-tooltip>
         <template slot-scope="{ row }">
           <el-tag type="primary" v-if="row.is_primary === 1">{{$t('common.isEnabled')}}</el-tag>
