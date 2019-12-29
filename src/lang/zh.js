@@ -257,7 +257,8 @@ export default {
     option: '参数',
     value: '值',
     selectTemplate: '选择命令行模版',
-    optionTemplate: '命令行模版：'
+    optionTemplate: '命令行模版：',
+    autoBoot: '自动启动'
   },
   newVmDialog: {
     createVm: '创建虚拟机'

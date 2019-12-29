@@ -247,7 +247,8 @@ export default {
     option: 'Option',
     value: 'Value',
     selectTemplate: 'Select the template',
-    optionTemplate: 'Arg template:'
+    optionTemplate: 'Arg template:',
+    autoBoot: 'Auto Boot'
   },
   newVmDialog: {
     createVm: 'Create Virtual Machine'
