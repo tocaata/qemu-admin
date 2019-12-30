@@ -24,6 +24,7 @@ export default {
     statusLabel: '状态：',
     typeLabel: '类型：',
     detailLabel: '详情：',
+    defaultLabel: '默认值：',
     enabledLabel: '启用：'
   },
   route: {
@@ -196,43 +197,28 @@ export default {
     closeAll: '关闭所有'
   },
   commandOption: {
-    add: '添加',
     option: '参数',
-    name: '名称',
     template1: '模版',
-    action: '操作',
     addVmTitle: 'QEMU参数模版',
     title: '标题：',
     template: '模版：',
     description: '详情：',
-    type: '类型：',
     addVariable: '添加变量',
-    save: '保存',
-    cancel: '取消',
+    component: '组件',
+    options: '可选项',
     placeholder: {
-      name: '名称：',
       label: '标签：',
-      type: '类型：',
-      componentType: '组件类型：',
-      default: '默认值：'
+      componentType: '组件：',
+      options: '可选项：'
     }
   },
   os: {
     searching: '搜索',
-    create: '创建',
-    name: '名称',
     osType: '操作系统类型',
     detail: '详细描述',
-    createdAt: '创建时间',
-    action: '操作',
 
     newDialog: {
       createOSTemplate: '创建系统模版',
-      name: '名称',
-      type: '类型',
-      detail: '详情',
-      enabled: '启用',
-
       allTemplates: '所有的参数模版',
       enabledTemplates: '启用的参数模版'
     }
@@ -249,7 +235,6 @@ export default {
   user: {
     name: '姓名',
     username: '用户名',
-    createdAt: '创建时间',
     emailAddress: '邮箱地址'
   },
   machineDetail: {
@@ -267,7 +252,6 @@ export default {
     title: '标题：',
     template: '模版：',
     description: '描述：',
-    type: '类型：',
     templateVariable: '模版变量：',
     addVariable: '添加变量'
   }

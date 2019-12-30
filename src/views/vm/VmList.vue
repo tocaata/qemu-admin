@@ -22,7 +22,7 @@
       </el-button>
     </el-form>
     <el-table :data="vms" stripe
-              header-align="center" align="center"
+              header-align="center"
               @sort-change="sortChange"
               :default-sort = "{ prop: 'created_at', order: 'descending' }"
               v-loading="loading"
@@ -102,12 +102,10 @@
         </template>
       </el-table-column>
       <el-table-column
-        sortable="custom"
         :label="$t('virtualMachine.memory')"
         prop="memory">
       </el-table-column>
       <el-table-column
-        sortable="custom"
         label="CPU"
         prop="cpu">
       </el-table-column>
@@ -129,10 +127,20 @@
         align="center"
         :label="$t('common.action')">
         <template slot-scope="{ row }">
-          <el-link v-show="row.status === 'stopped'" class="middle-icon" @click="runMachine(row.id)"
-                   icon="el-icon-video-play" type="primary"></el-link>
-          <el-link v-show="row.status !== 'stopped'" class="middle-icon" @click="exec(row.id, 'stop')"
-                   icon="el-icon-video-pause" type="primary"></el-link>
+          <el-link
+            v-show="row.status === 'stopped'"
+             class="middle-icon"
+             @click="runMachine(row.id)"
+             icon="el-icon-video-play"
+             type="primary">
+          </el-link>
+          <el-link
+            v-show="row.status !== 'stopped'"
+            class="middle-icon"
+            @click="exec(row.id, 'stop')"
+            icon="el-icon-video-pause"
+            type="primary">
+          </el-link>
           <el-link class="middle-icon" icon="el-icon-setting" @click="machineDetail(row.id)"></el-link>
           <delete-link class="middle-icon" @click="deleteVm(row.id)"></delete-link>
         </template>
@@ -155,7 +163,7 @@
 </template>
 
 <script>
-  import { mapGetters } from 'vuex'
+  import { mapGetters } from 'vuex';
   import { vmList, deleteVm, getCmd, run, exec } from '../../api/vm';
   import NewVmDialog from './VmDialog/NewVmDialog';
   import DeleteLink from '@/components/DeleteLink';
@@ -188,6 +196,7 @@
       ...mapGetters(['dirtyViews'])
     },
     mounted() {
+      this.$store.dispatch('delDirtyView', 'VmList').then();
       this.search();
     },
     activated() {

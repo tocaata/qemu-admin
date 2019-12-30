@@ -17,7 +17,7 @@
         <el-form-item :label="$t('common.typeLabel')" prop="type">
           <el-input style="width: 40%" type="textarea" v-model="newConfig.type" clearable></el-input>
         </el-form-item>
-        <el-form-item label="Primary:" prop="isPrimary">
+        <el-form-item :label="$t('common.enabledLabel')" prop="isPrimary">
           <el-switch v-model="newConfig.isPrimary"></el-switch>
         </el-form-item>
       </el-form>
@@ -64,7 +64,7 @@
           </el-form-item>
           <el-col :span="4">
             <el-form-item prop="default">
-              <el-input :placeholder="$t('commandOption.placeholder.default')" v-model="param.default" clearable />
+              <el-input :placeholder="$t('common.defaultLabel')" v-model="param.default" clearable />
             </el-form-item>
           </el-col>
           <el-button @click="removeParam(param.key)" type="text" icon="el-icon-delete"></el-button>

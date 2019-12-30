@@ -124,6 +124,7 @@
             message: res.message
           });
           this.$emit('created', undefined);
+          this.$store.dispatch('addDirtyViews', ['VmList']);
         }).catch(_ => {
           this.loading = false;
         });

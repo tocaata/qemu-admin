@@ -1,7 +1,24 @@
 <template>
   <div class="margin">
-    <new-option-dialog  :on-create="handleCreate" :text="$t('common.add')">
-    </new-option-dialog>
+    <div :style="{display: 'flex'}">
+      <el-form ref="searching" :model="searching" @submit.native.prevent="search" inline>
+        <el-form-item prop="searchStr">
+          <el-input
+            clearable
+            :readonly="loading"
+            :placeholder="$t('virtualMachine.searching')"
+            v-model="searching.searchStr">
+            <el-button slot="append"
+                       icon="el-icon-search"
+                       :loading="loading"
+                       @click="search">
+            </el-button>
+          </el-input>
+        </el-form-item>
+      </el-form>
+      <new-option-dialog  :on-create="handleCreate" :text="$t('common.add')">
+      </new-option-dialog>
+    </div>
 
     <el-table :data="args" class="arg-table" stripe highlight-current-row :expand-row-keys="expand"
               style="margin-top: 30px" row-key="id" v-loading="loading" @expand-change="handleExpandChange">
@@ -62,6 +79,9 @@
     data() {
       return {
         loading: false,
+        searching: {
+          searchStr: ''
+        },
         newParams: {
           name: '',
           label: '',
@@ -90,7 +110,7 @@
         this.loading = true;
 
         const { pageIndex, pageSize } = this;
-        return listOption({ pageIndex, pageSize }).then(res => {
+        return listOption({ pageIndex, pageSize, searchStr: this.searching.searchStr }).then(res => {
           this.args = res.data.list;
           this.total = res.data.totalSize;
           this.loading = false;

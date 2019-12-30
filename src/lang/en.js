@@ -24,6 +24,7 @@ export default {
     statusLabel: 'Status:',
     typeLabel: 'Type:',
     detailLabel: 'Detail:',
+    defaultLabel: 'Default:',
     enabledLabel: 'Enabled:'
   },
   route: {
@@ -202,27 +203,22 @@ export default {
     title: 'Title:',
     template: 'Template:',
     description: 'Desc:',
-    type: 'Type:',
     addVariable: 'Add Variable',
+    component: 'Component',
+    options: 'Options',
     placeholder: {
       label: 'Label:',
-      componentType: 'Component Type:',
-      default: 'Default:'
+      componentType: 'Component:',
+      options: 'Options:'
     }
   },
   os: {
     searching: 'Searching',
     osType: 'OS Type',
     detail: 'Detail',
-    isEnabled: 'Enabled',
 
     newDialog: {
       createOSTemplate: 'Create OS Template',
-      name: 'OS Name',
-      type: 'OS Type',
-      detail: 'OS Detail',
-      enabled: 'Enabled',
-
       allTemplates: 'All Templates',
       enabledTemplates: 'Enabled Templates'
     }
@@ -240,7 +236,6 @@ export default {
     name: 'Name',
     username: 'Username',
     emailAddress: 'Email Address',
-    delete: 'Delete'
   },
   machineDetail: {
     machineDetail: 'Machine Detail',
@@ -257,7 +252,6 @@ export default {
     title: 'Title:',
     template: 'Template:',
     description: 'Description:',
-    type: 'Type:',
     templateVariable: 'Template Variable:',
     addVariable: 'Add Variable',
   }
