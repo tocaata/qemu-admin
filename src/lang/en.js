@@ -41,6 +41,7 @@ export default {
     vm: 'Virtual Machine',
     vmDetail: 'Vm Detail',
     user: 'Users',
+    systemSetting: 'System Setting',
 
     components: 'Components',
     componentIndex: 'Introduction',
@@ -254,5 +255,8 @@ export default {
     description: 'Description:',
     templateVariable: 'Template Variable:',
     addVariable: 'Add Variable',
+  },
+  setting: {
+    value: 'Value'
   }
 }

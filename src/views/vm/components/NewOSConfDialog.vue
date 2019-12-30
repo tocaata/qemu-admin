@@ -60,7 +60,7 @@
 </template>
 
 <script>
-  import { getAllOptions, saveOS } from '@/api/vm';
+  import { getEnabledOptions, saveOS } from '@/api/vm';
   import _ from 'lodash';
   import { mapGetters } from 'vuex'
 
@@ -104,7 +104,7 @@
     },
     methods: {
       getData() {
-        getAllOptions().then(res => {
+        getEnabledOptions().then(res => {
           this.data = res.data.map(temp => {
             const data = JSON.parse(temp.config);
             const template = _.zip(data.arg, data.template).map(([arg, tpl]) => arg + (tpl ? ' ' + tpl : '')).join('\n');

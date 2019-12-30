@@ -110,7 +110,6 @@
         prop="cpu">
       </el-table-column>
       <el-table-column
-        sortable="custom"
         :label="$t('virtualMachine.os')"
         prop="os">
         <template slot-scope="{ row }">
@@ -168,7 +167,8 @@
   import NewVmDialog from './VmDialog/NewVmDialog';
   import DeleteLink from '@/components/DeleteLink';
   import ShowMore from '@/components/ShowMore';
-  import Pager from './mixins/pager';
+  import Pager from '@/mixins/pager';
+  import moment from 'moment';
 
   export default {
     name: 'VmList',
@@ -227,18 +227,18 @@
         const { searchStr } = this.searchVM;
         const { pageSize, pageIndex, orderBy, ascending } = this;
         this.loading = true;
-        vmList({ searchStr, pageSize, pageIndex, orderBy, ascending }).then(res => {
+        vmList({ searchStr, pageSize, pageIndex, orderBy, ascending }).then(({ data }) => {
           const cmds = this.vms.reduce((total, cur) => {
             total[cur.id] = cur.cmdArgs;
             return total;
           }, {});
 
-          this.vms = res.data.list.map(vm => {
+          this.vms = data.list.map(vm => {
             vm.cmdArgs = cmds[vm.id];
             vm.loading = false;
             return vm;
           });
-          this.total = res.data.totalSize;
+          this.total = data.totalSize;
           this.loading = false;
           // this.handleExpandChange(null, this.vms.filter(x => this.expand.indexOf(x.id) >= 0));
         }).catch(() => {

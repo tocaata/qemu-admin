@@ -159,6 +159,25 @@ export const asyncRouterMap = [
   componentsRouter,
 
   {
+    path: '/setting',
+    component: Layout,
+    redirect: '/setting/index',
+    name: 'Setting',
+    meta: {
+      title: 'Setting',
+      icon: 'example'
+    },
+    children: [
+      {
+        path: 'index',
+        component: () => import('@/views/setting/index'),
+        name: 'Setting List',
+        meta: { title: 'systemSetting', noCache: false, icon: 'setting' }
+      }
+    ]
+  },
+
+  {
     path: '/error',
     component: Layout,
     redirect: 'noredirect',

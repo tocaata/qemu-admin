@@ -22,8 +22,8 @@ const vmsRouter = {
       name: 'VmDetail',
       meta: { title: 'vmDetail', icon: 'el-icon-s-platform', noCache: false },
       hidden: true
-    },
+    }
   ]
-}
+};
 
 export default vmsRouter

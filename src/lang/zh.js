@@ -41,6 +41,7 @@ export default {
     vm: '虚拟机',
     vmDetail: '虚拟机详情',
     user: '用户',
+    systemSetting: '系统设置',
 
     components: '组件',
     componentIndex: '介绍',
@@ -254,5 +255,8 @@ export default {
     description: '描述：',
     templateVariable: '模版变量：',
     addVariable: '添加变量'
+  },
+  setting: {
+    value: '值'
   }
 }
