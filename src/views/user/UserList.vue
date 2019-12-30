@@ -1,8 +1,9 @@
 <template>
   <div class="container">
-    <el-table :data="users" align="center"
-              v-loading="loading"
-              fit highlight-current-row>
+    <el-table
+      :data="users" align="center"
+      v-loading="loading"
+      fit highlight-current-row>
       <el-table-column
         :label="$t('user.name')"
         prop="name">
@@ -44,6 +45,7 @@
 
 <script>
   import { userList, deleteUser } from '../../api/user';
+  import moment from 'moment';
 
   export default {
     name: 'UserList',

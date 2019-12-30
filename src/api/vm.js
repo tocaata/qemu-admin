@@ -34,10 +34,11 @@ export function listOption(data) {
   })
 }
 
-export function getPrimaryOptions() {
+export function getEnabledOptions() {
   return request({
-    url: '/vmOptionTemplate/primary',
-    method: 'get'
+    url: '/vmOptionTemplate/all',
+    method: 'get',
+    params: { enabled: true }
   })
 }
 

@@ -58,7 +58,8 @@
   import DeleteLink from '@/components/DeleteLink';
   import NewOsConfDialog from './components/NewOSConfDialog';
   import EditOsConfDialog from './components/EditOSConfDialog';
-  import Pager from './mixins/pager';
+  import Pager from '@/mixins/pager';
+  import moment from 'moment';
 
   import { OSList, deleteOS } from '../../api/vm';
   import Vue from 'vue';

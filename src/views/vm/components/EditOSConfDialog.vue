@@ -48,7 +48,7 @@
 </template>
 
 <script>
-  import { getAllOptions, updateOS, OSDetail } from '@/api/vm';
+  import { getEnabledOptions, updateOS, OSDetail } from '@/api/vm';
 
   export default {
     name: 'EditOSConfDialog',
@@ -93,7 +93,7 @@
     },
     methods: {
       getData() {
-        getAllOptions().then(res => {
+        getEnabledOptions().then(res => {
           this.allConfig = res.data.map(temp => {
             const data = JSON.parse(temp.config);
             const template = _.zip(data.arg, data.template).map(([arg, tpl]) => arg + (tpl ? ' ' + tpl : '')).join('\n');

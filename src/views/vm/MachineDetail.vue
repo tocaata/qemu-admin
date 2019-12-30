@@ -74,7 +74,7 @@
 
 <script>
   import _ from 'lodash';
-  import { vmDetail, editVm, deleteConfig, editConfig, getAllOptions, addConfig, editArg } from '../../api/vm'
+  import { vmDetail, editVm, deleteConfig, editConfig, getEnabledOptions, addConfig } from '../../api/vm'
   import DeleteLink from '@/components/DeleteLink';
 
   export default {
@@ -105,14 +105,10 @@
       };
     },
     computed: {
-      configsFiltered() {
-        const keys = Object.keys(this.newVM.arguments);
-        return this.configs.filter(x => keys.includes(x.id.toString()));
-      }
     },
     mounted() {
       this.getData();
-      getAllOptions().then(res => {
+      getEnabledOptions().then(res => {
         this.data = res.data.map(temp => {
           const data = JSON.parse(temp.config);
           const template = _.zip(data.arg, data.template).map(([arg, tpl]) => arg + (tpl ? ' ' + tpl : '')).join('\n');
@@ -182,11 +178,6 @@
           this.loading = false;
         }).finally(() => {
           this.vmSettingEditable = false;
-        });
-      },
-      editVM() {
-        editVm({ id: this.machineId, ...this.newVM }).then(res => {
-        }).catch(err => {
         });
       },
       deleteArg(configId) {
