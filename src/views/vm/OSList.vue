@@ -94,13 +94,14 @@
     },
     mounted() {
       this.search();
+      this.$store.dispatch('delDirtyView', 'OSList').then();
     },
 
     activated() {
       if (this.dirtyViews.includes('OSList')) {
         this.$store.dispatch('delDirtyView', 'OSList').then(() => {
           this.search();
-        })
+        });
       }
     },
     methods: {

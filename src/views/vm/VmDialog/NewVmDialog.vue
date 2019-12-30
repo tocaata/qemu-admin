@@ -54,6 +54,7 @@
 <script>
   import { getPrimaryOptions, OSEnabled, createVm, OSDetail } from '@/api/vm';
   import KvmWizardControl from './KvmWizardControl';
+  import {mapGetters} from "vuex";
 
   export default {
     name: 'NewVmDialog',
@@ -71,7 +72,8 @@
         set(newValue) {
           this.$emit("update:visible", newValue);
         }
-      }
+      },
+      ...mapGetters(['dirtyViews'])
     },
     data() {
       return {
@@ -116,47 +118,31 @@
       }
     },
     mounted () {
-      OSEnabled().then(res => {
-        const { data } = res;
-        this.oss = data.reduce((total, cur) => {
-          let i = total.find((x) => x.value === cur.type);
-          if (!i) {
-            total.push({
-              label: cur.type,
-              value: cur.type,
-              children: []
-            });
-            i = total[total.length - 1];
-          }
-          i.children.push({ label: cur.name, value: cur.id });
-          return total;
-        }, []);
-      })
-
-      return;
-
-      getPrimaryOptions().then(res => {
-        const allVmArgs = res.data.map(d => {
-          d.config = JSON.parse(d.config);
-          return d;
-        });
-
-        return ;
-
-        [this.configurableArgs, this.unconfigArgs] = allVmArgs.reduce((total, cur) => {
-          if (cur.config.params.length > 0) {
-            total[0].push(cur);
-          } else {
-            total[1].push(cur);
-          }
-          return total;
-        }, [[], []]);
-
-        Object.freeze(this.configurableArgs);
-        Object.freeze(this.unconfigArgs);
-      });
+      this.getData();
+    },
+    activated() {
+      if (this.dirtyViews.includes('VmList')) {
+        this.getData();
+      }
     },
     methods: {
+      getData() {
+        return OSEnabled().then(({data}) => {
+          this.oss = data.reduce((total, cur) => {
+            let i = total.find((x) => x.value === cur.type);
+            if (!i) {
+              total.push({
+                label: cur.type,
+                value: cur.type,
+                children: []
+              });
+              i = total[total.length - 1];
+            }
+            i.children.push({ label: cur.name, value: cur.id });
+            return total;
+          }, []);
+        });
+      },
       createVm() {
         this.loading = true;
         const tmpArgs = this.unconfigArgs.reduce((total, cur) => {

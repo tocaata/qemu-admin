@@ -198,6 +198,7 @@
             message: message
           });
           this.getData();
+          this.$store.dispatch('addDirtyViews', ['VmList']);
         }).catch(err => {
           this.loading = false;
         })
@@ -228,6 +229,7 @@
           });
 
           this.getData();
+          this.$store.dispatch('addDirtyViews', ['VmList']);
         }).catch(err => {
           this.loading = false;
         })
