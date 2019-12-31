@@ -82,10 +82,13 @@ export default {
   width: 100%;
   /deep/ {
     .el-scrollbar__bar {
-      bottom: 0px;
+      bottom: 0;
     }
     .el-scrollbar__wrap {
       height: 49px;
+    }
+    .el-scrollbar__view {
+      user-select: none;
     }
   }
 }

@@ -257,6 +257,8 @@ export default {
     addVariable: 'Add Variable',
   },
   setting: {
-    value: 'Value'
+    value: 'Value',
+    valueLabel: 'Value:',
+    newSettingTitle: 'New Setting'
   }
 }
