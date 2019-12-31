@@ -74,6 +74,14 @@ export function createVm(data) {
   })
 }
 
+export function cloneVm(id) {
+  return request({
+    url: '/vm/clone',
+    method: 'post',
+    data: {id}
+  })
+}
+
 export function deleteVm(id) {
   return request({
     url: '/vm/delete',

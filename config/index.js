@@ -13,7 +13,6 @@ module.exports = {
       '/api-dev': {
         target:'http://localhost:3000/',
         // target: 'http://192.168.0.3:3000/',
-        // target: 'https://www.baidu.com/',
         changeOrigin: true,
         pathRewrite:{'^/api-dev':''},
         secure: false,
@@ -47,7 +46,7 @@ module.exports = {
      */
 
     // https://webpack.js.org/configuration/devtool/#development
-    devtool: 'cheap-source-map',
+    devtool: 'cheap-module-eval-source-map',
 
     // CSS Sourcemaps off by default because relative paths are "buggy"
     // with this option, according to the CSS-Loader README
