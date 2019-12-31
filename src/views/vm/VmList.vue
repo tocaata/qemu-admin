@@ -55,6 +55,13 @@
                   <svg-icon icon-class="close"/>
                 </el-button>
               </el-tooltip>
+
+              <el-tooltip effect="dark" content="clone vm" placement="top" :open-delay="500">
+                <el-button type="text" style="font-size: 20px"
+                           @click="cloneVm(row.id)">
+                  <svg-icon icon-class="clone"/>
+                </el-button>
+              </el-tooltip>
             </el-form-item>
             <el-form-item :label="$t('common.nameLabel')">
               <span>{{ row.name }}</span>
@@ -163,7 +170,7 @@
 
 <script>
   import { mapGetters } from 'vuex';
-  import { vmList, deleteVm, getCmd, run, exec } from '../../api/vm';
+  import { vmList, deleteVm, cloneVm, getCmd, run, exec } from '../../api/vm';
   import NewVmDialog from './VmDialog/NewVmDialog';
   import DeleteLink from '@/components/DeleteLink';
   import ShowMore from '@/components/ShowMore';
@@ -279,6 +286,15 @@
       vmCreated() {
         this.dialogVisible = false;
         this.search();
+      },
+      cloneVm(id) {
+        this.loading = true;
+        cloneVm(id).then(({message}) => {
+          this.$message({ type: 'success', message });
+          this.search();
+        }).finally(() => {
+          this.loading = false;
+        });
       },
       deleteVm(id) {
         this.loading = true;
