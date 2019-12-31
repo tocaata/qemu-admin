@@ -257,6 +257,8 @@ export default {
     addVariable: '添加变量'
   },
   setting: {
-    value: '值'
+    value: '值',
+    valueLabel: '值：',
+    newSettingTitle: '创建新设置'
   }
 }
