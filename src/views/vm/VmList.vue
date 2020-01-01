@@ -65,7 +65,7 @@
 
               <el-tooltip effect="dark" content="connect vpn" placement="top" :open-delay="500">
                 <el-button type="text" style="font-size: 20px"
-                           @click="vnc(row.id)">
+                           @click="vnc(row)">
                   <svg-icon icon-class="vnc"/>
                 </el-button>
               </el-tooltip>
@@ -303,7 +303,12 @@
           this.loading = false;
         });
       },
-      vnc(id) {
+      vnc(row) {
+        const {id} = row;
+        const vncOption = row.cmdArgs.find(option => option.option === '-vnc');
+        const matched = vncOption.match(/:([0-9]+)/);
+        const port = matched && matched[1];
+
         const pass = Math.random().toString(36).slice(2);
         this.loading = true;
         exec(
@@ -311,7 +316,9 @@
           'set_password',
           {'protocol': 'vnc', 'password': pass}
         ).then(({message}) => {
+          console.log('VNC password', pass);
           this.$message({ type: 'success', message });
+          window.open(`noVNC-1.1.0/vnc.html?host=${document.location.host}&port=${port}&password=${pass}`)
         }).finally(() => {
           this.loading = false;
         });
