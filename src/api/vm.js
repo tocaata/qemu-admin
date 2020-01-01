@@ -141,11 +141,11 @@ export function getCmd(id) {
   })
 }
 
-export function exec(id, cmd) {
+export function exec(id, cmd, args) {
   return request({
     url: '/vm/exec',
     method: 'post',
-    data: { id, cmd }
+    data: { id, cmd, args }
   })
 }
 
