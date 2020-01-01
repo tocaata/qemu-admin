@@ -62,6 +62,13 @@
                   <svg-icon icon-class="clone"/>
                 </el-button>
               </el-tooltip>
+
+              <el-tooltip effect="dark" content="connect vpn" placement="top" :open-delay="500">
+                <el-button type="text" style="font-size: 20px"
+                           @click="vnc(row.id)">
+                  <svg-icon icon-class="vnc"/>
+                </el-button>
+              </el-tooltip>
             </el-form-item>
             <el-form-item :label="$t('common.nameLabel')">
               <span>{{ row.name }}</span>
@@ -292,6 +299,19 @@
         cloneVm(id).then(({message}) => {
           this.$message({ type: 'success', message });
           this.search();
+        }).finally(() => {
+          this.loading = false;
+        });
+      },
+      vnc(id) {
+        const pass = Math.random().toString(36).slice(2);
+        this.loading = true;
+        exec(
+          id,
+          'set_password',
+          {'protocol': 'vnc', 'password': pass}
+        ).then(({message}) => {
+          this.$message({ type: 'success', message });
         }).finally(() => {
           this.loading = false;
         });

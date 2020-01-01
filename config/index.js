@@ -14,7 +14,7 @@ module.exports = {
         target:'http://localhost:3000/',
         // target: 'http://192.168.0.3:3000/',
         changeOrigin: true,
-        pathRewrite:{'^/api-dev':''},
+        pathRewrite: {'^/api-dev':''},
         secure: false,
         logLevel: 'info'
         // agent: new ProxyAgent('http://127.0.0.1:8888')
