@@ -306,7 +306,7 @@
       vnc(row) {
         const {id} = row;
         const vncOption = row.cmdArgs.find(option => option.option === '-vnc');
-        const matched = vncOption.match(/:([0-9]+)/);
+        const matched = vncOption && vncOption.value.match(/:([0-9]+)/);
         const port = matched && matched[1];
 
         const pass = Math.random().toString(36).slice(2);
@@ -318,7 +318,7 @@
         ).then(({message}) => {
           console.log('VNC password', pass);
           this.$message({ type: 'success', message });
-          window.open(`noVNC-1.1.0/vnc.html?host=${document.location.host}&port=${port}&password=${pass}`)
+          window.open(`noVNC-1.1.0/vnc.html?host=${document.location.host}&port=${5700 + parseInt(port)}&password=${pass}`)
         }).finally(() => {
           this.loading = false;
         });

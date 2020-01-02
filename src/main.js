@@ -29,8 +29,10 @@ Vue.use(Element, {
   i18n: (key, value) => i18n.t(key, value)
 })
 
+const socketIOServer = `${document.location.protocol}//${document.location.host}:${process.env.SOCKET_PORT}`
+
 Vue.use(new VueSocketIO({
-  connection: io(process.env.SERVER)
+  connection: io(socketIOServer)
 }));
 
 // register global utility filters.
