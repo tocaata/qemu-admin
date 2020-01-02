@@ -65,7 +65,7 @@
 
               <el-tooltip effect="dark" content="connect vpn" placement="top" :open-delay="500">
                 <el-button type="text" style="font-size: 20px"
-                           @click="vnc(row)">
+                           @click="vnc(row)" :disabled="row.status === 'stopped'">
                   <svg-icon icon-class="vnc"/>
                 </el-button>
               </el-tooltip>
