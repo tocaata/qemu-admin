@@ -117,8 +117,8 @@
     },
     computed: {
       filteredCmdTemplates() {
-        const searchStr = this.searchStr;
-        return this.cmdTemplates.filter(config => config.label.toLowerCase().includes(searchStr.toLowerCase()));
+        const searchStr = this.searchStr.toLowerCase();
+        return this.cmdTemplates.filter(({label}) => label.toLowerCase().includes(searchStr));
       }
     },
     mounted() {
@@ -153,16 +153,17 @@
             type: 'success',
             message: res.message
           });
+          this.$store.dispatch('addDirtyViews', ['VmList']);
           if (this.onUpdate) {
             this.onUpdate();
           }
-        }).catch(_ => {
+        }).catch(() => {
           this.loading = false;
         });
       },
 
       filterConfigs(query, item) {
-        return item.label.indexOf(query) > -1;
+        return item.label.indexOf(query) >= 0;
       },
 
       handleClose() {
