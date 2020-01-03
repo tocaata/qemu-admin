@@ -217,7 +217,7 @@
     activated() {
       if (this.dirtyViews.includes('VmList')) {
         this.$store.dispatch('delDirtyView', 'VmList').then(() => {
-          this.search();
+          this.search(true);
         })
       }
     },
@@ -238,28 +238,32 @@
       }
     },
     methods: {
-      search() {
+      search(withExpand = false) {
         const { searchStr } = this.searchVM;
         const { pageSize, pageIndex, orderBy, ascending } = this;
         this.loading = true;
         vmList({ searchStr, pageSize, pageIndex, orderBy, ascending }).then(({ data }) => {
-          const cmds = this.vms.reduce((total, cur) => {
+          const cmdOptions = this.vms.reduce((total, cur) => {
             total[cur.id] = cur.cmdArgs;
             return total;
           }, {});
 
           this.vms = data.list.map(vm => {
-            vm.cmdArgs = cmds[vm.id];
+            vm.cmdArgs = cmdOptions[vm.id];
             vm.loading = false;
             return vm;
           });
           this.total = data.totalSize;
           this.loading = false;
-          // this.handleExpandChange(null, this.vms.filter(x => this.expand.indexOf(x.id) >= 0));
-        }).catch(() => {
-          this.loading = false;
+          if (withExpand) {
+            this.handleExpandChange(
+              null,
+              this.vms.filter(x => this.expand.indexOf(x.id) >= 0),
+              true
+            );
+          }
         }).finally(() => {
-          // this.searchVM.searchStr = '';
+          this.loading = false;
         })
       },
       dateFormatter(row, column, cellValue) {
@@ -282,8 +286,7 @@
           this.$message({ type: 'success', message: res.message });
           const vm = this.vms.find(x => x.id === id);
           vm.status = 'in process';
-          this.loading = false;
-        }).catch(err => {
+        }).finally(() => {
           this.loading = false;
         });
       },
@@ -292,8 +295,7 @@
         this.loading = true;
         exec(id, cmd).then(res => {
           this.$message({ type: 'success', message: res.message });
-          this.loading = false;
-        }).catch(err => {
+        }).finally(() => {
           this.loading = false;
         });
       },
@@ -325,7 +327,7 @@
         ).then(({message}) => {
           console.log('VNC password', pass);
           this.$message({ type: 'success', message });
-          window.open(`noVNC-1.1.0/vnc.html?host=${document.location.host}&port=${5700 + parseInt(port)}&password=${pass}`)
+          window.open(`noVNC-1.1.0/vnc.html?host=${document.location.hostname}&port=${5700 + parseInt(port)}&password=${pass}`)
         }).finally(() => {
           this.loading = false;
         });
@@ -333,28 +335,26 @@
       deleteVm(id) {
         this.loading = true;
         deleteVm(id).then(res => {
-          this.loading = false;
           this.$message({
             type: 'success',
             message: res.message
           });
 
           this.search();
-        }).catch(() => {
+        }).finally(() => {
           this.loading = false;
-        })
+        });
       },
-      handleExpandChange(rows, expandedRows) {
+      handleExpandChange(rows, expandedRows, refresh = false) {
         if (expandedRows.length > 0) {
           expandedRows.forEach(row => {
-            if (('cmdArgs' in row) && !row.cmdArgs) {
+            if (('cmdArgs' in row) && !row.cmdArgs || refresh) {
               this.$set(row, 'loading', true);
-              getCmd(row.id).then(res => {
-                this.$set(row, 'cmdArgs', res.data.map(([option, value]) => { return { option, value } }));
+              getCmd(row.id).then(({data}) => {
+                this.$set(row, 'cmdArgs', data.map(([option, value]) => ({ option, value })));
+              }).finally(() => {
                 this.$set(row, 'loading', false);
-              }).catch(() => {
-                this.$set(row, 'loading', false);
-              })
+              });
             }
           });
         }
@@ -372,7 +372,7 @@
     sockets: {
       updateMachineList(data) {
         console.log('updateMachineList', data);
-        this.search();
+        this.search(true);
       }
     }
   }

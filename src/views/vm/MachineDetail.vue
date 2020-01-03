@@ -132,9 +132,7 @@
             x.cmd = this.getCmd(x);
             return x;
           });
-
-          this.loading = false;
-        }).catch(() => {
+        }).finally(() => {
           this.loading = false;
         });
       },
@@ -183,36 +181,35 @@
       deleteArg(configId) {
         this.loading = true;
         deleteConfig(this.machineId, configId).then(({ message, data }) => {
-          this.loading = false;
           this.$message({
             type: 'success',
             message: message
           });
           this.getData();
           this.$store.dispatch('addDirtyViews', ['VmList']);
-        }).catch(err => {
+        }).finally(() => {
           this.loading = false;
         })
         // this.$delete(this.newVM.arguments, key);
       },
       editConfig(configId, configParams, index, rowId) {
         this.loading = true;
-        editConfig(this.machineId, configId, configParams).then(({ message, data }) => {
+        editConfig(this.machineId, configId, configParams).then(({ message }) => {
           this.loading = false;
           this.$message({
             type: 'success',
             message: message
           });
+          this.$store.dispatch('addDirtyViews', ['VmList']);
           this.getData();
           this.fold(rowId, index);
-        }).catch(err => {
+        }).catch(() => {
           this.loading = false;
         })
       },
       addConfig() {
         this.loading = true;
         addConfig(this.machineId, this.selectedArg).then(({ message, data }) => {
-          this.loading = false;
           this.dialogVisible = false;
           this.$message({
             type: 'success',
@@ -221,7 +218,7 @@
 
           this.getData();
           this.$store.dispatch('addDirtyViews', ['VmList']);
-        }).catch(err => {
+        }).finally(() => {
           this.loading = false;
         })
       },
