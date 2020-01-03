@@ -219,6 +219,7 @@ export default {
     detail: 'Detail',
 
     newDialog: {
+      brandLabel: 'Brand:',
       createOSTemplate: 'Create OS Template',
       allTemplates: 'All Templates',
       enabledTemplates: 'Enabled Templates'

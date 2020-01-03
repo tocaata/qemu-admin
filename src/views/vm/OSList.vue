@@ -11,13 +11,21 @@
           </el-button>
         </el-input>
       </el-form-item>
-      <new-os-conf-dialog @created="search" :text="$t('common.create')"></new-os-conf-dialog>
+      <new-os-dialog @created="search" :text="$t('common.create')"></new-os-dialog>
     </el-form>
 
-    <el-table :data="oss" v-loading="loading">
+    <el-table
+      :data="oss"
+      stripe
+      highlight-current-row
+      v-loading="loading">
       <el-table-column prop="name" :label="$t('common.name')">
       </el-table-column>
       <el-table-column prop="type" :label="$t('os.osType')">
+        <template slot-scope="{ row }">
+          <svg-icon v-if="row.icon" :icon-class="row.icon"/>
+          {{ row.type }}
+        </template>
       </el-table-column>
       <el-table-column prop="detail" :label="$t('os.detail')" show-overflow-tooltip>
       </el-table-column>
@@ -56,22 +64,22 @@
 
 <script>
   import DeleteLink from '@/components/DeleteLink';
-  import NewOsConfDialog from './components/NewOSConfDialog';
-  import EditOsConfDialog from './components/EditOSConfDialog';
+  import NewOsDialog from './components/NewOSDialog';
+  import EditOsDialog from './components/EditOSDialog';
   import Pager from '@/mixins/pager';
   import moment from 'moment';
 
   import { OSList, deleteOS } from '../../api/vm';
   import Vue from 'vue';
   import { mapGetters } from 'vuex'
-  const EditDialog = Vue.extend(EditOsConfDialog);
+  const EditDialog = Vue.extend(EditOsDialog);
 
   export default {
     name: 'OSList',
     components: {
       DeleteLink,
-      NewOsConfDialog,
-      EditOsConfDialog
+      NewOsDialog,
+      EditOsDialog
     },
     mixins: [ Pager ],
     data() {
@@ -121,7 +129,7 @@
 
       handleEdit(OS) {
         const component = {
-          component: 'EditOsConfDialog',
+          component: 'EditOsDialog',
           key: OS.id,
           props: {
             data: OS,
