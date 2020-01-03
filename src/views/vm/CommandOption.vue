@@ -20,22 +20,38 @@
       </new-option-dialog>
     </div>
 
-    <el-table :data="args" class="arg-table" stripe highlight-current-row :expand-row-keys="expand"
-              style="margin-top: 30px" row-key="id" v-loading="loading" @expand-change="handleExpandChange">
+    <el-table
+      :data="args"
+      @sort-change="sortChange"
+      class="arg-table"
+      stripe highlight-current-row
+      :expand-row-keys="expand"
+      row-key="id"
+      v-loading="loading"
+      @expand-change="handleExpandChange">
       <el-table-column type="expand">
         <template slot-scope="{ row }">
           <edit-cmd-option :data="row.config | json" :arg-id="row.id" @change="search"></edit-cmd-option>
         </template>
       </el-table-column>
-      <el-table-column prop="arg" :label="$t('commandOption.option')" width="200">
+      <el-table-column
+        prop="arg"
+        sortable="custom"
+        :label="$t('commandOption.option')"
+        width="200">
         <template slot-scope="{ row }">
           {{ JSON.parse(row.arg).join(', ') }}
         </template>
       </el-table-column>
-      <el-table-column prop="name" :label="$t('common.name')" width="150">
+      <el-table-column
+        prop="name"
+        sortable="custom"
+        :label="$t('common.name')"
+        width="150">
       </el-table-column>
       <el-table-column
         prop="is_primary"
+        sortable="custom"
         :label="$t('common.enabled')"
         width="120"
         show-overflow-tooltip>
@@ -80,7 +96,9 @@
       return {
         loading: false,
         searching: {
-          searchStr: ''
+          searchStr: '',
+          orderBy: 'id',
+          ascending: false
         },
         newParams: {
           name: '',
@@ -110,13 +128,25 @@
         this.loading = true;
 
         const { pageIndex, pageSize } = this;
-        return listOption({ pageIndex, pageSize, searchStr: this.searching.searchStr }).then(res => {
+        return listOption({ pageIndex, pageSize, ...this.searching }).then(res => {
           this.args = res.data.list;
           this.total = res.data.totalSize;
           this.loading = false;
         }).catch(() => {
           this.loading = false;
         })
+      },
+
+      sortChange({order, prop}) {
+        if (order) {
+          this.searching.ascending = order === 'ascending';
+          this.searching.orderBy = prop || 'id';
+        } else {
+          this.searching.ascending = 'ascending';
+          this.searching.orderBy = 'id';
+        }
+
+        this.search();
       },
 
       deleteArg(id) {

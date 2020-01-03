@@ -127,6 +127,7 @@
         :label="$t('virtualMachine.os')"
         prop="os">
         <template slot-scope="{ row }">
+          <svg-icon v-if="row.os && row.os.icon" :icon-class="row.os.icon"/>
           {{ row.os && row.os.name }}
         </template>
       </el-table-column>
@@ -265,8 +266,14 @@
         return moment(cellValue).format('YYYY-MM-DD hh:mm:ss');
       },
       sortChange({order, prop}) {
-        this.ascending = order === 'ascending';
-        this.orderBy = prop || 'created_at';
+        if (order) {
+          this.ascending = order === 'ascending';
+          this.orderBy = prop || 'created_at';
+        } else {
+          this.ascending = 'ascending';
+          this.orderBy = 'created_at'
+        }
+
         this.search();
       },
       runMachine(id) {

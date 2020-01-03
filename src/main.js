@@ -27,9 +27,9 @@ import * as filters from './filters' // global filters
 Vue.use(Element, {
   size: Cookies.get('size') || 'medium', // set element-ui default size
   i18n: (key, value) => i18n.t(key, value)
-})
+});
 
-const socketIOServer = `${document.location.protocol}//${document.location.host}:${process.env.SOCKET_PORT}`
+const socketIOServer = `${document.location.protocol}//${document.location.hostname}:${process.env.SOCKET_PORT}`;
 
 Vue.use(new VueSocketIO({
   connection: io(socketIOServer)
@@ -38,9 +38,9 @@ Vue.use(new VueSocketIO({
 // register global utility filters.
 Object.keys(filters).forEach(key => {
   Vue.filter(key, filters[key])
-})
+});
 
-Vue.config.productionTip = false
+Vue.config.productionTip = false;
 
 new Vue({
   el: '#app',
@@ -48,4 +48,4 @@ new Vue({
   store,
   i18n,
   render: h => h(App)
-})
+});

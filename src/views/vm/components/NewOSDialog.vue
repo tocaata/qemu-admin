@@ -24,6 +24,9 @@
               <el-option v-for="item of OSTypes" :key="item.value" :label="item.label" :value="item.value"></el-option>
             </el-select>
           </el-form-item>
+          <el-form-item prop="icon" :label="$t('os.newDialog.brandLabel')">
+            <el-input v-model="newOS.icon"></el-input>
+          </el-form-item>
           <el-form-item prop="detail" :label="$t('common.detailLabel')">
             <el-input v-model="newOS.detail" type="textarea"></el-input>
           </el-form-item>
@@ -37,14 +40,31 @@
           Specify the parameters for this OS template.
         </p>
         <el-divider></el-divider>
-        <el-transfer
-          filterable
-          :filter-method="filterConfigs"
-          filter-placeholder="Please input config"
-          :titles="[$t('os.newDialog.allTemplates'), $t('os.newDialog.enabledTemplates')]"
-          v-model="selectedConfig"
-          :data="data">
-        </el-transfer>
+        <el-input
+          v-model="searchStr"
+          class="config-filter"
+          placeholder="Please input config"
+          clearable>
+        </el-input>
+        <el-card>
+          <el-checkbox-group
+            class="config-group"
+            v-model="selectedConfig">
+            <el-tooltip
+              v-for="config in filteredCmdTemplates"
+              :key="config.key"
+              effect="dark"
+              disabled
+              :content="config.label"
+              placement="top-start">
+              <el-checkbox
+                :disabled="config.disabled"
+                :label="config.key">
+                {{config.label}}
+              </el-checkbox>
+            </el-tooltip>
+          </el-checkbox-group>
+        </el-card>
       </div>
 
       <span slot="footer" class="dialog-footer">
@@ -60,12 +80,12 @@
 </template>
 
 <script>
-  import { getEnabledOptions, saveOS } from '@/api/vm';
-  import _ from 'lodash';
+  import { getAllOptions, saveOS } from '@/api/vm';
+  import {zip, pick} from 'lodash';
   import { mapGetters } from 'vuex'
 
   export default {
-    name: 'NewOSConfDialog',
+    name: 'NewOSDialog',
     props: {
       text: String
     },
@@ -73,13 +93,15 @@
       return {
         loading: false,
         dialogVisible: false,
-        data: [],
+        cmdTemplates: [],
+        searchStr: '',
         selectedConfig: [],
         step: 0,
         totalStep: 2,
         newOS: {
           name: '',
           type: null,
+          icon: '',
           detail: '',
           enabled: true
         },
@@ -92,7 +114,11 @@
       };
     },
     computed: {
-      ...mapGetters(['dirtyViews'])
+      ...mapGetters(['dirtyViews']),
+      filteredCmdTemplates() {
+        const searchStr = this.searchStr;
+        return this.cmdTemplates.filter(config => config.label.toLowerCase().includes(searchStr.toLowerCase()));
+      }
     },
     mounted() {
       this.getData();
@@ -104,19 +130,23 @@
     },
     methods: {
       getData() {
-        getEnabledOptions().then(res => {
-          this.data = res.data.map(temp => {
-            const data = JSON.parse(temp.config);
-            const template = _.zip(data.arg, data.template).map(([arg, tpl]) => arg + (tpl ? ' ' + tpl : '')).join('\n');
-            return { key: temp.id, label: `${data.title} '${template}'` };
+        getAllOptions().then(res => {
+          this.cmdTemplates = res.data.map(cmdTemplate => {
+            const data = JSON.parse(cmdTemplate.config);
+            const template = zip(data.arg, data.template).map(([arg, tpl]) => arg + (tpl ? ' ' + tpl : '')).join('\n');
+            return {
+              key: cmdTemplate.id,
+              label: `${data.title} '${template}'`,
+              disabled: !cmdTemplate.is_primary,
+              ...pick(data, ['title', 'desc'])
+            };
           });
-        })
+        });
       },
 
       saveOS() {
         this.loading = true;
         saveOS({...this.newOS, templates: this.selectedConfig}).then(res => {
-          this.loading = false;
           this.step = 0;
           this.dialogVisible = false;
           this.$message({
@@ -125,7 +155,7 @@
           });
           this.$emit('created', undefined);
           this.$store.dispatch('addDirtyViews', ['VmList']);
-        }).catch(_ => {
+        }).finally(() => {
           this.loading = false;
         });
       },
@@ -160,6 +190,28 @@
     /deep/ .form-container {
       width: 100%;
       padding: 15px 25px;
+
+      .config-filter {
+        margin-bottom: 10px;
+        width: 40%;
+      }
+
+      .el-card {
+         box-shadow: none;
+       }
+
+      .config-group {
+        /*height: 260px;*/
+        overflow-y: auto;
+        overflow-x: hidden;
+
+        label {
+          overflow: hidden;
+          margin-bottom: 10px;
+
+          display: block;
+        }
+      }
     }
 
     /deep/ .newOS {

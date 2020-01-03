@@ -215,10 +215,11 @@ export default {
   },
   os: {
     searching: '搜索',
-    osType: '操作系统类型',
+    osType: '系统类型',
     detail: '详细描述',
 
     newDialog: {
+      brandLabel: '标志：',
       createOSTemplate: '创建系统模版',
       allTemplates: '所有的参数模版',
       enabledTemplates: '启用的参数模版'
