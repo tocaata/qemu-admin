@@ -30,23 +30,23 @@
       </el-form-item>
     </el-form>
 
-    <el-table :data="newConfig.params" style="width: 80%">
-      <el-table-column :label="$t('common.name')" prop="name" width="120">
+    <el-table :data="newConfig.params" style="width: 95%">
+      <el-table-column :label="$t('common.name')" prop="name" width="150">
         <template slot-scope="{ row }">
           <span v-if="isShow">{{ row.name }}</span>
-          <el-input v-if="!isShow" v-model="row.name" :placeholder="$t('common.nameLabel')" size="small" clearable></el-input>
+          <el-input v-if="!isShow" v-model="row.name" :placeholder="$t('common.nameLabel')" size="small"></el-input>
         </template>
       </el-table-column>
       <el-table-column :label="$t('common.label')" prop="label" width="200">
         <template slot-scope="{ row }">
           <span v-if="isShow">{{ row.label }}</span>
-          <el-input v-else v-model="row.label" :placeholder="$t('common.labelLabel')" size="small" clearable></el-input>
+          <el-input v-else v-model="row.label" :placeholder="$t('commandOption.placeholder.label')" size="small"></el-input>
         </template>
       </el-table-column>
       <el-table-column :label="$t('common.type')" prop="type" width="160">
         <template slot-scope="{ row }">
           <span v-if="isShow">{{ row.type }}</span>
-          <el-select v-else v-model="row.type" :placeholder="$t('common.typeLabel')" size="small" clearable>
+          <el-select v-else v-model="row.type" :placeholder="$t('common.typeLabel')" size="small">
             <el-option
               v-for="t in types"
               :key="t.value"
@@ -59,7 +59,7 @@
       <el-table-column :label="$t('commandOption.component')" prop="component" width="160">
         <template slot-scope="{ row }">
           <span v-if="isShow">{{ row.component }}</span>
-          <el-select v-else v-model="row.component" :placeholder="$t('commandOption.placeholder.componentType')" size="small" clearable>
+          <el-select v-else v-model="row.component" :placeholder="$t('commandOption.placeholder.componentType')" size="small">
             <el-option v-for="c in componentOptions"
                        :key="c.value"
                        :label="c.label"
@@ -72,7 +72,7 @@
         <template slot-scope="{ row }">
           <span v-if="isShow">{{ row.options.join(',') }}</span>
           <el-select v-else-if="row.component === 'el-select'" size="small"
-                     :placeholder="$t('commandOption.placeholder.options')" clearable style="width: 100%"
+                     :placeholder="$t('commandOption.placeholder.options')" style="width: 100%"
                      v-model="row.options" multiple allow-create filterable default-first-option>
           </el-select>
         </template>
@@ -80,7 +80,7 @@
       <el-table-column :label="$t('common.default')" prop="default">
         <template slot-scope="{ row }">
           <span v-if="isShow">{{ row.default }}</span>
-          <el-input v-else v-model="row.default" :placeholder="$t('common.defaultLabel')" size="small" clearable></el-input>
+          <el-input v-else v-model="row.default" :placeholder="$t('common.defaultLabel')" size="small"></el-input>
         </template>
       </el-table-column>
       <el-table-column :label="$t('common.action')" align="center" width="100">
