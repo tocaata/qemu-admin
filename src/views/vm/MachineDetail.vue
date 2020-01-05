@@ -37,7 +37,9 @@
             </el-form>
           </template>
         </el-table-column>
-        <el-table-column prop="arg" width="240" :label="$t('machineDetail.option')" show-overflow-tooltip>
+        <el-table-column prop="arg" width="200" :label="$t('machineDetail.option')" show-overflow-tooltip>
+        </el-table-column>
+        <el-table-column prop="name" width="200" :label="$t('common.name')" show-overflow-tooltip>
         </el-table-column>
         <el-table-column :label="$t('machineDetail.value')" show-overflow-tooltip>
           <template slot-scope="{ row }">
@@ -59,7 +61,7 @@
     <el-dialog :visible.sync="dialogVisible" :title="$t('machineDetail.selectTemplate')">
       <el-form>
         <el-form-item :label="$t('machineDetail.optionTemplate')">
-          <el-select v-model="selectedArg">
+          <el-select v-model="selectedArg" filterable>
             <el-option v-for="temp in data" :label="temp.label" :key="temp.key" :value="temp.key"></el-option>
           </el-select>
         </el-form-item>
