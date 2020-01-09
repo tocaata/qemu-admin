@@ -232,7 +232,8 @@ export default {
     os: '操作系统',
     commandOptionsLabel: '参数：',
     option: '参数',
-    value: '值'
+    value: '值',
+    selectIso: '选择光盘镜像'
   },
   user: {
     name: '姓名',
