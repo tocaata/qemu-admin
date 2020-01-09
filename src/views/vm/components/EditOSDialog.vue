@@ -73,7 +73,9 @@
 
 <script>
   import { getAllOptions, updateOS, OSDetail } from '@/api/vm';
-  import _ from 'lodash';
+  // import SvgPicker from '@/components/SvgPicker';
+
+  import {pick, zip} from 'lodash';
 
   export default {
     name: 'EditOSDialog',
@@ -129,8 +131,8 @@
         getAllOptions().then(res => {
           this.cmdTemplates = res.data.map(cmdTemplate => {
             const data = JSON.parse(cmdTemplate.config);
-            const template = _.zip(data.arg, data.template).map(([arg, tpl]) => arg + (tpl ? ' ' + tpl : '')).join('\n');
-            return { key: cmdTemplate.id, label: `${data.title} '${template}'`, ..._.pick(data, ['title', 'desc']), disabled: !cmdTemplate.is_primary };
+            const template = zip(data.arg, data.template).map(([arg, tpl]) => arg + (tpl ? ' ' + tpl : '')).join('\n');
+            return { key: cmdTemplate.id, label: `${data.title} '${template}'`, ...pick(data, ['title', 'desc']), disabled: !cmdTemplate.is_primary };
           });
         });
 

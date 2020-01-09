@@ -232,7 +232,8 @@ export default {
     os: 'OS',
     commandOptionsLabel: 'Command Options:',
     option: 'Option',
-    value: 'Value'
+    value: 'Value',
+    selectIso: 'Select ISO Image'
   },
   user: {
     name: 'Name',

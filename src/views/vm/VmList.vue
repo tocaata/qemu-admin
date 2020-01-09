@@ -69,6 +69,30 @@
                   <svg-icon icon-class="vnc"/>
                 </el-button>
               </el-tooltip>
+
+              <el-tooltip effect="dark" content="connect vpn" placement="top" :open-delay="500">
+                <el-popover
+                  placement="bottom"
+                  :title="$t('virtualMachine.selectIso')"
+                  width="300"
+                  height="300"
+                  trigger="click">
+                  <el-select value="123">
+                    <el-option :label="'dddd'" :value="123"></el-option>
+                    <el-option :label="'aaaa'" :value="234"></el-option>
+                  </el-select>
+                  <div style="text-align: right; margin: 10px">
+                    <el-button size="mini" type="text">取消</el-button>
+                    <el-button type="primary" size="mini">确定</el-button>
+                  </div>
+                  <el-button
+                    type="text"
+                    style="font-size: 20px"
+                    slot="reference">
+                    <svg-icon icon-class="cd"/>
+                  </el-button>
+                </el-popover>
+              </el-tooltip>
             </el-form-item>
             <el-form-item :label="$t('common.nameLabel')">
               <span>{{ row.name }}</span>
@@ -76,7 +100,8 @@
             <el-form-item :label="$t('common.statusLabel')">
               <el-tag :type="row.status | mapStatus" style="font-size: 1em;">{{ row.status }}</el-tag>
             </el-form-item>
-            <el-form-item :label="$t('virtualMachine.commandOptionsLabel')" class="newline-item"></el-form-item>
+            <el-form-item :label="$t('virtualMachine.commandOptionsLabel')" class="newline-item">
+            </el-form-item>
             <el-row>
               <ShowMore
                 style="width: 80%"

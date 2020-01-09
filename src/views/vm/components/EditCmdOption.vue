@@ -130,12 +130,20 @@
       }
     },
     data() {
-      const { title, arg = [], template = [], desc, type, isPrimary, params } = this.data;
+      const { title, arg = [], template = [], desc, type, isPrimary, params = []} = this.data;
       const argTemplate = [];
 
       for (let i = 0; i < arg.length; i++) {
         argTemplate.push(arg[i] + (template[i] ? (' ' + template[i]) : ''));
       }
+
+      const paramsCopy = params.map(param => {
+        for (let [key, value] of Object.entries(param)) {
+          param[`${key}_mutable`] = value;
+        }
+
+        return param;
+      });
 
       return {
         newConfig: {
@@ -146,7 +154,7 @@
           desc,
           type,
           isPrimary,
-          params: params || []
+          params: paramsCopy
         },
         newConfigRules: {
           argTemplate: [
@@ -225,6 +233,13 @@
       handleCancel() {
         this.isShow = true;
         this.$refs.newConfig.resetFields();
+        this.newConfig.params.forEach(param => {
+          for (let key of Object.keys(param)) {
+            if (!key.includes('_mutable')) {
+              param[key] = param[`${key}_mutable`]
+            }
+          }
+        });
       }
     }
   }
