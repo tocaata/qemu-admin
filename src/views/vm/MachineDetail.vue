@@ -19,7 +19,7 @@
         </el-form-item>
       </el-form>
 
-      <el-table :data="configs" v-loading="loading" :expand-row-keys="expand" row-key="id"
+      <el-table :data="configs" v-loading="loading" :expand-row-keys="expand" row-key="values.id"
                 @expand-change="handleExpandChange">
         <el-table-column type="expand">
           <template slot-scope="{ row, $index: index }">
@@ -224,8 +224,8 @@
           this.loading = false;
         })
       },
-      handleExpandChange(e, b) {
-        this.expand = b.map(x => x.id);
+      handleExpandChange(e, expandedRows) {
+        this.expand = expandedRows.map(row => row.values.id);
       },
       fold(key, i) {
         const index = this.expand.indexOf(key);
