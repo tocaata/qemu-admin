@@ -23,18 +23,14 @@
                 @expand-change="handleExpandChange">
         <el-table-column type="expand">
           <template slot-scope="{ row, $index: index }">
-            <el-form label-position="top" :model="row.values.value" :ref="'configForm' + index">
-              <el-form-item v-for="param in row.config.params" :key="param.key" :label="param.label" :prop="param.name">
-                <component :is="param.component" v-model="row.values.value[param.name]">
-                  <template v-if="param.component === 'el-select'">
-                    <el-option v-for="option in param.options" :key="option" :label="option" :value="option">
-                    </el-option>
-                  </template>
-                </component>
-              </el-form-item>
-              <el-button type="primary" size="small" @click="editConfig(row.values.id, row.values.value, index, row.id)">{{$t('common.save')}}</el-button>
-              <el-button type="second" size="small" @click="fold(row.id, index)">{{$t('common.cancel')}}</el-button>
-            </el-form>
+            <machine-config-form
+              :key="JSON.stringify(row.values.value)"
+              :value="row.values.value"
+              @input="rowData => editConfig(row.values.id, rowData)"
+              :params="row.config.params"
+              :on-cancel="() => fold(row.values.id)"
+            >
+            </machine-config-form>
           </template>
         </el-table-column>
         <el-table-column prop="arg" width="200" :label="$t('machineDetail.option')" show-overflow-tooltip>
@@ -76,13 +72,15 @@
 
 <script>
   import _ from 'lodash';
+  import MachineConfigForm from "./components/MachineConfigForm";
   import { vmDetail, editVm, deleteConfig, editConfig, getEnabledOptions, addConfig } from '../../api/vm'
   import DeleteLink from '@/components/DeleteLink';
 
   export default {
     name: 'MachineDetail',
     components: {
-      DeleteLink
+      DeleteLink,
+      MachineConfigForm
     },
     data() {
       return {
@@ -204,7 +202,7 @@
           });
           this.$store.dispatch('addDirtyViews', ['VmList']);
           this.getData();
-          this.fold(rowId, index);
+          this.fold(configId);
         }).catch(() => {
           this.loading = false;
         })
@@ -227,9 +225,8 @@
       handleExpandChange(e, expandedRows) {
         this.expand = expandedRows.map(row => row.values.id);
       },
-      fold(key, i) {
+      fold(key) {
         const index = this.expand.indexOf(key);
-        this.$refs['configForm' + i].resetFields();
         if (index >= 0) {
           this.expand.splice(index, 1);
         }
