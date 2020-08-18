@@ -1,8 +1,8 @@
 {
-  "name": "vue-element-admin",
+  "name": "qemu-admin",
   "version": "3.9.3",
-  "description": "A magical vue admin. Typical templates for enterprise applications. Newest development stack of vue. Lots of awesome features",
-  "author": "Pan <panfree23@gmail.com>",
+  "description": "qemu-admin is a front-end management for qemu/kvm virtual machine. It based on vue and vue-element-admin and use the UI Toolkit element.",
+  "author": "Toccata Yi <tuotaka@gmail.com>",
   "license": "MIT",
   "scripts": {
     "dev": "cross-env BABEL_ENV=development webpack-dev-server --inline --progress --config build/webpack.dev.conf.js",
@@ -28,10 +28,10 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/PanJiaChen/vue-element-admin.git"
+    "url": "git+https://github.com/tocaata/qemu-admin"
   },
   "bugs": {
-    "url": "https://github.com/PanJiaChen/vue-element-admin/issues"
+    "url": "https://github.com/tocaata/qemu-admin/issues"
   },
   "dependencies": {
     "axios": "^0.19.0",
