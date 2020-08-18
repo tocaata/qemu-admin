@@ -352,7 +352,7 @@
         ).then(({message}) => {
           console.log('VNC password', pass);
           this.$message({ type: 'success', message });
-          window.open(`noVNC-1.1.0/vnc.html?host=${document.location.hostname}&port=${5700 + parseInt(port)}&password=${pass}`)
+          window.open(`vnc://:${pass}@${document.location.hostname}:${5900 + parseInt(port)}`)
         }).finally(() => {
           this.loading = false;
         });
